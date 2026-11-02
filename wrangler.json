@@ -1,0 +1,6 @@
+{
+  "name": "libxposed-mcp",
+  "main": "src/worker.ts",
+  "compatibility_date": "2024-11-05",
+  "compatibility_flags": ["nodejs_compat"]
+}

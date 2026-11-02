@@ -35,41 +35,26 @@ Unlike partial references, `libxposed-mcp` covers **100% of all 5 core subprojec
 
 ---
 
-## 🚀 Setup & Local Usage (Phase 1)
+## 🚀 Usage & Configuration
 
-### 1. Build the Standalone Bundle
-```bash
-npm install
-npm run build
-```
-This generates a single, zero-external-dependency bundle at `dist/index.js`.
+### Option A: Cloud Remote MCP (Zero Local Setup - Recommended)
+No Node.js, no Git clone, no local dependencies required! Simply add the live Cloudflare Worker URL to your AI client:
 
-### 2. Configure Your AI Client
-
-#### Cursor / Windsurf / Antigravity (`mcp.json` / Settings)
-Add the local Stdio server configuration:
 ```json
 {
   "mcpServers": {
     "libxposed": {
-      "command": "node",
-      "args": ["C:/Users/aka/Desktop/Portal/Projekt/libxposed_MCP/dist/index.js"]
+      "url": "https://libxposed-mcp.ra1nify.workers.dev/sse"
     }
   }
 }
 ```
 
-#### Claude Desktop (`claude_desktop_config.json`)
-```json
-{
-  "mcpServers": {
-    "libxposed": {
-      "command": "node",
-      "args": ["C:/Users/aka/Desktop/Portal/Projekt/libxposed_MCP/dist/index.js"]
-    }
-  }
-}
-```
+*Dashboard & Health Check*: Visit [https://libxposed-mcp.ra1nify.workers.dev](https://libxposed-mcp.ra1nify.workers.dev) in your browser.
+
+---
+
+### Option B: Local Standalone Bundle (Offline Mode)
 
 ---
 
