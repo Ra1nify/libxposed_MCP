@@ -21924,45 +21924,192 @@ var helper_default = {
 // src/data/service.json
 var service_default = {
   module: "service",
-  version: "1.0.0",
-  description: "Modern cross-process communication (IPC), RemotePreferences, framework service binding, and hot reload protocols",
-  components: [
+  version: "102.0.1",
+  description: "Modern Xposed Service - Communication interface between Xposed framework and module app (IPC, Scope Management, Process Discovery, Hot Reload, RemotePreferences, and Direct Boot)",
+  javadocUrl: "https://libxposed.github.io/service/",
+  artifacts: [
     {
-      name: "io.github.libxposed.service.RemotePreferences",
-      type: "class",
-      summary: "Modern secure SharedPreferences implementation communicating with Xposed framework over IPC. Replaces deprecated and non-functional XSharedPreferences on Android 7+.",
-      features: [
-        "Read-only in target hooked processes",
-        "Configured via module UI and broadcasted across processes",
-        "Supports SharedPreferences.OnSharedPreferenceChangeListener for reactive settings",
-        "Safe across SELinux and scoped storage restrictions"
+      target: "Module Developers",
+      coordinate: "io.github.libxposed:service:102.0.1",
+      instruction: 'Add implementation("io.github.libxposed:service:102.0.1") in app/build.gradle.kts'
+    },
+    {
+      target: "Framework Developers",
+      coordinate: "io.github.libxposed:interface:102.0.1",
+      instruction: 'Add implementation("io.github.libxposed:interface:102.0.1") in framework build.gradle.kts'
+    }
+  ],
+  directBoot: {
+    summary: "XposedProvider is Direct Boot aware. Xposed frameworks can deliver service binders before the user unlocks the device for the first time after a reboot.",
+    guidelines: [
+      "The module app's Application initialization and service listener callbacks must be safe to run before user unlock.",
+      "Use Context.createDeviceProtectedStorageContext() for local data needed before unlock.",
+      "Defer access to credential-protected storage until UserManager.isUserUnlocked() returns true.",
+      "Remote preferences and remote files availability before unlock depends on framework implementation."
+    ]
+  },
+  classes: [
+    {
+      name: "io.github.libxposed.service.XposedService",
+      type: "final class",
+      sinceApi: 101,
+      summary: "Central client service class managing communication with the host Xposed framework daemon (scope, running targets, hot reload, remote preferences, remote files).",
+      constants: [
+        { name: "API_101", type: "int", value: "101", doc: "Initial modern service API level." },
+        { name: "API_102", type: "int", value: "102", doc: "Service API 102: allows querying running hooked targets and requesting hot reload." },
+        { name: "PROP_CAP_SYSTEM", type: "long", value: "1L", doc: "Framework can hook system_server and system processes." },
+        { name: "PROP_CAP_REMOTE", type: "long", value: "1L << 1", doc: "Framework provides remote preferences and files support." },
+        { name: "PROP_RT_API_PROTECTION", type: "long", value: "1L << 2", doc: "Framework disallows accessing API via reflection or dynamically loaded code." }
       ],
-      usage: [
+      methods: [
+        { name: "getApiVersion", signature: "int getApiVersion()", doc: "Returns the service API version of the running framework." },
+        { name: "getFrameworkName", signature: "String getFrameworkName()", doc: "Returns the host framework name (e.g. LSPosed)." },
+        { name: "getFrameworkVersion", signature: "String getFrameworkVersion()", doc: "Returns the host framework version string." },
+        { name: "getFrameworkVersionCode", signature: "long getFrameworkVersionCode()", doc: "Returns the framework version code." },
+        { name: "getFrameworkProperties", signature: "long getFrameworkProperties()", doc: "Returns bitmask of framework capabilities and runtime flags." },
+        { name: "getScope", signature: "List<String> getScope()", doc: "Returns the application package scope configured for this module." },
+        { name: "requestScope", signature: "void requestScope(@NonNull List<String> packages, @NonNull OnScopeEventListener callback)", doc: "Asynchronously requests the framework to expand module scope to include the specified packages." },
+        { name: "removeScope", signature: "void removeScope(@NonNull List<String> packages)", doc: "Removes specified packages from module scope." },
+        { name: "getRunningTargets", signature: "List<HookedTarget> getRunningTargets()", sinceApi: 102, doc: "Queries all currently running processes that are hooked by this module. Returned targets can be used to trigger hot reloading." },
+        { name: "hotReloadModule", signature: "void hotReloadModule(@NonNull HookedTarget target, @Nullable Bundle data, @NonNull HotReloadCallback callback)", sinceApi: 102, doc: "Requests the framework to hot reload the module in target process without rebooting or killing the target app." },
+        { name: "getRemotePreferences", signature: "SharedPreferences getRemotePreferences(@NonNull String group)", doc: "Retrieves or creates a named group of RemotePreferences stored in the Xposed framework." },
+        { name: "deleteRemotePreferences", signature: "void deleteRemotePreferences(@NonNull String group)", doc: "Deletes a named group of RemotePreferences." },
+        { name: "listRemoteFiles", signature: "String[] listRemoteFiles()", doc: "Lists all shared files in module's framework-managed data directory." },
+        { name: "openRemoteFile", signature: "ParcelFileDescriptor openRemoteFile(@NonNull String name)", doc: "Opens a ParcelFileDescriptor to a remote file." },
+        { name: "deleteRemoteFile", signature: "boolean deleteRemoteFile(@NonNull String name)", doc: "Deletes a remote file from module's shared data directory." }
+      ],
+      innerTypes: [
         {
-          title: "Retrieving RemotePreferences in Hooked App",
-          code: 'val prefs = getRemotePreferences("settings")\nval isEnabled = prefs.getBoolean("feature_flag", false)\nprefs.registerOnSharedPreferenceChangeListener { _, key ->\n    log(Log.INFO, TAG, "Preference updated: " + key)\n}'
+          name: "OnScopeEventListener",
+          type: "interface",
+          methods: [
+            { name: "onScopeRequestApproved", signature: "void onScopeRequestApproved(@NonNull List<String> approved)", doc: "Called when user/framework approves the scope expansion." },
+            { name: "onScopeRequestFailed", signature: "void onScopeRequestFailed(@NonNull String message)", doc: "Called when scope request is rejected or fails." }
+          ]
+        },
+        {
+          name: "HotReloadCallback",
+          type: "interface",
+          sinceApi: 102,
+          methods: [
+            { name: "onHotReloadResult", signature: "void onHotReloadResult(@NonNull HookedTarget target, @NonNull HotReloadResult result)", doc: "Called when hot reload completes or fails. Note: runs on Binder thread; dispatch to Main thread for UI updates." }
+          ]
+        },
+        {
+          name: "ServiceException",
+          type: "class",
+          doc: "Runtime exception thrown when framework service connection is dead or IPC transaction fails."
         }
       ]
     },
     {
-      name: "io.github.libxposed.service.XposedService",
-      type: "class",
-      summary: "Client service class that manages binding and IPC communication with the host Xposed framework service."
+      name: "io.github.libxposed.service.XposedServiceHelper",
+      type: "final class",
+      summary: "Helper to bind and listen to Xposed framework service connections in module applications.",
+      methods: [
+        {
+          name: "registerListener",
+          signature: "static void registerListener(OnServiceListener listener)",
+          doc: "Registers a service listener to receive XposedService instances when framework connects. Safe across multiple framework managers."
+        }
+      ],
+      innerTypes: [
+        {
+          name: "OnServiceListener",
+          type: "interface",
+          methods: [
+            { name: "onServiceBind", signature: "void onServiceBind(@NonNull XposedService service)", doc: "Called when XposedService binder is connected. May be called multiple times if multiple frameworks exist." },
+            { name: "onServiceDied", signature: "void onServiceDied(@NonNull XposedService service)", doc: "Called when framework service dies or disconnects." }
+          ]
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.service.HookedTarget",
+      type: "final class",
+      sinceApi: 102,
+      summary: "Represents a running process that is hooked by this module.",
+      properties: [
+        { name: "mTargetId", type: "long", doc: "Internal target identity handle for hot reload transactions." },
+        { name: "mUid", type: "int", doc: "Target process UID." },
+        { name: "mPid", type: "int", doc: "Target process PID." },
+        { name: "mProcessName", type: "String", doc: "Android process name." },
+        { name: "mState", type: "HookedTarget.State", doc: "Status enum: UP_TO_DATE, STALE, RELOADING, FAILED." },
+        { name: "mLoadedVersionCode", type: "long", doc: "Version code of module package loaded in this process." }
+      ],
+      innerTypes: [
+        {
+          name: "State",
+          type: "enum",
+          values: ["UP_TO_DATE", "STALE", "RELOADING", "FAILED"]
+        }
+      ]
     },
     {
       name: "io.github.libxposed.service.HotReloadResult",
-      type: "class",
-      summary: "Data holder representing the result and status of dynamic module hot reloading."
+      type: "record",
+      sinceApi: 102,
+      summary: "Result record of an asynchronous hot reload request with completion status and diagnostic message.",
+      innerTypes: [
+        {
+          name: "Status",
+          type: "enum",
+          values: ["SUCCEEDED", "FAILED", "UNSUPPORTED", "IN_PROGRESS", "PROCESS_DIED"]
+        }
+      ]
     },
     {
-      name: "AIDL Interfaces",
-      type: "aidl",
-      interfaces: [
-        { name: "IXposedService", doc: "Core AIDL interface for requesting remote preferences, remote files, and scope verification." },
-        { name: "IXposedScopeCallback", doc: "Callback interface for scope resolution." },
-        { name: "IHotReloadCallback", doc: "Callback interface for triggering hot reload notifications." },
-        { name: "HookedProcess", doc: "Parcelable representing a process that has been hooked by the framework." }
+      name: "io.github.libxposed.service.RemotePreferences",
+      type: "final class",
+      summary: "Modern secure SharedPreferences implementation over IPC. Overcomes Android 7.0+ world-readable file restrictions.",
+      methods: [
+        { name: "getAll", signature: "Map<String, ?> getAll()", doc: "Returns an unmodifiable snapshot copy of all key-value pairs." },
+        { name: "getString", signature: "String getString(String key, String defValue)", doc: "Retrieves String value." },
+        { name: "getInt", signature: "int getInt(String key, int defValue)", doc: "Retrieves int value." },
+        { name: "getBoolean", signature: "boolean getBoolean(String key, boolean defValue)", doc: "Retrieves boolean value." },
+        { name: "getLong", signature: "long getLong(String key, long defValue)", doc: "Retrieves long value." },
+        { name: "getFloat", signature: "float getFloat(String key, float defValue)", doc: "Retrieves float value." },
+        { name: "getStringSet", signature: "Set<String> getStringSet(String key, Set<String> defValues)", doc: "Retrieves Set<String> value." },
+        { name: "contains", signature: "boolean contains(String key)", doc: "Checks if preference key exists." },
+        { name: "registerOnSharedPreferenceChangeListener", signature: "void registerOnSharedPreferenceChangeListener(OnSharedPreferenceChangeListener listener)", doc: "Registers a reactive listener triggered when preferences update." }
       ]
+    },
+    {
+      name: "io.github.libxposed.service.XposedProvider",
+      type: "class extends ContentProvider",
+      summary: "Internal Direct-Boot-aware ContentProvider exported by the module app to receive IBinder connection from LSPosed/Xposed framework."
+    }
+  ],
+  aidl: [
+    {
+      name: "io.github.libxposed.service.IXposedService",
+      summary: "Core framework AIDL interface providing API level checks, scope control, remote preferences, remote files, and hot reload."
+    },
+    {
+      name: "io.github.libxposed.service.IXposedScopeCallback",
+      summary: "AIDL callback for scope request approval or failure."
+    },
+    {
+      name: "io.github.libxposed.service.IHotReloadCallback",
+      summary: "AIDL callback delivering hot reload result code and diagnostic message."
+    },
+    {
+      name: "io.github.libxposed.service.HookedProcess",
+      summary: "AIDL Parcelable conveying running target process state, pid, uid, and targetId."
+    }
+  ],
+  patterns: [
+    {
+      title: "Module App: Binding to XposedService and Updating Preferences",
+      code: 'XposedServiceHelper.registerListener(new XposedServiceHelper.OnServiceListener() {\n    @Override\n    public void onServiceBind(@NonNull XposedService service) {\n        Log.i("ModuleApp", "Connected to framework: " + service.getFrameworkName());\n        SharedPreferences prefs = service.getRemotePreferences("config");\n        prefs.edit().putBoolean("enable_feature", true).apply();\n    }\n\n    @Override\n    public void onServiceDied(@NonNull XposedService service) {\n        Log.w("ModuleApp", "Framework service died");\n    }\n});'
+    },
+    {
+      title: "Module App: Discovering Hooked Targets and Triggering Hot Reload",
+      code: 'List<HookedTarget> targets = service.getRunningTargets();\nfor (HookedTarget target : targets) {\n    if (target.getState() == HookedTarget.State.STALE) {\n        service.hotReloadModule(target, null, (t, result) -> {\n            if (result.status() == HotReloadResult.Status.SUCCEEDED) {\n                Log.i("ModuleApp", "Hot reload succeeded for: " + t.getProcessName());\n            } else {\n                Log.e("ModuleApp", "Hot reload failed: " + result.message());\n            }\n        });\n    }\n}'
+    },
+    {
+      title: "Hooked App: Reading RemotePreferences Reactively",
+      code: 'val prefs = getRemotePreferences("config")\nval enabled = prefs.getBoolean("enable_feature", false)\nprefs.registerOnSharedPreferenceChangeListener { _, key ->\n    log(Log.INFO, TAG, "Remote preference changed: $key")\n}'
     }
   ]
 };
@@ -22166,11 +22313,28 @@ function createLibXposedServer() {
         }
       }
       if (module === "all" || module === "service") {
-        for (const comp of serviceData.components) {
-          if (comp.name?.toLowerCase().includes(q) || comp.summary?.toLowerCase().includes(q)) {
-            results.push(`### [Service Component] ${comp.name}
-- **Type**: ${comp.type}
-- **Summary**: ${comp.summary}`);
+        for (const cls of serviceData.classes) {
+          if (cls.name?.toLowerCase().includes(q) || cls.summary?.toLowerCase().includes(q)) {
+            results.push(`### [Service Class] ${cls.name}
+- **Type**: ${cls.type}
+- **Summary**: ${cls.summary}`);
+          }
+          if (cls.methods) {
+            for (const m of cls.methods) {
+              if (m.name?.toLowerCase().includes(q) || m.signature?.toLowerCase().includes(q) || m.doc?.toLowerCase().includes(q)) {
+                results.push(`### [Service Method] ${cls.name}#${m.name}
+- **Signature**: \`${m.signature}\`
+- **Doc**: ${m.doc || ""}`);
+              }
+            }
+          }
+        }
+        if (serviceData.aidl) {
+          for (const a of serviceData.aidl) {
+            if (a.name?.toLowerCase().includes(q) || a.summary?.toLowerCase().includes(q)) {
+              results.push(`### [Service AIDL] ${a.name}
+- **Summary**: ${a.summary}`);
+            }
           }
         }
       }
@@ -22382,64 +22546,126 @@ ${p.code}
   );
   server.tool(
     "get_service_guide",
-    "Get guides for libxposed:service, including modern cross-process RemotePreferences (replacing broken XSharedPreferences), XposedService IPC, and Hot Reload protocols.",
+    "Get comprehensive guides for libxposed:service, including XposedService, XposedServiceHelper, modern RemotePreferences, HookedTarget process introspection, Hot Reload protocols, Direct Boot rules, and AIDL definitions.",
     {
-      topic: external_exports.enum(["all", "remote_preferences", "hot_reload", "aidl"]).describe("Service topic to retrieve: 'remote_preferences', 'hot_reload', 'aidl', or 'all'")
+      topic: external_exports.enum(["all", "remote_preferences", "xposed_service", "hot_reload", "direct_boot", "aidl"]).describe("Service topic to retrieve: 'xposed_service', 'remote_preferences', 'hot_reload', 'direct_boot', 'aidl', or 'all'")
     },
     async ({ topic }) => {
       let output = `# LibXposed Service & IPC Architecture (libxposed:service)
 
 `;
-      if (topic === "all" || topic === "remote_preferences") {
-        const rp = serviceData.components.find((c) => c.name.includes("RemotePreferences"));
-        output += `## RemotePreferences (Modern Cross-Process SharedPreferences)
-${rp?.summary}
-
-### Key Features:
+      if (serviceData.artifacts) {
+        output += `### Gradle Dependencies:
 `;
-        if (rp?.features) {
-          output += rp.features.map((f) => "- " + f).join("\n") + "\n\n";
+        for (const art of serviceData.artifacts) {
+          output += `- **${art.target}**: \`${art.coordinate}\` (\`${art.instruction}\`)
+`;
         }
-        if (rp?.usage) {
-          for (const u of rp.usage) {
-            output += `### ${u.title}
-\`\`\`kotlin
-${u.code}
+        output += `
+`;
+      }
+      if (topic === "all" || topic === "direct_boot") {
+        output += `## 1. Direct Boot Awareness
+${serviceData.directBoot?.summary}
+
+### Critical Rules:
+`;
+        if (serviceData.directBoot?.guidelines) {
+          output += serviceData.directBoot.guidelines.map((g) => "- " + g).join("\n") + "\n\n";
+        }
+      }
+      if (topic === "all" || topic === "xposed_service") {
+        const xs = serviceData.classes.find((c) => c.name.endsWith(".XposedService"));
+        const xsh = serviceData.classes.find((c) => c.name.endsWith(".XposedServiceHelper"));
+        output += `## 2. XposedService & XposedServiceHelper
+${xs?.summary}
+
+`;
+        output += `### Connecting via XposedServiceHelper:
+`;
+        const bindPattern = serviceData.patterns?.find((p) => p.title.includes("Binding to XposedService"));
+        if (bindPattern) {
+          output += `\`\`\`java
+${bindPattern.code}
 \`\`\`
 
 `;
+        }
+        output += `### XposedService Methods:
+`;
+        if (xs?.methods) {
+          for (const m of xs.methods) {
+            output += `- **\`${m.name}\`**: \`${m.signature}\`
+  ${m.doc}
+`;
           }
+        }
+        output += `
+`;
+      }
+      if (topic === "all" || topic === "remote_preferences") {
+        const rp = serviceData.classes.find((c) => c.name.endsWith(".RemotePreferences"));
+        output += `## 3. RemotePreferences (Modern Cross-Process SharedPreferences)
+${rp?.summary}
+
+`;
+        output += `### Methods in Hooked & Module Processes:
+`;
+        if (rp?.methods) {
+          for (const m of rp.methods) {
+            output += `- **\`${m.name}\`**: \`${m.signature}\`
+  ${m.doc}
+`;
+          }
+        }
+        const prefPattern = serviceData.patterns?.find((p) => p.title.includes("Reading RemotePreferences"));
+        if (prefPattern) {
+          output += `
+### Reactive Usage Example:
+\`\`\`kotlin
+${prefPattern.code}
+\`\`\`
+
+`;
         }
       }
       if (topic === "all" || topic === "hot_reload") {
-        output += `## Hot Reload Protocol (API 102+)
+        const ht = serviceData.classes.find((c) => c.name.endsWith(".HookedTarget"));
+        const hr = serviceData.classes.find((c) => c.name.endsWith(".HotReloadResult"));
+        output += `## 4. Hot Reload Protocol (API 102+)
 `;
         output += `Hot reload allows modules to update hooks dynamically without restarting the hooked application process.
 
 `;
-        output += `### Lifecycle Callbacks in XposedModule:
+        output += `### Process Introspection via HookedTarget:
 `;
-        output += `1. **\`boolean onHotReloading(HotReloadingParam param)\`**:
-   - Called before the module is reloaded.
-   - Save state using \`param.setSavedInstanceState(serializable)\`.
-   - Return \`true\` to allow reload, or \`false\` to abort.
+        output += `- States: \`${ht?.innerTypes?.find((i) => i.name === "State")?.values?.join(", ")}\`
+`;
+        output += `- Properties: ${ht?.properties?.map((p) => `\`${p.name}\` (${p.doc})`).join(", ")}
 
 `;
-        output += `2. **\`void onHotReloaded(HotReloadedParam param)\`**:
-   - Called after reload succeeds.
-   - Retrieve prior state with \`param.getSavedInstanceState()\`.
-   - Clean up previous hooks using \`param.getOldHookHandles().forEach(HookHandle::unhook)\` or replace them atomically via \`handle.replaceHook(newHooker)\`.
+        output += `### HotReloadResult Status:
+`;
+        output += `- Statuses: \`${hr?.innerTypes?.find((i) => i.name === "Status")?.values?.join(", ")}\`
 
 `;
+        const reloadPattern = serviceData.patterns?.find((p) => p.title.includes("Triggering Hot Reload"));
+        if (reloadPattern) {
+          output += `### Triggering Hot Reload from Module App:
+\`\`\`java
+${reloadPattern.code}
+\`\`\`
+
+`;
+        }
       }
       if (topic === "all" || topic === "aidl") {
-        const aidl = serviceData.components.find((c) => c.type === "aidl");
-        output += `## Framework AIDL Interfaces
+        output += `## 5. Framework AIDL Interfaces
 
 `;
-        if (aidl?.interfaces) {
-          for (const i of aidl.interfaces) {
-            output += `- **\`${i.name}\`**: ${i.doc}
+        if (serviceData.aidl) {
+          for (const a of serviceData.aidl) {
+            output += `- **\`${a.name}\`**: ${a.summary}
 `;
           }
         }

@@ -47,18 +47,33 @@ export interface HelperModuleData {
   components: HelperComponent[];
 }
 
+export interface ServiceClass {
+  name: string;
+  type: string;
+  sinceApi?: number;
+  summary: string;
+  constants?: ApiConstant[];
+  methods?: ApiMethod[];
+  properties?: { name: string; type: string; doc: string }[];
+  innerTypes?: {
+    name: string;
+    type: string;
+    doc?: string;
+    values?: string[];
+    methods?: ApiMethod[];
+  }[];
+}
+
 export interface ServiceModuleData {
   module: string;
   version: string;
   description: string;
-  components: {
-    name: string;
-    type: string;
-    summary: string;
-    features?: string[];
-    usage?: { title: string; code: string }[];
-    interfaces?: { name: string; doc: string }[];
-  }[];
+  javadocUrl?: string;
+  artifacts?: { target: string; coordinate: string; instruction: string }[];
+  directBoot?: { summary: string; guidelines: string[] };
+  classes: ServiceClass[];
+  aidl?: { name: string; summary: string }[];
+  patterns?: { title: string; code: string }[];
 }
 
 export interface LintModuleData {

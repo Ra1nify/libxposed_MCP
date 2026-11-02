@@ -79,9 +79,23 @@ export function createLibXposedServer(): McpServer {
       }
 
       if (module === "all" || module === "service") {
-        for (const comp of serviceData.components) {
-          if (comp.name?.toLowerCase().includes(q) || comp.summary?.toLowerCase().includes(q)) {
-            results.push(`### [Service Component] ${comp.name}\n- **Type**: ${comp.type}\n- **Summary**: ${comp.summary}`);
+        for (const cls of serviceData.classes) {
+          if (cls.name?.toLowerCase().includes(q) || cls.summary?.toLowerCase().includes(q)) {
+            results.push(`### [Service Class] ${cls.name}\n- **Type**: ${cls.type}\n- **Summary**: ${cls.summary}`);
+          }
+          if (cls.methods) {
+            for (const m of cls.methods) {
+              if (m.name?.toLowerCase().includes(q) || m.signature?.toLowerCase().includes(q) || m.doc?.toLowerCase().includes(q)) {
+                results.push(`### [Service Method] ${cls.name}#${m.name}\n- **Signature**: \`${m.signature}\`\n- **Doc**: ${m.doc || ""}`);
+              }
+            }
+          }
+        }
+        if (serviceData.aidl) {
+          for (const a of serviceData.aidl) {
+            if (a.name?.toLowerCase().includes(q) || a.summary?.toLowerCase().includes(q)) {
+              results.push(`### [Service AIDL] ${a.name}\n- **Summary**: ${a.summary}`);
+            }
           }
         }
       }
@@ -251,43 +265,85 @@ export function createLibXposedServer(): McpServer {
     }
   );
 
-  // Tool 4: Service, IPC, and Hot Reload Guide
+  // Tool 4: Service, IPC, Direct Boot, and Hot Reload Guide
   server.tool(
     "get_service_guide",
-    "Get guides for libxposed:service, including modern cross-process RemotePreferences (replacing broken XSharedPreferences), XposedService IPC, and Hot Reload protocols.",
+    "Get comprehensive guides for libxposed:service, including XposedService, XposedServiceHelper, modern RemotePreferences, HookedTarget process introspection, Hot Reload protocols, Direct Boot rules, and AIDL definitions.",
     {
-      topic: z.enum(["all", "remote_preferences", "hot_reload", "aidl"]).describe("Service topic to retrieve: 'remote_preferences', 'hot_reload', 'aidl', or 'all'"),
+      topic: z.enum(["all", "remote_preferences", "xposed_service", "hot_reload", "direct_boot", "aidl"]).describe("Service topic to retrieve: 'xposed_service', 'remote_preferences', 'hot_reload', 'direct_boot', 'aidl', or 'all'"),
     },
     async ({ topic }) => {
       let output = `# LibXposed Service & IPC Architecture (libxposed:service)\n\n`;
 
-      if (topic === "all" || topic === "remote_preferences") {
-        const rp = serviceData.components.find((c) => c.name.includes("RemotePreferences"));
-        output += `## RemotePreferences (Modern Cross-Process SharedPreferences)\n${rp?.summary}\n\n### Key Features:\n`;
-        if (rp?.features) {
-          output += rp.features.map((f) => "- " + f).join("\n") + "\n\n";
+      if (serviceData.artifacts) {
+        output += `### Gradle Dependencies:\n`;
+        for (const art of serviceData.artifacts) {
+          output += `- **${art.target}**: \`${art.coordinate}\` (\`${art.instruction}\`)\n`;
         }
-        if (rp?.usage) {
-          for (const u of rp.usage) {
-            output += `### ${u.title}\n\`\`\`kotlin\n${u.code}\n\`\`\`\n\n`;
+        output += `\n`;
+      }
+
+      if (topic === "all" || topic === "direct_boot") {
+        output += `## 1. Direct Boot Awareness\n${serviceData.directBoot?.summary}\n\n### Critical Rules:\n`;
+        if (serviceData.directBoot?.guidelines) {
+          output += serviceData.directBoot.guidelines.map((g) => "- " + g).join("\n") + "\n\n";
+        }
+      }
+
+      if (topic === "all" || topic === "xposed_service") {
+        const xs = serviceData.classes.find((c) => c.name.endsWith(".XposedService"));
+        const xsh = serviceData.classes.find((c) => c.name.endsWith(".XposedServiceHelper"));
+        output += `## 2. XposedService & XposedServiceHelper\n${xs?.summary}\n\n`;
+        output += `### Connecting via XposedServiceHelper:\n`;
+        const bindPattern = serviceData.patterns?.find((p) => p.title.includes("Binding to XposedService"));
+        if (bindPattern) {
+          output += `\`\`\`java\n${bindPattern.code}\n\`\`\`\n\n`;
+        }
+        output += `### XposedService Methods:\n`;
+        if (xs?.methods) {
+          for (const m of xs.methods) {
+            output += `- **\`${m.name}\`**: \`${m.signature}\`\n  ${m.doc}\n`;
           }
+        }
+        output += `\n`;
+      }
+
+      if (topic === "all" || topic === "remote_preferences") {
+        const rp = serviceData.classes.find((c) => c.name.endsWith(".RemotePreferences"));
+        output += `## 3. RemotePreferences (Modern Cross-Process SharedPreferences)\n${rp?.summary}\n\n`;
+        output += `### Methods in Hooked & Module Processes:\n`;
+        if (rp?.methods) {
+          for (const m of rp.methods) {
+            output += `- **\`${m.name}\`**: \`${m.signature}\`\n  ${m.doc}\n`;
+          }
+        }
+        const prefPattern = serviceData.patterns?.find((p) => p.title.includes("Reading RemotePreferences"));
+        if (prefPattern) {
+          output += `\n### Reactive Usage Example:\n\`\`\`kotlin\n${prefPattern.code}\n\`\`\`\n\n`;
         }
       }
 
       if (topic === "all" || topic === "hot_reload") {
-        output += `## Hot Reload Protocol (API 102+)\n`;
+        const ht = serviceData.classes.find((c) => c.name.endsWith(".HookedTarget"));
+        const hr = serviceData.classes.find((c) => c.name.endsWith(".HotReloadResult"));
+        output += `## 4. Hot Reload Protocol (API 102+)\n`;
         output += `Hot reload allows modules to update hooks dynamically without restarting the hooked application process.\n\n`;
-        output += `### Lifecycle Callbacks in XposedModule:\n`;
-        output += `1. **\`boolean onHotReloading(HotReloadingParam param)\`**:\n   - Called before the module is reloaded.\n   - Save state using \`param.setSavedInstanceState(serializable)\`.\n   - Return \`true\` to allow reload, or \`false\` to abort.\n\n`;
-        output += `2. **\`void onHotReloaded(HotReloadedParam param)\`**:\n   - Called after reload succeeds.\n   - Retrieve prior state with \`param.getSavedInstanceState()\`.\n   - Clean up previous hooks using \`param.getOldHookHandles().forEach(HookHandle::unhook)\` or replace them atomically via \`handle.replaceHook(newHooker)\`.\n\n`;
+        output += `### Process Introspection via HookedTarget:\n`;
+        output += `- States: \`${ht?.innerTypes?.find((i) => i.name === "State")?.values?.join(", ")}\`\n`;
+        output += `- Properties: ${ht?.properties?.map((p) => `\`${p.name}\` (${p.doc})`).join(", ")}\n\n`;
+        output += `### HotReloadResult Status:\n`;
+        output += `- Statuses: \`${hr?.innerTypes?.find((i) => i.name === "Status")?.values?.join(", ")}\`\n\n`;
+        const reloadPattern = serviceData.patterns?.find((p) => p.title.includes("Triggering Hot Reload"));
+        if (reloadPattern) {
+          output += `### Triggering Hot Reload from Module App:\n\`\`\`java\n${reloadPattern.code}\n\`\`\`\n\n`;
+        }
       }
 
       if (topic === "all" || topic === "aidl") {
-        const aidl = serviceData.components.find((c) => c.type === "aidl");
-        output += `## Framework AIDL Interfaces\n\n`;
-        if (aidl?.interfaces) {
-          for (const i of aidl.interfaces) {
-            output += `- **\`${i.name}\`**: ${i.doc}\n`;
+        output += `## 5. Framework AIDL Interfaces\n\n`;
+        if (serviceData.aidl) {
+          for (const a of serviceData.aidl) {
+            output += `- **\`${a.name}\`**: ${a.summary}\n`;
           }
         }
       }
