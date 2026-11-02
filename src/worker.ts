@@ -13,7 +13,7 @@ async function processJsonRpc(msg: any): Promise<any> {
     let resolved = false;
     const server = createLibXposedServer();
 
-    const transport = {
+    const transport: any = {
       start: async () => {},
       send: async (responseMsg: any) => {
         if (!resolved) {
@@ -149,10 +149,11 @@ export default {
   <h1>LibXposed MCP Server <span class="badge">ONLINE</span></h1>
   <p>Full-spectrum Model Context Protocol (MCP) server for modern LibXposed Android hooking framework.</p>
   
-  <h2>🔗 Connection Endpoints</h2>
+  <h2>🔗 Connection Endpoint</h2>
+  <p>Use the root URL with modern <code>streamable-http</code> transport:</p>
   <ul>
-    <li><strong>Standard SSE URL:</strong> <code>https://${url.host}/sse</code></li>
-    <li><strong>Streamable HTTP URL:</strong> <code>https://${url.host}/mcp</code></li>
+    <li><strong>Streamable HTTP URL (Root):</strong> <code>https://${url.host}</code></li>
+    <li><strong>Transport Type:</strong> <code>streamable-http</code></li>
   </ul>
 
   <h2>🛠️ Registered Tools (All 7 Available)</h2>
@@ -166,11 +167,12 @@ export default {
     <li><code>check_api_compatibility</code>: API 101/102 features and @InternalApi checks</li>
   </ul>
 
-  <h2>⚙️ IDE Configuration</h2>
+  <h2>⚙️ Recommended MCP Configuration (DSH, Cursor, Windsurf, Claude)</h2>
   <pre>{
   "mcpServers": {
     "libxposed": {
-      "url": "https://${url.host}/sse"
+      "url": "https://${url.host}",
+      "transport": "streamable-http"
     }
   }
 }</pre>
