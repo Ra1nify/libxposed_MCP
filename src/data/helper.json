@@ -1,0 +1,101 @@
+{
+  "module": "helper",
+  "version": "1.0.0",
+  "description": "High-level fluent hook builder, dex analysis caching, reflection helpers, and Kotlin DSL extensions",
+  "components": [
+    {
+      "name": "io.github.libxposed.helper.HookBuilder",
+      "type": "interface",
+      "summary": "Fluent and declarative builder for discovering classes, methods, constructors, and fields to hook with lazy sequences and dex analysis.",
+      "methods": [
+        {
+          "name": "buildHooks",
+          "signature": "static Future<?> buildHooks(@NonNull XposedInterface ctx, @NonNull BaseDexClassLoader classLoader, @NonNull String sourcePath, Consumer<HookBuilder> consumer)",
+          "doc": "Main entry point to define declarative hooks on a classloader with optional dex analysis caching."
+        },
+        {
+          "name": "setForceDexAnalysis",
+          "signature": "HookBuilder setForceDexAnalysis(boolean forceDexAnalysis)",
+          "doc": "Enables/disables full dex analysis if bytecode introspection is required."
+        },
+        {
+          "name": "methods",
+          "signature": "MethodLazySequence methods(@NonNull Consumer<MethodMatcher> matcher)",
+          "doc": "Finds all methods matching the specified criteria."
+        },
+        {
+          "name": "firstMethod",
+          "signature": "MethodMatch firstMethod(@NonNull Consumer<MethodMatcher> matcher)",
+          "doc": "Finds the first method matching the specified criteria."
+        },
+        {
+          "name": "constructors",
+          "signature": "ConstructorLazySequence constructors(@NonNull Consumer<ConstructorMatcher> matcher)",
+          "doc": "Finds all constructors matching the specified criteria."
+        },
+        {
+          "name": "firstConstructor",
+          "signature": "ConstructorMatch firstConstructor(@NonNull Consumer<ConstructorMatcher> matcher)",
+          "doc": "Finds the first constructor matching the specified criteria."
+        },
+        {
+          "name": "fields",
+          "signature": "FieldLazySequence fields(@NonNull Consumer<FieldMatcher> matcher)",
+          "doc": "Finds all fields matching the specified criteria."
+        },
+        {
+          "name": "firstField",
+          "signature": "FieldMatch firstField(@NonNull Consumer<FieldMatcher> matcher)",
+          "doc": "Finds the first field matching the specified criteria."
+        },
+        {
+          "name": "classes",
+          "signature": "ClassLazySequence classes(@NonNull Consumer<ClassMatcher> matcher)",
+          "doc": "Finds all classes matching the specified criteria."
+        },
+        {
+          "name": "firstClass",
+          "signature": "ClassMatch firstClass(@NonNull Consumer<ClassMatcher> matcher)",
+          "doc": "Finds the first class matching the specified criteria."
+        },
+        {
+          "name": "exactClass",
+          "signature": "ClassMatch exactClass(@NonNull String name)",
+          "doc": "Finds a class by its exact canonical name."
+        },
+        {
+          "name": "exactMethod",
+          "signature": "MethodMatch exactMethod(@NonNull String signature)",
+          "doc": "Finds a method by its exact signature or name."
+        },
+        {
+          "name": "exactConstructor",
+          "signature": "ConstructorMatch exactConstructor(@NonNull String signature)",
+          "doc": "Finds a constructor by its exact signature."
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.helper.Reflector",
+      "type": "class",
+      "summary": "Reflection acceleration and caching toolkit for accessing hidden or obfuscated fields, methods, and constructors without performance penalties.",
+      "methods": [
+        { "name": "findClass", "signature": "static Class<?> findClass(String name, ClassLoader loader)", "doc": "Resolves class with caching." },
+        { "name": "findMethod", "signature": "static Method findMethod(Class<?> clazz, String name, Class<?>... paramTypes)", "doc": "Finds declared or inherited method with caching." },
+        { "name": "findConstructor", "signature": "static Constructor<?> findConstructor(Class<?> clazz, Class<?>... paramTypes)", "doc": "Finds declared constructor with caching." },
+        { "name": "findField", "signature": "static Field findField(Class<?> clazz, String name)", "doc": "Finds declared or inherited field with caching." }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.helper.ktx",
+      "type": "package",
+      "summary": "Idiomatic Kotlin DSL extensions for LibXposed hook declarations.",
+      "patterns": [
+        {
+          "title": "Kotlin HookBuilder DSL",
+          "code": "buildHooks(ctx, classLoader, sourcePath) {\n    firstMethod {\n        name = \"targetMethod\"\n        paramTypes(String::class.java)\n    }.hook {\n        intercept {\n            val arg0 = it.args[0] as String\n            it.proceed()\n        }\n    }\n}"
+        }
+      ]
+    }
+  ]
+}

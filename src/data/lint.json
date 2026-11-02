@@ -1,0 +1,39 @@
+{
+  "module": "lint",
+  "version": "1.0.0",
+  "description": "Lint checks, annotation enforcement, and API version compatibility rules",
+  "annotations": [
+    {
+      "name": "io.github.libxposed.annotation.SinceApi",
+      "target": ["TYPE", "METHOD", "CONSTRUCTOR", "FIELD"],
+      "doc": "Annotates an API element with the minimum LibXposed API version required (e.g. 101, 102). Modules targeting lower API versions trigger a lint error when referencing it."
+    },
+    {
+      "name": "io.github.libxposed.annotation.InternalApi",
+      "target": ["TYPE", "METHOD", "CONSTRUCTOR", "FIELD"],
+      "doc": "Marks framework internal classes or methods. Calling these from module code triggers lint warnings/errors and breaks module portability."
+    }
+  ],
+  "apiLevels": [
+    {
+      "version": 101,
+      "name": "API_101",
+      "features": [
+        "First modern LibXposed specification",
+        "Modules run strictly within the target package process scope (no zygote injection)",
+        "Strongly typed Hooker and Invoker architecture",
+        "Replaces legacy XC_MethodHook with Chain.proceed()"
+      ]
+    },
+    {
+      "version": 102,
+      "name": "API_102",
+      "features": [
+        "Hot reload support (onHotReloading, onHotReloaded, setSavedInstanceState, getOldHookHandles)",
+        "Hook IDs and atomic replacement (HookBuilder.setId, HookHandle.replaceHook)",
+        "Modules can stop receiving subsequent lifecycle callbacks",
+        "Enforces strict block against calling legacy de.robv.android.xposed APIs"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "module": "migration",
+  "version": "1.0.0",
+  "description": "Comprehensive migration guide and mapping table from Legacy Xposed (XposedBridge / EdXposed / LSPosed legacy API) to modern LibXposed",
+  "mappings": [
+    {
+      "legacy": "IXposedHookLoadPackage.handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam)",
+      "modern": "XposedModule.onPackageReady(PackageReadyParam param) or onPackageLoaded(PackageLoadedParam param)",
+      "notes": "In LibXposed, extend XposedModule and override onPackageReady. Use param.getClassLoader() and param.getPackageName()."
+    },
+    {
+      "legacy": "XposedHelpers.findAndHookMethod(className, classLoader, methodName, paramTypes..., new XC_MethodHook() { ... })",
+      "modern": "hook(targetMethod).intercept(chain -> { ... })",
+      "notes": "Locate the Method using reflection (or Reflector.findMethod), then call hook(method).intercept(chain -> ...)."
+    },
+    {
+      "legacy": "XC_MethodHook.beforeHookedMethod(MethodHookParam param)",
+      "modern": "Code before chain.proceed() in Hooker.intercept(chain)",
+      "notes": "Execute your logic before chain.proceed(). If you want to skip the original method and return a value, simply return that value without calling chain.proceed()."
+    },
+    {
+      "legacy": "XC_MethodHook.afterHookedMethod(MethodHookParam param)",
+      "modern": "Code after Object result = chain.proceed() in Hooker.intercept(chain)",
+      "notes": "Execute chain.proceed() first, capture the result, inspect or alter it, and return the final value."
+    },
+    {
+      "legacy": "param.setResult(customValue)",
+      "modern": "return customValue",
+      "notes": "Do not call chain.proceed(). Return the replacement value directly from intercept()."
+    },
+    {
+      "legacy": "param.setThrowable(customException)",
+      "modern": "throw customException",
+      "notes": "Do not call chain.proceed(). Throw the exception directly from intercept()."
+    },
+    {
+      "legacy": "param.thisObject",
+      "modern": "chain.getThisObject()",
+      "notes": "Returns the instance receiver, or null for static methods."
+    },
+    {
+      "legacy": "param.args[index]",
+      "modern": "chain.getArg(index) or chain.getArgs().get(index)",
+      "notes": "chain.getArgs() returns an unmodifiable List<Object>. To modify arguments for downstream execution, call chain.proceed(newArgs)."
+    },
+    {
+      "legacy": "param.getResult()",
+      "modern": "Object result = chain.proceed()",
+      "notes": "The result is the direct return value of chain.proceed()."
+    },
+    {
+      "legacy": "XposedBridge.invokeOriginalMethod(method, thisObject, args)",
+      "modern": "getInvoker(method).setType(Invoker.Type.ORIGIN).invoke(thisObject, args)",
+      "notes": "Invokers bypass Java access checks and directly invoke the original implementation without re-triggering hooks."
+    },
+    {
+      "legacy": "new XSharedPreferences(packageName, prefName)",
+      "modern": "getRemotePreferences(groupName)",
+      "notes": "Replaces the deprecated and broken world-readable file approach with secure framework IPC."
+    },
+    {
+      "legacy": "assets/xposed_init",
+      "modern": "META-INF/xposed/java_init.list",
+      "notes": "Place the fully qualified class name in META-INF/xposed/java_init.list and add the required ProGuard keep rules."
+    }
+  ],
+  "migrationExample": {
+    "before": "// Legacy Xposed\npublic class MyModule implements IXposedHookLoadPackage {\n    public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) {\n        if (!lpparam.packageName.equals(\"com.target.app\")) return;\n        XposedHelpers.findAndHookMethod(\"com.target.app.Secret\", lpparam.classLoader, \"getToken\", new XC_MethodHook() {\n            protected void afterHookedMethod(MethodHookParam param) {\n                param.setResult(\"fake_token\");\n            }\n        });\n    }\n}",
+    "after": "// Modern LibXposed\npublic class MyModule extends XposedModule {\n    @Override\n    public void onPackageReady(@NonNull PackageReadyParam param) {\n        if (!param.getPackageName().equals(\"com.target.app\")) return;\n        try {\n            Class<?> clazz = param.getClassLoader().loadClass(\"com.target.app.Secret\");\n            Method method = clazz.getDeclaredMethod(\"getToken\");\n            hook(method).intercept(chain -> {\n                // Replace result without calling chain.proceed() or override result\n                return \"fake_token\";\n            });\n        } catch (Throwable t) {\n            log(Log.ERROR, \"MyModule\", \"Hook failed\", t);\n        }\n    }\n}"
+  }
+}

@@ -1,0 +1,414 @@
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { z } from "zod";
+import apiDataRaw from "./data/api.json" with { type: "json" };
+import helperDataRaw from "./data/helper.json" with { type: "json" };
+import serviceDataRaw from "./data/service.json" with { type: "json" };
+import lintDataRaw from "./data/lint.json" with { type: "json" };
+import exampleDataRaw from "./data/example.json" with { type: "json" };
+import migrationDataRaw from "./data/migration.json" with { type: "json" };
+
+import type {
+  ApiModuleData,
+  HelperModuleData,
+  ServiceModuleData,
+  LintModuleData,
+  ExampleModuleData,
+  MigrationModuleData,
+} from "./types.js";
+
+const apiData = apiDataRaw as ApiModuleData;
+const helperData = helperDataRaw as HelperModuleData;
+const serviceData = serviceDataRaw as ServiceModuleData;
+const lintData = lintDataRaw as LintModuleData;
+const exampleData = exampleDataRaw as ExampleModuleData;
+const migrationData = migrationDataRaw as MigrationModuleData;
+
+export function createLibXposedServer(): McpServer {
+  const server = new McpServer({
+    name: "libxposed-mcp",
+    version: "1.0.0",
+  });
+
+  // Tool 1: Universal Search across all 6 domains
+  server.tool(
+    "search_libxposed",
+    "Search across all LibXposed modules (api, helper, service, lint, example, migration) by keyword, class name, method name, or concept.",
+    {
+      query: z.string().describe("Search term, e.g., 'hook', 'Invoker', 'RemotePreferences', 'onPackageReady', 'SinceApi', 'XSharedPreferences'"),
+      module: z.enum(["all", "api", "helper", "service", "lint", "example", "migration"]).optional().describe("Optional module scope to filter search results (default: 'all')"),
+    },
+    async ({ query, module = "all" }) => {
+      const q = query.toLowerCase();
+      const results: string[] = [];
+
+      if (module === "all" || module === "api") {
+        for (const cls of apiData.classes) {
+          if (cls.name?.toLowerCase().includes(q) || cls.summary?.toLowerCase().includes(q)) {
+            results.push(`### [API Class] ${cls.name}\n- **Type**: ${cls.type} (Since API ${cls.sinceApi})\n- **Summary**: ${cls.summary}\n- **Javadoc**: ${cls.javadocUrl || apiData.javadocBaseUrl}`);
+          }
+          if (cls.methods) {
+            for (const m of cls.methods) {
+              if (m.name?.toLowerCase().includes(q) || m.signature?.toLowerCase().includes(q) || m.doc?.toLowerCase().includes(q)) {
+                results.push(`### [API Method] ${cls.name}#${m.name}\n- **Signature**: \`${m.signature}\`\n- **Doc**: ${m.doc || ""}\n- **Since API**: ${m.sinceApi || cls.sinceApi}`);
+              }
+            }
+          }
+          if (cls.constants) {
+            for (const c of cls.constants) {
+              if (c.name?.toLowerCase().includes(q) || c.doc?.toLowerCase().includes(q)) {
+                results.push(`### [API Constant] ${cls.name}.${c.name}\n- **Type**: \`${c.type}\` = \`${c.value}\`\n- **Doc**: ${c.doc || ""}`);
+              }
+            }
+          }
+        }
+      }
+
+      if (module === "all" || module === "helper") {
+        for (const comp of helperData.components) {
+          if (comp.name?.toLowerCase().includes(q) || comp.summary?.toLowerCase().includes(q)) {
+            results.push(`### [Helper Component] ${comp.name}\n- **Type**: ${comp.type}\n- **Summary**: ${comp.summary}`);
+          }
+          if (comp.methods) {
+            for (const m of comp.methods) {
+              if (m.name?.toLowerCase().includes(q) || m.signature?.toLowerCase().includes(q) || m.doc?.toLowerCase().includes(q)) {
+                results.push(`### [Helper Method] ${comp.name}#${m.name}\n- **Signature**: \`${m.signature}\`\n- **Doc**: ${m.doc || ""}`);
+              }
+            }
+          }
+        }
+      }
+
+      if (module === "all" || module === "service") {
+        for (const comp of serviceData.components) {
+          if (comp.name?.toLowerCase().includes(q) || comp.summary?.toLowerCase().includes(q)) {
+            results.push(`### [Service Component] ${comp.name}\n- **Type**: ${comp.type}\n- **Summary**: ${comp.summary}`);
+          }
+        }
+      }
+
+      if (module === "all" || module === "lint") {
+        for (const ann of lintData.annotations) {
+          if (ann.name?.toLowerCase().includes(q) || ann.doc?.toLowerCase().includes(q)) {
+            results.push(`### [Lint Annotation] ${ann.name}\n- **Targets**: ${ann.target.join(", ")}\n- **Rule**: ${ann.doc}`);
+          }
+        }
+        for (const lvl of lintData.apiLevels) {
+          if (lvl.name?.toLowerCase().includes(q) || lvl.features?.some(f => f?.toLowerCase().includes(q))) {
+            results.push(`### [API Level Specification] ${lvl.name} (v${lvl.version})\n- **Features**: ${lvl.features.join("; ")}`);
+          }
+        }
+      }
+
+      if (module === "all" || module === "migration") {
+        for (const m of migrationData.mappings) {
+          if (m.legacy?.toLowerCase().includes(q) || m.modern?.toLowerCase().includes(q) || m.notes?.toLowerCase().includes(q)) {
+            results.push(`### [Migration Mapping]\n- **Legacy**: \`${m.legacy}\`\n- **Modern LibXposed**: \`${m.modern}\`\n- **Notes**: ${m.notes}`);
+          }
+        }
+      }
+
+      const output = results.length > 0
+        ? `Found ${results.length} result(s) for query "${query}":\n\n` + results.join("\n\n---\n\n")
+        : `No direct matches found across LibXposed modules for query "${query}". Try searching for broader terms such as 'hook', 'invoker', 'preferences', or 'package'.`;
+
+      return {
+        content: [{ type: "text", text: output }],
+      };
+    }
+  );
+
+  // Tool 2: Detailed API Documentation & Official Javadoc Links
+  server.tool(
+    "get_api_doc",
+    "Retrieve detailed documentation, method signatures, parameters, return types, sinceApi version, and official Javadoc links for LibXposed core API classes.",
+    {
+      className: z.string().describe("Name of the class or interface (e.g., 'XposedInterface', 'XposedModule', 'Chain', 'Hooker', 'Invoker', 'HookHandle', 'HookBuilder')"),
+      memberName: z.string().optional().describe("Optional method or constant name to focus on (e.g., 'hook', 'deoptimize', 'proceed', 'replaceHook', 'API_102')"),
+    },
+    async ({ className, memberName }) => {
+      const targetCls = apiData.classes.find(
+        (c) =>
+          c.name.toLowerCase() === className.toLowerCase() ||
+          c.name.toLowerCase().endsWith("." + className.toLowerCase()) ||
+          c.name.toLowerCase().endsWith("$" + className.toLowerCase())
+      );
+
+      if (!targetCls) {
+        const available = apiData.classes.map((c) => c.name.split(".").pop()).join(", ");
+        return {
+          content: [
+            {
+              type: "text",
+              text: `Class "${className}" not found in LibXposed core API.\nAvailable classes: ${available}`,
+            },
+          ],
+        };
+      }
+
+      if (memberName) {
+        const m = targetCls.methods?.find((x) => x.name.toLowerCase() === memberName.toLowerCase());
+        const c = targetCls.constants?.find((x) => x.name.toLowerCase() === memberName.toLowerCase());
+
+        if (m) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: `# ${targetCls.name}#${m.name}\n\n- **Signature**: \`${m.signature}\`\n- **Return Type**: \`${m.returnType || "void"}\`\n- **Since API**: ${m.sinceApi || targetCls.sinceApi}\n- **Official Javadoc**: ${targetCls.javadocUrl || apiData.javadocBaseUrl}\n\n### Description\n${m.doc}\n\n${m.params && m.params.length > 0 ? "### Parameters\n" + m.params.map((p) => "- `" + p + "`").join("\n") : ""}`,
+              },
+            ],
+          };
+        }
+
+        if (c) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: `# ${targetCls.name}.${c.name}\n\n- **Type**: \`${c.type}\`\n- **Value**: \`${c.value}\`\n- **Official Javadoc**: ${targetCls.javadocUrl || apiData.javadocBaseUrl}\n\n### Description\n${c.doc}`,
+              },
+            ],
+          };
+        }
+
+        return {
+          content: [
+            {
+              type: "text",
+              text: `Member "${memberName}" not found in class "${targetCls.name}".`,
+            },
+          ],
+        };
+      }
+
+      let doc = `# ${targetCls.name}\n\n- **Type**: \`${targetCls.type}\`\n- **Since API**: ${targetCls.sinceApi}\n- **Official Javadoc**: ${targetCls.javadocUrl || apiData.javadocBaseUrl}\n\n### Overview\n${targetCls.summary}\n`;
+
+      if (targetCls.constants && targetCls.constants.length > 0) {
+        doc += `\n### Constants\n| Name | Type | Value | Description |\n|---|---|---|---|\n`;
+        for (const cn of targetCls.constants) {
+          doc += `| \`${cn.name}\` | \`${cn.type}\` | \`${cn.value}\` | ${cn.doc} |\n`;
+        }
+      }
+
+      if (targetCls.methods && targetCls.methods.length > 0) {
+        doc += `\n### Methods\n`;
+        for (const mt of targetCls.methods) {
+          doc += `- **\`${mt.name}\`** (Since API ${mt.sinceApi || targetCls.sinceApi}): \`${mt.signature}\`\n  ${mt.doc}\n`;
+        }
+      }
+
+      return {
+        content: [{ type: "text", text: doc }],
+      };
+    }
+  );
+
+  // Tool 3: Helper & Kotlin DSL Guide
+  server.tool(
+    "get_helper_guide",
+    "Get comprehensive guides and API references for libxposed:helper, including HookBuilder fluent discovery, Reflector reflection utilities, and Kotlin helper-ktx DSL.",
+    {
+      topic: z.enum(["all", "hook_builder", "reflector", "kotlin_dsl"]).describe("Topic to retrieve: 'hook_builder' for fluent discovery, 'reflector' for reflection caching, 'kotlin_dsl' for Kotlin extensions, or 'all'"),
+    },
+    async ({ topic }) => {
+      let output = `# LibXposed Helper Kit Reference (libxposed:helper & helper-ktx)\n\n`;
+
+      if (topic === "all" || topic === "hook_builder") {
+        const hb = helperData.components.find((c) => c.name.includes("HookBuilder"));
+        output += `## 1. HookBuilder (Fluent Discovery & Dex Analysis)\n${hb?.summary}\n\n### Key Methods:\n`;
+        if (hb?.methods) {
+          for (const m of hb.methods) {
+            output += `- **\`${m.name}\`**: \`${m.signature}\`\n  ${m.doc}\n`;
+          }
+        }
+        output += `\n`;
+      }
+
+      if (topic === "all" || topic === "reflector") {
+        const rf = helperData.components.find((c) => c.name.includes("Reflector"));
+        output += `## 2. Reflector (High-Performance Reflection)\n${rf?.summary}\n\n### Key Methods:\n`;
+        if (rf?.methods) {
+          for (const m of rf.methods) {
+            output += `- **\`${m.name}\`**: \`${m.signature}\`\n  ${m.doc}\n`;
+          }
+        }
+        output += `\n`;
+      }
+
+      if (topic === "all" || topic === "kotlin_dsl") {
+        const ktx = helperData.components.find((c) => c.name.includes("ktx"));
+        output += `## 3. Kotlin DSL (helper-ktx)\n${ktx?.summary}\n\n`;
+        if (ktx?.patterns) {
+          for (const p of ktx.patterns) {
+            output += `### ${p.title}\n\`\`\`kotlin\n${p.code}\n\`\`\`\n\n`;
+          }
+        }
+      }
+
+      return {
+        content: [{ type: "text", text: output }],
+      };
+    }
+  );
+
+  // Tool 4: Service, IPC, and Hot Reload Guide
+  server.tool(
+    "get_service_guide",
+    "Get guides for libxposed:service, including modern cross-process RemotePreferences (replacing broken XSharedPreferences), XposedService IPC, and Hot Reload protocols.",
+    {
+      topic: z.enum(["all", "remote_preferences", "hot_reload", "aidl"]).describe("Service topic to retrieve: 'remote_preferences', 'hot_reload', 'aidl', or 'all'"),
+    },
+    async ({ topic }) => {
+      let output = `# LibXposed Service & IPC Architecture (libxposed:service)\n\n`;
+
+      if (topic === "all" || topic === "remote_preferences") {
+        const rp = serviceData.components.find((c) => c.name.includes("RemotePreferences"));
+        output += `## RemotePreferences (Modern Cross-Process SharedPreferences)\n${rp?.summary}\n\n### Key Features:\n`;
+        if (rp?.features) {
+          output += rp.features.map((f) => "- " + f).join("\n") + "\n\n";
+        }
+        if (rp?.usage) {
+          for (const u of rp.usage) {
+            output += `### ${u.title}\n\`\`\`kotlin\n${u.code}\n\`\`\`\n\n`;
+          }
+        }
+      }
+
+      if (topic === "all" || topic === "hot_reload") {
+        output += `## Hot Reload Protocol (API 102+)\n`;
+        output += `Hot reload allows modules to update hooks dynamically without restarting the hooked application process.\n\n`;
+        output += `### Lifecycle Callbacks in XposedModule:\n`;
+        output += `1. **\`boolean onHotReloading(HotReloadingParam param)\`**:\n   - Called before the module is reloaded.\n   - Save state using \`param.setSavedInstanceState(serializable)\`.\n   - Return \`true\` to allow reload, or \`false\` to abort.\n\n`;
+        output += `2. **\`void onHotReloaded(HotReloadedParam param)\`**:\n   - Called after reload succeeds.\n   - Retrieve prior state with \`param.getSavedInstanceState()\`.\n   - Clean up previous hooks using \`param.getOldHookHandles().forEach(HookHandle::unhook)\` or replace them atomically via \`handle.replaceHook(newHooker)\`.\n\n`;
+      }
+
+      if (topic === "all" || topic === "aidl") {
+        const aidl = serviceData.components.find((c) => c.type === "aidl");
+        output += `## Framework AIDL Interfaces\n\n`;
+        if (aidl?.interfaces) {
+          for (const i of aidl.interfaces) {
+            output += `- **\`${i.name}\`**: ${i.doc}\n`;
+          }
+        }
+      }
+
+      return {
+        content: [{ type: "text", text: output }],
+      };
+    }
+  );
+
+  // Tool 5: Scaffolding, Manifest, ProGuard, Gradle & Reference Modules
+  server.tool(
+    "get_scaffold",
+    "Generate standard project scaffolds and configurations for LibXposed modules, including build.gradle.kts, AndroidManifest.xml, ProGuard/R8 rules, entry list, and Java/Kotlin module skeletons.",
+    {
+      type: z.enum(["all", "build_gradle", "manifest", "proguard", "entry_list", "java_module", "kotlin_module"]).describe("Type of configuration or code scaffold to generate"),
+    },
+    async ({ type }) => {
+      let output = `# LibXposed Project Scaffolding & Specifications\n\n`;
+      const t = exampleData.templates;
+
+      if (type === "all" || type === "build_gradle") {
+        output += `## 1. build.gradle.kts\n\`\`\`kotlin\n${t.build_gradle_kts}\n\`\`\`\n\n`;
+      }
+
+      if (type === "all" || type === "manifest") {
+        output += `## 2. AndroidManifest.xml\n\`\`\`xml\n${t.manifest_xml}\n\`\`\`\n\n`;
+      }
+
+      if (type === "all" || type === "proguard") {
+        output += `## 3. proguard-rules.pro (Crucial for R8 Optimization)\n\`\`\`proguard\n${t.proguard_rules}\n\`\`\`\n\n`;
+      }
+
+      if (type === "all" || type === "entry_list") {
+        output += `## 4. META-INF/xposed/java_init.list\n\`\`\`text\n${t.java_init_list}\n\`\`\`\n*(Place in app/src/main/resources/META-INF/xposed/java_init.list)*\n\n`;
+      }
+
+      if (type === "all" || type === "java_module") {
+        output += `## 5. Canonical Java Module Entry (ModuleMain.java)\n\`\`\`java\n${t.java_module_example}\n\`\`\`\n\n`;
+      }
+
+      if (type === "all" || type === "kotlin_module") {
+        output += `## 6. Canonical Kotlin Module Entry (ModuleMainKt.kt)\n\`\`\`kotlin\n${t.kotlin_module_example}\n\`\`\`\n\n`;
+      }
+
+      return {
+        content: [{ type: "text", text: output }],
+      };
+    }
+  );
+
+  // Tool 6: Legacy Xposed to Modern LibXposed Migration Guide
+  server.tool(
+    "migrate_legacy_code",
+    "Convert legacy XposedBridge / EdXposed code (e.g., handleLoadPackage, findAndHookMethod, XC_MethodHook, XSharedPreferences) into modern, type-safe LibXposed code.",
+    {
+      legacySnippet: z.string().optional().describe("Optional legacy code snippet or API name to look up migration guidance for"),
+    },
+    async ({ legacySnippet }) => {
+      let output = `# Legacy Xposed to Modern LibXposed Migration Guide\n\n`;
+
+      if (legacySnippet) {
+        const q = legacySnippet.toLowerCase();
+        const matched = migrationData.mappings.filter(
+          (m) => m.legacy.toLowerCase().includes(q) || m.notes.toLowerCase().includes(q)
+        );
+
+        if (matched.length > 0) {
+          output += `### Direct Matches for "${legacySnippet}":\n\n`;
+          for (const m of matched) {
+            output += `- **Legacy API**: \`${m.legacy}\`\n  - **Modern LibXposed**: \`${m.modern}\`\n  - **Notes**: ${m.notes}\n\n`;
+          }
+          return { content: [{ type: "text", text: output }] };
+        }
+      }
+
+      output += `### 1:1 Mapping Reference Table\n\n`;
+      output += `| Legacy Xposed API | Modern LibXposed Equivalent | Notes |\n`;
+      output += `|---|---|---|\n`;
+      for (const m of migrationData.mappings) {
+        output += `| \`${m.legacy}\` | \`${m.modern}\` | ${m.notes} |\n`;
+      }
+
+      output += `\n### Full Migration Transformation Example\n\n`;
+      output += `#### Before (Legacy Xposed):\n\`\`\`java\n${migrationData.migrationExample.before}\n\`\`\`\n\n`;
+      output += `#### After (Modern LibXposed):\n\`\`\`java\n${migrationData.migrationExample.after}\n\`\`\`\n`;
+
+      return {
+        content: [{ type: "text", text: output }],
+      };
+    }
+  );
+
+  // Tool 7: API Compatibility & Lint Rules
+  server.tool(
+    "check_api_compatibility",
+    "Inspect LibXposed API version requirements (@SinceApi 101 vs 102), breaking changes, and prohibited @InternalApi usage.",
+    {
+      version: z.enum(["101", "102", "all"]).describe("API version to check features and compatibility for ('101', '102', or 'all')"),
+    },
+    async ({ version }) => {
+      let output = `# LibXposed API Version Compatibility & Annotations\n\n`;
+
+      output += `## Annotations\n`;
+      for (const ann of lintData.annotations) {
+        output += `### \`${ann.name}\`\n- **Allowed Targets**: ${ann.target.join(", ")}\n- **Rule**: ${ann.doc}\n\n`;
+      }
+
+      output += `## Version Specifications\n`;
+      const levels = version === "all" ? lintData.apiLevels : lintData.apiLevels.filter((l) => l.version.toString() === version);
+
+      for (const lvl of levels) {
+        output += `### ${lvl.name} (API Version ${lvl.version})\n`;
+        output += lvl.features.map((f) => "- " + f).join("\n") + "\n\n";
+      }
+
+      return {
+        content: [{ type: "text", text: output }],
+      };
+    }
+  );
+
+  return server;
+}

@@ -1,0 +1,44 @@
+{
+  "module": "service",
+  "version": "1.0.0",
+  "description": "Modern cross-process communication (IPC), RemotePreferences, framework service binding, and hot reload protocols",
+  "components": [
+    {
+      "name": "io.github.libxposed.service.RemotePreferences",
+      "type": "class",
+      "summary": "Modern secure SharedPreferences implementation communicating with Xposed framework over IPC. Replaces deprecated and non-functional XSharedPreferences on Android 7+.",
+      "features": [
+        "Read-only in target hooked processes",
+        "Configured via module UI and broadcasted across processes",
+        "Supports SharedPreferences.OnSharedPreferenceChangeListener for reactive settings",
+        "Safe across SELinux and scoped storage restrictions"
+      ],
+      "usage": [
+        {
+          "title": "Retrieving RemotePreferences in Hooked App",
+          "code": "val prefs = getRemotePreferences(\"settings\")\nval isEnabled = prefs.getBoolean(\"feature_flag\", false)\nprefs.registerOnSharedPreferenceChangeListener { _, key ->\n    log(Log.INFO, TAG, \"Preference updated: \" + key)\n}"
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.service.XposedService",
+      "type": "class",
+      "summary": "Client service class that manages binding and IPC communication with the host Xposed framework service."
+    },
+    {
+      "name": "io.github.libxposed.service.HotReloadResult",
+      "type": "class",
+      "summary": "Data holder representing the result and status of dynamic module hot reloading."
+    },
+    {
+      "name": "AIDL Interfaces",
+      "type": "aidl",
+      "interfaces": [
+        { "name": "IXposedService", "doc": "Core AIDL interface for requesting remote preferences, remote files, and scope verification." },
+        { "name": "IXposedScopeCallback", "doc": "Callback interface for scope resolution." },
+        { "name": "IHotReloadCallback", "doc": "Callback interface for triggering hot reload notifications." },
+        { "name": "HookedProcess", "doc": "Parcelable representing a process that has been hooked by the framework." }
+      ]
+    }
+  ]
+}
