@@ -77,13 +77,13 @@
     },
     {
       "name": "io.github.libxposed.helper.Reflector",
-      "type": "class",
-      "summary": "Reflection acceleration and caching toolkit for accessing hidden or obfuscated fields, methods, and constructors without performance penalties.",
+      "type": "class (package-private helper engine)",
+      "summary": "Internal reflection acceleration and caching engine with WeakReference caches. Parses smali-style signatures (e.g., 'com.target.Class->method(Ljava/lang/String;)V') and canonical names.",
       "methods": [
-        { "name": "findClass", "signature": "static Class<?> findClass(String name, ClassLoader loader)", "doc": "Resolves class with caching." },
-        { "name": "findMethod", "signature": "static Method findMethod(Class<?> clazz, String name, Class<?>... paramTypes)", "doc": "Finds declared or inherited method with caching." },
-        { "name": "findConstructor", "signature": "static Constructor<?> findConstructor(Class<?> clazz, Class<?>... paramTypes)", "doc": "Finds declared constructor with caching." },
-        { "name": "findField", "signature": "static Field findField(Class<?> clazz, String name)", "doc": "Finds declared or inherited field with caching." }
+        { "name": "loadClass", "signature": "Class<?> loadClass(@NonNull String className) throws ClassNotFoundException", "doc": "Resolves class with abbreviation decoding, inner-class fallback ($), and WeakReference caching." },
+        { "name": "loadMethod", "signature": "Method loadMethod(@NonNull String methodString) throws ClassNotFoundException, NoSuchMethodException", "doc": "Resolves method from signature like 'Class->method(ParamType):ReturnType' with caching." },
+        { "name": "loadConstructor", "signature": "Constructor<?> loadConstructor(@NonNull String constructorString) throws ClassNotFoundException, NoSuchMethodException", "doc": "Resolves constructor from signature like 'Class-><init>(ParamType)' with caching." },
+        { "name": "loadField", "signature": "Field loadField(@NonNull String fieldString) throws ClassNotFoundException, NoSuchFieldException", "doc": "Resolves field from signature like 'Class->field:Type' with caching." }
       ]
     },
     {

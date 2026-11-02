@@ -21809,11 +21809,92 @@ var api_default = {
       ]
     },
     {
+      name: "io.github.libxposed.api.XposedInterfaceWrapper",
+      type: "class",
+      sinceApi: 101,
+      summary: "Wrapper of XposedInterface used by module entry classes to shield framework implementation details and manage entry detachment.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/XposedInterfaceWrapper.html",
+      methods: [
+        {
+          name: "detach",
+          signature: "public final void detach()",
+          returnType: "void",
+          sinceApi: 102,
+          doc: "Stops all subsequent lifecycle callbacks (onPackageLoaded, onHotReloading, etc.) for the current module entry in current process. Only lifecycle callbacks are stopped; all XposedInterface APIs remain functional."
+        },
+        {
+          name: "attachFramework",
+          signature: "public final void attachFramework(@NonNull XposedInterface base, @NonNull Runnable detachImpl)",
+          returnType: "void",
+          sinceApi: 101,
+          doc: "Internal framework attachment method annotated with @InternalApi. Modules MUST NOT invoke this method directly."
+        }
+      ]
+    },
+    {
       name: "io.github.libxposed.api.XposedModuleInterface",
       type: "interface",
       sinceApi: 101,
-      summary: "Container for lifecycle callback parameter types (PackageLoadedParam, PackageReadyParam, HotReloadingParam, etc.).",
-      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/XposedModuleInterface.html"
+      summary: "Container for lifecycle callback signatures and parameter interfaces (ModuleLoadedParam, PackageLoadedParam, PackageReadyParam, SystemServerStartingParam, HotReloadingParam, HotReloadedParam).",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/XposedModuleInterface.html",
+      methods: [
+        {
+          name: "onModuleLoaded",
+          signature: "default void onModuleLoaded(@NonNull ModuleLoadedParam param)",
+          returnType: "void",
+          sinceApi: 101,
+          doc: "Called when initial module generation is loaded into target process."
+        },
+        {
+          name: "onPackageLoaded",
+          signature: "default void onPackageLoaded(@NonNull PackageLoadedParam param)",
+          returnType: "void",
+          sinceApi: 101,
+          doc: "Called when an APK package has loaded into process and default classloader is ready."
+        },
+        {
+          name: "onPackageReady",
+          signature: "default void onPackageReady(@NonNull PackageReadyParam param)",
+          returnType: "void",
+          sinceApi: 101,
+          doc: "Called when AppComponentFactory has instantiated classloader and is ready to create Application. Recommended place for most hooks."
+        },
+        {
+          name: "onSystemServerStarting",
+          signature: "default void onSystemServerStarting(@NonNull SystemServerStartingParam param)",
+          returnType: "void",
+          sinceApi: 101,
+          doc: "Called when system server is ready to start critical services."
+        },
+        {
+          name: "onHotReloading",
+          signature: "default boolean onHotReloading(@NonNull HotReloadingParam param)",
+          returnType: "boolean",
+          sinceApi: 102,
+          doc: "Called in old code before module is reloaded. Return true to allow reload, or false to reject. Save state with param.setSavedInstanceState()."
+        },
+        {
+          name: "onHotReloaded",
+          signature: "default void onHotReloaded(@NonNull HotReloadedParam param)",
+          returnType: "void",
+          sinceApi: 102,
+          doc: "Called in new code after reload succeeds. Package callbacks are not automatically replayed. Restore state with param.getSavedInstanceState() and replace/unhook old hooks via param.getOldHookHandles()."
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.api.error.HookFailedError",
+      type: "class extends Error",
+      sinceApi: 101,
+      summary: "Unchecked error thrown when a hook operation fails due to framework internal error.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/error/HookFailedError.html"
+    },
+    {
+      name: "io.github.libxposed.api.error.XposedFrameworkError",
+      type: "class extends Error",
+      sinceApi: 101,
+      summary: "Unchecked error thrown when the framework encounters an unrecoverable internal error.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/error/XposedFrameworkError.html"
     }
   ]
 };
@@ -21898,13 +21979,13 @@ var helper_default = {
     },
     {
       name: "io.github.libxposed.helper.Reflector",
-      type: "class",
-      summary: "Reflection acceleration and caching toolkit for accessing hidden or obfuscated fields, methods, and constructors without performance penalties.",
+      type: "class (package-private helper engine)",
+      summary: "Internal reflection acceleration and caching engine with WeakReference caches. Parses smali-style signatures (e.g., 'com.target.Class->method(Ljava/lang/String;)V') and canonical names.",
       methods: [
-        { name: "findClass", signature: "static Class<?> findClass(String name, ClassLoader loader)", doc: "Resolves class with caching." },
-        { name: "findMethod", signature: "static Method findMethod(Class<?> clazz, String name, Class<?>... paramTypes)", doc: "Finds declared or inherited method with caching." },
-        { name: "findConstructor", signature: "static Constructor<?> findConstructor(Class<?> clazz, Class<?>... paramTypes)", doc: "Finds declared constructor with caching." },
-        { name: "findField", signature: "static Field findField(Class<?> clazz, String name)", doc: "Finds declared or inherited field with caching." }
+        { name: "loadClass", signature: "Class<?> loadClass(@NonNull String className) throws ClassNotFoundException", doc: "Resolves class with abbreviation decoding, inner-class fallback ($), and WeakReference caching." },
+        { name: "loadMethod", signature: "Method loadMethod(@NonNull String methodString) throws ClassNotFoundException, NoSuchMethodException", doc: "Resolves method from signature like 'Class->method(ParamType):ReturnType' with caching." },
+        { name: "loadConstructor", signature: "Constructor<?> loadConstructor(@NonNull String constructorString) throws ClassNotFoundException, NoSuchMethodException", doc: "Resolves constructor from signature like 'Class-><init>(ParamType)' with caching." },
+        { name: "loadField", signature: "Field loadField(@NonNull String fieldString) throws ClassNotFoundException, NoSuchFieldException", doc: "Resolves field from signature like 'Class->field:Type' with caching." }
       ]
     },
     {
