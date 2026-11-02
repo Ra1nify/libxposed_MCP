@@ -29,12 +29,12 @@ child.stdout.on("data", (chunk) => {
 
 function handleMessage(msg) {
   if (msg.id === 1) {
-    console.log("1. ✅ Initialize success:", msg.result?.serverInfo?.name);
+    console.log("1. [OK] Initialize success:", msg.result?.serverInfo?.name);
     send({ jsonrpc: "2.0", method: "notifications/initialized" });
     send({ jsonrpc: "2.0", id: 2, method: "tools/list", params: {} });
   } else if (msg.id === 2) {
     const tools = msg.result?.tools?.map((t) => t.name) || [];
-    console.log("2. ✅ Registered 7 tools:", tools);
+    console.log("2. [OK] Registered 7 tools:", tools);
     send({
       jsonrpc: "2.0",
       id: 3,
@@ -42,7 +42,7 @@ function handleMessage(msg) {
       params: { name: "get_api_doc", arguments: { className: "XposedInterface", memberName: "hook" } },
     });
   } else if (msg.id === 3) {
-    console.log("3. ✅ get_api_doc returned signature:\n  ", msg.result?.content?.[0]?.text?.split("\n")[2]);
+    console.log("3. [OK] get_api_doc returned signature:\n  ", msg.result?.content?.[0]?.text?.split("\n")[2]);
     send({
       jsonrpc: "2.0",
       id: 4,
@@ -50,7 +50,7 @@ function handleMessage(msg) {
       params: { name: "get_helper_guide", arguments: { topic: "kotlin_dsl" } },
     });
   } else if (msg.id === 4) {
-    console.log("4. ✅ get_helper_guide returned Kotlin DSL snippet");
+    console.log("4. [OK] get_helper_guide returned Kotlin DSL snippet");
     send({
       jsonrpc: "2.0",
       id: 5,
@@ -58,7 +58,7 @@ function handleMessage(msg) {
       params: { name: "get_service_guide", arguments: { topic: "remote_preferences" } },
     });
   } else if (msg.id === 5) {
-    console.log("5. ✅ get_service_guide returned RemotePreferences docs");
+    console.log("5. [OK] get_service_guide returned RemotePreferences docs");
     send({
       jsonrpc: "2.0",
       id: 6,
@@ -66,7 +66,7 @@ function handleMessage(msg) {
       params: { name: "migrate_legacy_code", arguments: { legacySnippet: "findAndHookMethod" } },
     });
   } else if (msg.id === 6) {
-    console.log("6. ✅ migrate_legacy_code returned modern mapping");
+    console.log("6. [OK] migrate_legacy_code returned modern mapping");
     send({
       jsonrpc: "2.0",
       id: 7,
@@ -74,8 +74,8 @@ function handleMessage(msg) {
       params: { name: "check_api_compatibility", arguments: { version: "102" } },
     });
   } else if (msg.id === 7) {
-    console.log("7. ✅ check_api_compatibility returned API 102 specifications");
-    console.log("\n🎯 100% OF TOOLS TESTED AND VERIFIED!");
+    console.log("7. [OK] check_api_compatibility returned API 102 specifications");
+    console.log("\n[PASS] All 7 tools tested and verified.");
     child.kill();
     process.exit(0);
   }

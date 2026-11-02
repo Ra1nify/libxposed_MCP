@@ -1,28 +1,29 @@
 # LibXposed MCP Server
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
-[![Protocol](https://img.shields.io/badge/MCP-1.6.1-green.svg)](https://modelcontextprotocol.io)
+[![Protocol](https://img.shields.io/badge/MCP-1.32.2-green.svg)](https://modelcontextprotocol.io)
 [![LibXposed API](https://img.shields.io/badge/API-101%20%7C%20102-orange.svg)](https://libxposed.github.io/api/)
 [![Cloud Status](https://img.shields.io/badge/Cloud%20Edge-ONLINE-brightgreen.svg)](https://libxposed-mcp.ra1nify.workers.dev)
 
-A full-spectrum, pre-indexed [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server providing instant, structured API lookups, code scaffolding, architecture guidelines, and legacy migration tools for modern **LibXposed** Android hooking framework developers.
+A structured, full-spectrum Model Context Protocol (MCP) server providing API references, architectural guides, code scaffolding, and legacy migration tools for modern LibXposed Android development.
 
-Hosted live on Cloudflare Edge with global zero-cold-start performance.
+Deployed globally on Cloudflare Edge with zero cold start.
 
 ---
 
-## 🚀 Quick Setup & Configuration
+## Quick Setup
 
-### Option A: Cloud Remote MCP (Zero Local Setup - Recommended)
+### Option A: Remote Server (Recommended)
 
-Connect directly to the live Cloudflare Worker without cloning repositories or installing Node.js.
+Connect directly to the deployed Cloudflare Edge endpoint without local installation.
 
 > [!IMPORTANT]
-> **Client Compatibility & Transport Notes:**
-> 1. **Do NOT append `/sse`**: Use the root endpoint `https://libxposed-mcp.ra1nify.workers.dev`. The `/sse` route is deprecated legacy HTTP+SSE; modern MCP clients and harnesses (such as DSH) use the modern, stateless `streamable-http` protocol on the root path.
-> 2. **`transport` Field is Mandatory**: Unlike Cursor which auto-infers, explicit MCP clients (like DSH) strictly require `"transport": "streamable-http"`.
+> **Transport and Protocol Requirements**
+> - **Endpoint Path**: Use the root path (`https://libxposed-mcp.ra1nify.workers.dev`). Do not append `/sse`. Modern MCP clients communicate over stateless `streamable-http` at the root path.
+> - **Transport Field**: Explicit MCP environments (such as DSH) require `"transport": "streamable-http"`.
 
-#### Recommended Configuration (DSH, Cursor, Windsurf, Claude Desktop)
+#### Client Configuration (DSH, Cursor, Windsurf, Claude Desktop)
+
 ```json
 {
   "mcpServers": {
@@ -34,13 +35,13 @@ Connect directly to the live Cloudflare Worker without cloning repositories or i
 }
 ```
 
-*Web Dashboard & Health Check*: Visit [https://libxposed-mcp.ra1nify.workers.dev](https://libxposed-mcp.ra1nify.workers.dev) in your browser to verify service status and view available tools.
+*Web Dashboard*: Visit [https://libxposed-mcp.ra1nify.workers.dev](https://libxposed-mcp.ra1nify.workers.dev) for server health and tool discovery.
 
 ---
 
-### Option B: Local Standalone Bundle (Offline Stdio Mode)
+### Option B: Local Stdio Mode
 
-For offline environments or direct local execution:
+Run as a local process via standard input/output.
 
 #### 1. Build Bundle
 ```bash
@@ -62,67 +63,63 @@ npm run build
 
 ---
 
-## 🌟 Capabilities & Full-Spectrum Coverage
+## Architecture and Coverage
 
-Unlike partial references, `libxposed-mcp` models **100% of all 5 core subprojects** of LibXposed plus legacy migration tooling:
+The server models 100% of all five LibXposed subprojects and legacy migration pathways:
 
-1. **`libxposed:api`**: Core interfaces (`XposedInterface`, `XposedModule`, `Hooker`, `Chain`, `Invoker`, `CtorInvoker`, `HookHandle`, `HookBuilder`, `ExceptionMode`, `XposedInterfaceWrapper`), lifecycle callbacks, and official Javadoc hyperlinks.
-2. **`libxposed:helper` & `helper-ktx`**: High-performance reflection caching (`Reflector`), fluent class/method matcher sequences (`HookBuilder`), dex analysis, and idiomatic Kotlin DSL.
-3. **`libxposed:service`**: Modern cross-process communication (`RemotePreferences` replacing broken `XSharedPreferences`), framework IPC bindings (`XposedService`), process discovery (`HookedTarget`), Hot Reload protocols (`HotReloadResult`), Direct Boot awareness, and AIDL specifications.
-4. **`libxposed:lint`**: Version compatibility constraints (`@SinceApi(101/102)`), internal API protection (`@InternalApi`), and lint issue registries.
-5. **`libxposed:example`**: Standard project scaffolding (`build.gradle.kts`, `AndroidManifest.xml`, `proguard-rules.pro`, `META-INF/xposed/java_init.list`, `ModuleMain.java`, `ModuleMainKt.kt`).
-6. **`migration`**: Comprehensive 1:1 mapping table and before/after transformation guides from legacy XposedBridge (`de.robv.android.xposed.*`) to modern LibXposed.
+1. **`libxposed:api`**: Core hook interfaces (`XposedInterface`, `XposedModule`, `Hooker`, `Chain`, `Invoker`, `CtorInvoker`, `HookHandle`, `HookBuilder`, `ExceptionMode`, `XposedInterfaceWrapper`), module lifecycle events, and Javadoc references.
+2. **`libxposed:helper` & `helper-ktx`**: High-throughput reflection caching (`Reflector`), fluent matching chains (`HookBuilder`), dex analysis, and idiomatic Kotlin DSL.
+3. **`libxposed:service`**: Cross-process communication (`RemotePreferences` replacing legacy `XSharedPreferences`), framework IPC bindings (`XposedService`), target discovery (`HookedTarget`), hot reload protocols (`HotReloadResult`), Direct Boot compatibility, and AIDL specifications.
+4. **`libxposed:lint`**: API level compatibility constraints (`@SinceApi(101/102)`), internal API restrictions (`@InternalApi`), and lint checks.
+5. **`libxposed:example`**: Standard project templates (`build.gradle.kts`, `AndroidManifest.xml`, `proguard-rules.pro`, `META-INF/xposed/java_init.list`, `ModuleMain.java`, `ModuleMainKt.kt`).
+6. **`migration`**: 1:1 mapping definitions and structural transformation guides from legacy XposedBridge (`de.robv.android.xposed.*`) to modern LibXposed.
 
 ---
 
-## 🛠️ Available MCP Tools
+## Available MCP Tools
 
-All 7 tools are fully implemented, verified with unit tests, and accessible over both `streamable-http` and local stdio transports:
+All seven tools operate across both `streamable-http` and local `stdio` transports:
 
 | Tool Name | Parameters | Description |
 | :--- | :--- | :--- |
-| **`search_libxposed`** | `query` (string), `module?` (`all`, `api`, `helper`, `service`, `lint`, `example`, `migration`) | Universal keyword search across all classes, methods, constants, and migration rules. |
-| **`get_api_doc`** | `className` (string), `memberName?` (string) | Deep dive into class or method signatures, parameter descriptions, sinceApi levels, and official Javadoc links. |
-| **`get_helper_guide`** | `topic` (`all`, `hook_builder`, `reflector`, `kotlin_dsl`) | Fluent HookBuilder patterns, Reflector reflection helpers, and Kotlin DSL syntax. |
-| **`get_service_guide`** | `topic` (`all`, `xposed_service`, `remote_preferences`, `hot_reload`, `direct_boot`, `aidl`) | Cross-process RemotePreferences, reactive change listeners, hot reload state restoration, and AIDL specs. |
-| **`get_scaffold`** | `type` (`all`, `build_gradle`, `manifest`, `proguard`, `entry_list`, `java_module`, `kotlin_module`) | Generates standard compile-ready configuration files and module skeleton code. |
-| **`migrate_legacy_code`** | `legacySnippet?` (string) | 1:1 mapping table and transformation guides from legacy `XC_MethodHook` / `XSharedPreferences` to LibXposed. |
-| **`check_api_compatibility`** | `version` (`101`, `102`, `all`) | Inspects feature differences between API 101 and 102, breaking changes, and `@InternalApi` rules. |
+| **`search_libxposed`** | `query` (string), `module?` (`all`, `api`, `helper`, `service`, `lint`, `example`, `migration`) | Search across classes, methods, constants, architecture guides, and migration rules. |
+| **`get_api_doc`** | `className` (string), `memberName?` (string) | Query signatures, parameter specifications, sinceApi constraints, and Javadoc links. |
+| **`get_helper_guide`** | `topic` (`all`, `hook_builder`, `reflector`, `kotlin_dsl`) | Retrieve HookBuilder patterns, Reflector caching mechanisms, and Kotlin DSL usage. |
+| **`get_service_guide`** | `topic` (`all`, `xposed_service`, `remote_preferences`, `hot_reload`, `direct_boot`, `aidl`) | Access RemotePreferences IPC guides, reactive listener examples, and AIDL definitions. |
+| **`get_scaffold`** | `type` (`all`, `build_gradle`, `manifest`, `proguard`, `entry_list`, `java_module`, `kotlin_module`) | Generate compile-ready project configurations and module skeletons. |
+| **`migrate_legacy_code`** | `legacySnippet?` (string) | Provide 1:1 migration maps and code conversions from legacy XposedBridge to LibXposed. |
+| **`check_api_compatibility`** | `version` (`101`, `102`, `all`) | Inspect API 101/102 differences, breaking changes, and @InternalApi enforcement. |
 
 ---
 
-## 🧪 Testing & Verification
+## Verification and Testing
 
-Run the test suite verifying all 7 tools against local stdio:
-```bash
-node scripts/test_mcp.mjs
-```
+Execute the test suites to verify server behavior:
 
-Run comprehensive deep verification (34 edge-case tests):
 ```bash
-node scripts/deep_recheck.mjs
-```
+# Run stdio tool invocation test
+npm test
 
-Verify TypeScript types:
-```bash
+# Run exhaustive edge-case test suite (34 cases)
+npm run test:deep
+
+# Run TypeScript static analysis
 npm run typecheck
 ```
 
 ---
 
-## 🔄 CI/CD & Automated Deployment
+## CI/CD and Deployment
 
-This repository includes a pre-configured GitHub Actions workflow (`.github/workflows/deploy.yml`) that automatically builds, type-checks, and deploys the Cloudflare Worker upon pushing to `master` or `main`.
+Automated delivery is managed by GitHub Actions ([`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)). Each push to `master` or `main` automatically type-checks, builds, and deploys the Cloudflare Worker.
 
-### Setting up Continuous Deployment:
-
-1. In your GitHub repository, navigate to **Settings** > **Secrets and variables** > **Actions**.
-2. Click **New repository secret**.
-3. Name: `CLOUDFLARE_API_TOKEN`
-4. Value: Paste your Cloudflare API Token (with `Workers:Edit` and `Account:Read` permissions).
-5. Any subsequent push to `master` / `main` will automatically trigger a fresh deployment to Cloudflare Edge.
+### Continuous Deployment Setup:
+1. Navigate to **Settings** > **Secrets and variables** > **Actions** in your GitHub repository.
+2. Add a new secret named `CLOUDFLARE_API_TOKEN` containing your Cloudflare API token (`Workers:Edit` permissions).
+3. Pushes to `master` will deploy directly to Cloudflare Edge using Node.js 22 and Wrangler v4.
 
 ---
 
-## 📄 License
+## License
+
 Licensed under the [Apache License 2.0](LICENSE).

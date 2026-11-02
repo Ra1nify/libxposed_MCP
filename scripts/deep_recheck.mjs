@@ -60,7 +60,7 @@ let passedCount = 0;
 
 function runNextTest() {
   if (testIndex >= testQueue.length) {
-    console.log(`\n🎉 COMPREHENSIVE RECHECK SUCCEEDED: ${passedCount}/${testQueue.length} test cases passed without a single error!`);
+    console.log(`\n[PASS] Comprehensive verification passed: ${passedCount}/${testQueue.length} test cases passed without a single error!`);
     child.kill();
     process.exit(0);
   }
@@ -90,7 +90,7 @@ child.stdout.on("data", (chunk) => {
         runNextTest();
       } else if (msg.id > 1) {
         if (msg.error) {
-          console.error(`❌ Test failed on item ${testIndex}:`, msg.error);
+          console.error(`[FAIL] Test failed on item ${testIndex}:`, msg.error);
           child.kill();
           process.exit(1);
         } else {
@@ -118,7 +118,7 @@ send({
 });
 
 setTimeout(() => {
-  console.error("\n❌ Recheck timed out after 10s!");
+  console.error("\n[FAIL] Recheck timed out after 10s!");
   child.kill();
   process.exit(1);
 }, 10000);

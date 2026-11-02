@@ -149,14 +149,14 @@ export default {
   <h1>LibXposed MCP Server <span class="badge">ONLINE</span></h1>
   <p>Full-spectrum Model Context Protocol (MCP) server for modern LibXposed Android hooking framework.</p>
   
-  <h2>🔗 Connection Endpoint</h2>
+  <h2>Connection Endpoint</h2>
   <p>Use the root URL with modern <code>streamable-http</code> transport:</p>
   <ul>
     <li><strong>Streamable HTTP URL (Root):</strong> <code>https://${url.host}</code></li>
     <li><strong>Transport Type:</strong> <code>streamable-http</code></li>
   </ul>
 
-  <h2>🛠️ Registered Tools (All 7 Available)</h2>
+  <h2>Registered Tools</h2>
   <ul>
     <li><code>search_libxposed</code>: Universal search across api, helper, service, lint, example, migration</li>
     <li><code>get_api_doc</code>: Deep dive into class/method signatures and Javadoc links</li>
@@ -167,7 +167,7 @@ export default {
     <li><code>check_api_compatibility</code>: API 101/102 features and @InternalApi checks</li>
   </ul>
 
-  <h2>⚙️ Recommended MCP Configuration (DSH, Cursor, Windsurf, Claude)</h2>
+  <h2>Recommended Client Configuration</h2>
   <pre>{
   "mcpServers": {
     "libxposed": {
