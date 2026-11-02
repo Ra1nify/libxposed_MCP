@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "libxposed": {
+      "url": "https://libxposed-mcp.ra1nify.workers.dev"
+    }
+  }
+}
