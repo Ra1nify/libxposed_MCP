@@ -9,5 +9,404 @@
     "java_init_list": "com.example.xposedmodule.ModuleMain",
     "java_module_example": "package com.example.xposedmodule;\n\nimport android.util.Log;\nimport androidx.annotation.NonNull;\nimport io.github.libxposed.api.XposedModule;\nimport io.github.libxposed.api.XposedInterface.Invoker;\n\npublic class ModuleMain extends XposedModule {\n    private static final String TAG = \"ModuleMain\";\n\n    @Override\n    public void onPackageReady(@NonNull PackageReadyParam param) {\n        try {\n            Class<?> targetClass = Class.forName(\"com.target.app.MainActivity\", true, param.getClassLoader());\n            var targetMethod = targetClass.getDeclaredMethod(\"someMethod\", String.class);\n\n            hook(targetMethod).intercept(chain -> {\n                log(Log.INFO, TAG, \"Intercepted: \" + chain.getExecutable().getName());\n                String originalArg = (String) chain.getArg(0);\n                \n                // Modify arguments or execute original\n                Object result = chain.proceed();\n                \n                // Return result\n                return result;\n            });\n        } catch (Throwable t) {\n            log(Log.ERROR, TAG, \"Hook initialization failed\", t);\n        }\n    }\n}",
     "kotlin_module_example": "package com.example.xposedmodule\n\nimport android.util.Log\nimport io.github.libxposed.api.XposedModule\n\nclass ModuleMainKt : XposedModule() {\n    companion object {\n        const val TAG = \"ModuleMainKt\"\n    }\n\n    override fun onPackageReady(param: PackageReadyParam) {\n        if (!param.isFirstPackage) return\n\n        try {\n            val targetClass = Class.forName(\"com.target.app.MainActivity\", true, param.classLoader)\n            val targetMethod = targetClass.getDeclaredMethod(\"someMethod\", String::class.java)\n\n            hook(targetMethod).intercept { chain ->\n                log(Log.INFO, TAG, \"Intercepted from Kotlin: ${chain.executable.name}\")\n                chain.proceed()\n            }\n        } catch (t: Throwable) {\n            log(Log.ERROR, TAG, \"Hook failed\", t)\n        }\n    }\n}"
-  }
+  },
+  "classes": [
+    {
+      "name": "io.github.libxposed.example.App",
+      "simpleName": "App",
+      "type": "class",
+      "packageName": "io.github.libxposed.example",
+      "filePath": "example/app/src/main/java/io/github/libxposed/example/App.kt",
+      "sinceApi": 101,
+      "summary": "class App",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/example/App.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "removeServiceStateListener",
+          "signature": "fun removeServiceStateListener(listener: ServiceStateListener)",
+          "returnType": "fun",
+          "params": [
+            "listener: ServiceStateListener"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 38
+        },
+        {
+          "name": "notifyServiceStateChanged",
+          "signature": "fun notifyServiceStateChanged(service: XposedService?)",
+          "returnType": "fun",
+          "params": [
+            "service: XposedService?"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 43
+        },
+        {
+          "name": "onCreate",
+          "signature": "override fun onCreate()",
+          "returnType": "override fun",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 49
+        },
+        {
+          "name": "onServiceBind",
+          "signature": "override fun onServiceBind(service: XposedService)",
+          "returnType": "override fun",
+          "params": [
+            "service: XposedService"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 58
+        },
+        {
+          "name": "onServiceDied",
+          "signature": "override fun onServiceDied(service: XposedService)",
+          "returnType": "override fun",
+          "params": [
+            "service: XposedService"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 63
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.example.App.ServiceStateListener",
+      "simpleName": "ServiceStateListener",
+      "type": "interface",
+      "packageName": "io.github.libxposed.example",
+      "filePath": "example/app/src/main/java/io/github/libxposed/example/App.kt",
+      "sinceApi": 101,
+      "summary": "interface ServiceStateListener",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/example/ServiceStateListener.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "onServiceStateChanged",
+          "signature": "fun onServiceStateChanged(service: XposedService?)",
+          "returnType": "fun",
+          "params": [
+            "service: XposedService?"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 55
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.example.MainActivity",
+      "simpleName": "MainActivity",
+      "type": "class",
+      "packageName": "io.github.libxposed.example",
+      "filePath": "example/app/src/main/java/io/github/libxposed/example/MainActivity.kt",
+      "sinceApi": 101,
+      "summary": "class MainActivity",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/example/MainActivity.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "onScopeRequestApproved",
+          "signature": "override fun onScopeRequestApproved(approved: List<String>)",
+          "returnType": "override fun",
+          "params": [
+            "approved: List<String>"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 19
+        },
+        {
+          "name": "onScopeRequestFailed",
+          "signature": "override fun onScopeRequestFailed(message: String)",
+          "returnType": "override fun",
+          "params": [
+            "message: String"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 30
+        },
+        {
+          "name": "onCreate",
+          "signature": "override fun onCreate(savedInstanceState: Bundle?)",
+          "returnType": "override fun",
+          "params": [
+            "savedInstanceState: Bundle?"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 42
+        },
+        {
+          "name": "onStart",
+          "signature": "override fun onStart()",
+          "returnType": "override fun",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 51
+        },
+        {
+          "name": "onStop",
+          "signature": "override fun onStop()",
+          "returnType": "override fun",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 56
+        },
+        {
+          "name": "onServiceStateChanged",
+          "signature": "override fun onServiceStateChanged(service: XposedService?)",
+          "returnType": "override fun",
+          "params": [
+            "service: XposedService?"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 61
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.example.ModuleMain",
+      "simpleName": "ModuleMain",
+      "type": "class",
+      "packageName": "io.github.libxposed.example",
+      "filePath": "example/app/src/main/java/io/github/libxposed/example/ModuleMain.java",
+      "sinceApi": 101,
+      "summary": "class ModuleMain",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/example/ModuleMain.html",
+      "constants": [
+        {
+          "name": "TAG",
+          "type": "String",
+          "value": "\"ModuleMain\"",
+          "doc": ""
+        }
+      ],
+      "methods": [
+        {
+          "name": "hasProp",
+          "signature": "boolean hasProp(long prop)",
+          "returnType": "boolean",
+          "params": [
+            "long prop"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 16
+        },
+        {
+          "name": "onModuleLoaded",
+          "signature": "void onModuleLoaded(@NonNull ModuleLoadedParam param)",
+          "returnType": "void",
+          "params": [
+            "@NonNull ModuleLoadedParam param"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 21
+        },
+        {
+          "name": "getFrameworkName",
+          "signature": ", getFrameworkName()",
+          "returnType": ",",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 23
+        },
+        {
+          "name": "onPackageLoaded",
+          "signature": "void onPackageLoaded(@NonNull PackageLoadedParam param)",
+          "returnType": "void",
+          "params": [
+            "@NonNull PackageLoadedParam param"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 31
+        },
+        {
+          "name": "onHotReloading",
+          "signature": "boolean onHotReloading(@NonNull HotReloadingParam param)",
+          "returnType": "boolean",
+          "params": [
+            "@NonNull HotReloadingParam param"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 37
+        },
+        {
+          "name": "onHotReloaded",
+          "signature": "void onHotReloaded(@NonNull HotReloadedParam param)",
+          "returnType": "void",
+          "params": [
+            "@NonNull HotReloadedParam param"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 44
+        },
+        {
+          "name": "onPackageReady",
+          "signature": "void onPackageReady(@NonNull PackageReadyParam param)",
+          "returnType": "void",
+          "params": [
+            "@NonNull PackageReadyParam param"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 51
+        },
+        {
+          "name": "Object",
+          "signature": "new Object()",
+          "returnType": "new",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 63
+        },
+        {
+          "name": "Object",
+          "signature": "new Object()",
+          "returnType": "new",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 68
+        },
+        {
+          "name": "RuntimeException",
+          "signature": "throw new RuntimeException(\"constructor hook exception\")",
+          "returnType": "throw new",
+          "params": [
+            "\"constructor hook exception\""
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 89
+        },
+        {
+          "name": "Object",
+          "signature": "new Object()",
+          "returnType": "new",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "call the original method",
+          "line": 93
+        },
+        {
+          "name": "Object",
+          "signature": "new Object()",
+          "returnType": "new",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "call the special method starting from the middle of the hook chain",
+          "line": 95
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.example.ModuleMainKt",
+      "simpleName": "ModuleMainKt",
+      "type": "class",
+      "packageName": "io.github.libxposed.example",
+      "filePath": "example/app/src/main/java/io/github/libxposed/example/ModuleMainKt.kt",
+      "sinceApi": 101,
+      "summary": "class ModuleMainKt",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/example/ModuleMainKt.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "onModuleLoaded",
+          "signature": "override fun onModuleLoaded(param: ModuleLoadedParam)",
+          "returnType": "override fun",
+          "params": [
+            "param: ModuleLoadedParam"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 22
+        },
+        {
+          "name": "onHotReloading",
+          "signature": "override fun onHotReloading(param: XposedModuleInterface.HotReloadingParam)",
+          "returnType": "override fun",
+          "params": [
+            "param: XposedModuleInterface.HotReloadingParam"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 32
+        },
+        {
+          "name": "onHotReloaded",
+          "signature": "override fun onHotReloaded(param: XposedModuleInterface.HotReloadedParam)",
+          "returnType": "override fun",
+          "params": [
+            "param: XposedModuleInterface.HotReloadedParam"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 38
+        },
+        {
+          "name": "onPackageLoaded",
+          "signature": "override fun onPackageLoaded(param: PackageLoadedParam)",
+          "returnType": "override fun",
+          "params": [
+            "param: PackageLoadedParam"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 45
+        },
+        {
+          "name": "onPackageReady",
+          "signature": "override fun onPackageReady(param: PackageReadyParam)",
+          "returnType": "override fun",
+          "params": [
+            "param: PackageReadyParam"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 50
+        },
+        {
+          "name": "RuntimeException",
+          "signature": "throw RuntimeException(\"constructor hook exception\")",
+          "returnType": "throw",
+          "params": [
+            "\"constructor hook exception\""
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 114
+        },
+        {
+          "name": "onSystemServerStarting",
+          "signature": "override fun onSystemServerStarting(param: SystemServerStartingParam)",
+          "returnType": "override fun",
+          "params": [
+            "param: SystemServerStartingParam"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 129
+        }
+      ]
+    }
+  ]
 }

@@ -26,134 +26,1664 @@
   },
   "classes": [
     {
-      "name": "io.github.libxposed.service.XposedService",
-      "type": "final class",
+      "name": "io.github.libxposed.service.IHotReloadCallback",
+      "simpleName": "IHotReloadCallback",
+      "type": "interface",
+      "packageName": "io.github.libxposed.service",
+      "filePath": "service/interface/src/main/aidl/io/github/libxposed/service/IHotReloadCallback.aidl",
       "sinceApi": 101,
-      "summary": "Central client service class managing communication with the host Xposed framework daemon (scope, running targets, hot reload, remote preferences, remote files).",
-      "constants": [
-        { "name": "API_101", "type": "int", "value": "101", "doc": "Initial modern service API level." },
-        { "name": "API_102", "type": "int", "value": "102", "doc": "Service API 102: allows querying running hooked targets and requesting hot reload." },
-        { "name": "PROP_CAP_SYSTEM", "type": "long", "value": "1L", "doc": "Framework can hook system_server and system processes." },
-        { "name": "PROP_CAP_REMOTE", "type": "long", "value": "1L << 1", "doc": "Framework provides remote preferences and files support." },
-        { "name": "PROP_RT_API_PROTECTION", "type": "long", "value": "1L << 2", "doc": "Framework disallows accessing API via reflection or dynamically loaded code." }
-      ],
+      "summary": "Callback for asynchronous hot reload completion.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/service/IHotReloadCallback.html",
+      "constants": [],
       "methods": [
-        { "name": "getApiVersion", "signature": "int getApiVersion()", "doc": "Returns the service API version of the running framework." },
-        { "name": "getFrameworkName", "signature": "String getFrameworkName()", "doc": "Returns the host framework name (e.g. LSPosed)." },
-        { "name": "getFrameworkVersion", "signature": "String getFrameworkVersion()", "doc": "Returns the host framework version string." },
-        { "name": "getFrameworkVersionCode", "signature": "long getFrameworkVersionCode()", "doc": "Returns the framework version code." },
-        { "name": "getFrameworkProperties", "signature": "long getFrameworkProperties()", "doc": "Returns bitmask of framework capabilities and runtime flags." },
-        { "name": "getScope", "signature": "List<String> getScope()", "doc": "Returns the application package scope configured for this module." },
-        { "name": "requestScope", "signature": "void requestScope(@NonNull List<String> packages, @NonNull OnScopeEventListener callback)", "doc": "Asynchronously requests the framework to expand module scope to include the specified packages." },
-        { "name": "removeScope", "signature": "void removeScope(@NonNull List<String> packages)", "doc": "Removes specified packages from module scope." },
-        { "name": "getRunningTargets", "signature": "List<HookedTarget> getRunningTargets()", "sinceApi": 102, "doc": "Queries all currently running processes that are hooked by this module. Returned targets can be used to trigger hot reloading." },
-        { "name": "hotReloadModule", "signature": "void hotReloadModule(@NonNull HookedTarget target, @Nullable Bundle data, @NonNull HotReloadCallback callback)", "sinceApi": 102, "doc": "Requests the framework to hot reload the module in target process without rebooting or killing the target app." },
-        { "name": "getRemotePreferences", "signature": "SharedPreferences getRemotePreferences(@NonNull String group)", "doc": "Retrieves or creates a named group of RemotePreferences stored in the Xposed framework." },
-        { "name": "deleteRemotePreferences", "signature": "void deleteRemotePreferences(@NonNull String group)", "doc": "Deletes a named group of RemotePreferences." },
-        { "name": "listRemoteFiles", "signature": "String[] listRemoteFiles()", "doc": "Lists all shared files in module's framework-managed data directory." },
-        { "name": "openRemoteFile", "signature": "ParcelFileDescriptor openRemoteFile(@NonNull String name)", "doc": "Opens a ParcelFileDescriptor to a remote file." },
-        { "name": "deleteRemoteFile", "signature": "boolean deleteRemoteFile(@NonNull String name)", "doc": "Deletes a remote file from module's shared data directory." }
-      ],
-      "innerTypes": [
         {
-          "name": "OnScopeEventListener",
-          "type": "interface",
-          "methods": [
-            { "name": "onScopeRequestApproved", "signature": "void onScopeRequestApproved(@NonNull List<String> approved)", "doc": "Called when user/framework approves the scope expansion." },
-            { "name": "onScopeRequestFailed", "signature": "void onScopeRequestFailed(@NonNull String message)", "doc": "Called when scope request is rejected or fails." }
-          ]
-        },
-        {
-          "name": "HotReloadCallback",
-          "type": "interface",
-          "sinceApi": 102,
-          "methods": [
-            { "name": "onHotReloadResult", "signature": "void onHotReloadResult(@NonNull HookedTarget target, @NonNull HotReloadResult result)", "doc": "Called when hot reload completes or fails. Note: runs on Binder thread; dispatch to Main thread for UI updates." }
-          ]
-        },
-        {
-          "name": "ServiceException",
-          "type": "class",
-          "doc": "Runtime exception thrown when framework service connection is dead or IPC transaction fails."
+          "name": "onHotReloadResult",
+          "signature": "oneway void onHotReloadResult(int status, String message)",
+          "returnType": "oneway void",
+          "params": [
+            "int status",
+            "String message"
+          ],
+          "sinceApi": 101,
+          "doc": "Called when hot reload completes or fails. @param status The raw hot reload status @param message Optional diagnostic message; null for module-refused reloads",
+          "line": 13
         }
       ]
     },
     {
-      "name": "io.github.libxposed.service.XposedServiceHelper",
-      "type": "final class",
-      "summary": "Helper to bind and listen to Xposed framework service connections in module applications.",
+      "name": "io.github.libxposed.service.IXposedScopeCallback",
+      "simpleName": "IXposedScopeCallback",
+      "type": "interface",
+      "packageName": "io.github.libxposed.service",
+      "filePath": "service/interface/src/main/aidl/io/github/libxposed/service/IXposedScopeCallback.aidl",
+      "sinceApi": 101,
+      "summary": "interface IXposedScopeCallback",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/service/IXposedScopeCallback.html",
+      "constants": [],
       "methods": [
         {
-          "name": "registerListener",
-          "signature": "static void registerListener(OnServiceListener listener)",
-          "doc": "Registers a service listener to receive XposedService instances when framework connects. Safe across multiple framework managers."
+          "name": "onScopeRequestApproved",
+          "signature": "oneway void onScopeRequestApproved(in List<String> approved)",
+          "returnType": "oneway void",
+          "params": [
+            "in List<String> approved"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 4
+        },
+        {
+          "name": "onScopeRequestFailed",
+          "signature": "oneway void onScopeRequestFailed(String message)",
+          "returnType": "oneway void",
+          "params": [
+            "String message"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 5
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.service.IXposedService",
+      "simpleName": "IXposedService",
+      "type": "interface",
+      "packageName": "io.github.libxposed.service",
+      "filePath": "service/interface/src/main/aidl/io/github/libxposed/service/IXposedService.aidl",
+      "sinceApi": 101,
+      "summary": "interface IXposedService",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/service/IXposedService.html",
+      "constants": [
+        {
+          "name": "AUTHORITY_SUFFIX",
+          "type": "String",
+          "value": "\".XposedService\"",
+          "doc": ""
+        },
+        {
+          "name": "SEND_BINDER",
+          "type": "String",
+          "value": "\"SendBinder\"",
+          "doc": ""
+        },
+        {
+          "name": "API_101",
+          "type": "int",
+          "value": "101",
+          "doc": "API version 101."
+        },
+        {
+          "name": "API_102",
+          "type": "int",
+          "value": "102",
+          "doc": "API version 102."
+        },
+        {
+          "name": "LIB_API",
+          "type": "int",
+          "value": "API_102",
+          "doc": "API version implemented by this interface."
+        },
+        {
+          "name": "PROP_CAP_SYSTEM",
+          "type": "long",
+          "value": "1L",
+          "doc": "Framework property bit: system process hooking is supported."
+        },
+        {
+          "name": "PROP_CAP_REMOTE",
+          "type": "long",
+          "value": "1L << 1",
+          "doc": "Framework property bit: remote preferences and files are supported."
+        },
+        {
+          "name": "PROP_RT_API_PROTECTION",
+          "type": "long",
+          "value": "1L << 2",
+          "doc": "Framework property bit: runtime API protection is enforced."
+        },
+        {
+          "name": "HOT_RELOAD_SUCCEEDED",
+          "type": "int",
+          "value": "0",
+          "doc": "Raw hot reload status: succeeded."
+        },
+        {
+          "name": "HOT_RELOAD_FAILED",
+          "type": "int",
+          "value": "1",
+          "doc": "Raw hot reload status: module refused reload or reload raised an exception."
+        },
+        {
+          "name": "HOT_RELOAD_UNSUPPORTED",
+          "type": "int",
+          "value": "2",
+          "doc": "Raw hot reload status: unsupported."
+        },
+        {
+          "name": "HOT_RELOAD_IN_PROGRESS",
+          "type": "int",
+          "value": "3",
+          "doc": "Raw hot reload status: target already reloading."
+        },
+        {
+          "name": "HOT_RELOAD_PROCESS_DIED",
+          "type": "int",
+          "value": "4",
+          "doc": "Raw hot reload status: target process died."
         }
       ],
-      "innerTypes": [
+      "methods": [
         {
-          "name": "OnServiceListener",
-          "type": "interface",
-          "methods": [
-            { "name": "onServiceBind", "signature": "void onServiceBind(@NonNull XposedService service)", "doc": "Called when XposedService binder is connected. May be called multiple times if multiple frameworks exist." },
-            { "name": "onServiceDied", "signature": "void onServiceDied(@NonNull XposedService service)", "doc": "Called when framework service dies or disconnects." }
-          ]
+          "name": "getApiVersion",
+          "signature": "int getApiVersion()",
+          "returnType": "int",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "framework details",
+          "line": 58
+        },
+        {
+          "name": "getFrameworkName",
+          "signature": "String getFrameworkName()",
+          "returnType": "String",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 59
+        },
+        {
+          "name": "getFrameworkVersion",
+          "signature": "String getFrameworkVersion()",
+          "returnType": "String",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 60
+        },
+        {
+          "name": "getFrameworkVersionCode",
+          "signature": "long getFrameworkVersionCode()",
+          "returnType": "long",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 61
+        },
+        {
+          "name": "getFrameworkProperties",
+          "signature": "long getFrameworkProperties()",
+          "returnType": "long",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 62
+        },
+        {
+          "name": "getScope",
+          "signature": "List<String> getScope()",
+          "returnType": "List<String>",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "scope utilities",
+          "line": 65
+        },
+        {
+          "name": "requestScope",
+          "signature": "oneway void requestScope(in List<String> packages, IXposedScopeCallback callback)",
+          "returnType": "oneway void",
+          "params": [
+            "in List<String> packages",
+            "IXposedScopeCallback callback"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 66
+        },
+        {
+          "name": "removeScope",
+          "signature": "void removeScope(in List<String> packages)",
+          "returnType": "void",
+          "params": [
+            "in List<String> packages"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 67
+        },
+        {
+          "name": "getRunningTargets",
+          "signature": "List<HookedProcess> getRunningTargets()",
+          "returnType": "List<HookedProcess>",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Returns running processes currently hooked by this module. Returned target ids are opaque, process-scoped tokens and may become invalid after this call returns.",
+          "line": 73
+        },
+        {
+          "name": "hotReloadModule",
+          "signature": "void hotReloadModule(long targetId, in Bundle data, IHotReloadCallback callback)",
+          "returnType": "void",
+          "params": [
+            "long targetId",
+            "in Bundle data",
+            "IHotReloadCallback callback"
+          ],
+          "sinceApi": 101,
+          "doc": "Requests hot reload for a target returned by getRunningTargets(). Implementations should validate and enqueue the request promptly, then report completion through the callback. If hot reload is unsupported for the module or target, implementations should report HOT_RELOAD_UNSUPPORTED through the callback. @throws SecurityException if the target id is invalid or no longer belongs to this module",
+          "line": 83
+        },
+        {
+          "name": "requestRemotePreferences",
+          "signature": "Bundle requestRemotePreferences(String group)",
+          "returnType": "Bundle",
+          "params": [
+            "String group"
+          ],
+          "sinceApi": 101,
+          "doc": "remote preference utilities",
+          "line": 86
+        },
+        {
+          "name": "updateRemotePreferences",
+          "signature": "void updateRemotePreferences(String group, in Bundle diff)",
+          "returnType": "void",
+          "params": [
+            "String group",
+            "in Bundle diff"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 87
+        },
+        {
+          "name": "deleteRemotePreferences",
+          "signature": "void deleteRemotePreferences(String group)",
+          "returnType": "void",
+          "params": [
+            "String group"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 88
+        },
+        {
+          "name": "listRemoteFiles",
+          "signature": "String[] listRemoteFiles()",
+          "returnType": "String[]",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "remote file utilities",
+          "line": 91
+        },
+        {
+          "name": "openRemoteFile",
+          "signature": "ParcelFileDescriptor openRemoteFile(String name)",
+          "returnType": "ParcelFileDescriptor",
+          "params": [
+            "String name"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 92
+        },
+        {
+          "name": "deleteRemoteFile",
+          "signature": "boolean deleteRemoteFile(String name)",
+          "returnType": "boolean",
+          "params": [
+            "String name"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 93
         }
       ]
     },
     {
       "name": "io.github.libxposed.service.HookedTarget",
-      "type": "final class",
-      "sinceApi": 102,
-      "summary": "Represents a running process that is hooked by this module.",
-      "properties": [
-        { "name": "mTargetId", "type": "long", "doc": "Internal target identity handle for hot reload transactions." },
-        { "name": "mUid", "type": "int", "doc": "Target process UID." },
-        { "name": "mPid", "type": "int", "doc": "Target process PID." },
-        { "name": "mProcessName", "type": "String", "doc": "Android process name." },
-        { "name": "mState", "type": "HookedTarget.State", "doc": "Status enum: UP_TO_DATE, STALE, RELOADING, FAILED." },
-        { "name": "mLoadedVersionCode", "type": "long", "doc": "Version code of module package loaded in this process." }
-      ],
-      "innerTypes": [
+      "simpleName": "HookedTarget",
+      "type": "class",
+      "packageName": "io.github.libxposed.service",
+      "filePath": "service/service/src/main/java/io/github/libxposed/service/HookedTarget.java",
+      "sinceApi": 101,
+      "summary": "Information about a process currently hooked by this module. <p>Instances are snapshot handles and do not define stable value equality.</p>",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/service/HookedTarget.html",
+      "constants": [],
+      "methods": [
         {
-          "name": "State",
-          "type": "enum",
-          "values": ["UP_TO_DATE", "STALE", "RELOADING", "FAILED"]
+          "name": "getUid",
+          "signature": "int getUid()",
+          "returnType": "int",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Gets the process uid, provided for display and diagnostics.",
+          "line": 62
+        },
+        {
+          "name": "getPid",
+          "signature": "int getPid()",
+          "returnType": "int",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Gets the process id, provided for display and diagnostics. It must not be used as target identity.",
+          "line": 70
+        },
+        {
+          "name": "getProcessName",
+          "signature": "String getProcessName()",
+          "returnType": "String",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Gets the Android process name, provided for display and diagnostics.",
+          "line": 78
+        },
+        {
+          "name": "getState",
+          "signature": "State getState()",
+          "returnType": "State",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Gets the target state.",
+          "line": 86
+        },
+        {
+          "name": "getLoadedVersionCode",
+          "signature": "long getLoadedVersionCode()",
+          "returnType": "long",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Gets the version code of the module package loaded in this process. This is only a diagnostic value; the framework may use a stronger internal code identity to determine state.",
+          "line": 95
         }
       ]
+    },
+    {
+      "name": "io.github.libxposed.service.HookedTarget.State",
+      "simpleName": "State",
+      "type": "enum",
+      "packageName": "io.github.libxposed.service",
+      "filePath": "service/service/src/main/java/io/github/libxposed/service/HookedTarget.java",
+      "sinceApi": 101,
+      "summary": "State of a hooked target.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/service/State.html",
+      "constants": [],
+      "methods": []
     },
     {
       "name": "io.github.libxposed.service.HotReloadResult",
+      "simpleName": "HotReloadResult",
       "type": "record",
-      "sinceApi": 102,
-      "summary": "Result record of an asynchronous hot reload request with completion status and diagnostic message.",
-      "innerTypes": [
+      "packageName": "io.github.libxposed.service",
+      "filePath": "service/service/src/main/java/io/github/libxposed/service/HotReloadResult.java",
+      "sinceApi": 101,
+      "summary": "Result of an asynchronous hot reload request. @param status  The completion status @param message Optional framework-provided diagnostic message. For {@link Status#FAILED}, a null message means the old module refused reload by returning {@code false} from {@code onHotReloading}; a non-null message describes a reload exception.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/service/HotReloadResult.html",
+      "constants": [],
+      "methods": [
         {
-          "name": "Status",
-          "type": "enum",
-          "values": ["SUCCEEDED", "FAILED", "UNSUPPORTED", "IN_PROGRESS", "PROCESS_DIED"]
+          "name": "from",
+          "signature": "HotReloadResult from(int code, @Nullable String message)",
+          "returnType": "HotReloadResult",
+          "params": [
+            "int code",
+            "@Nullable String message"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 58
+        },
+        {
+          "name": "HotReloadResult",
+          "signature": "return new HotReloadResult(status, message)",
+          "returnType": "return new",
+          "params": [
+            "status",
+            "message"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 67
         }
       ]
     },
     {
+      "name": "io.github.libxposed.service.HotReloadResult.Status",
+      "simpleName": "Status",
+      "type": "enum",
+      "packageName": "io.github.libxposed.service",
+      "filePath": "service/service/src/main/java/io/github/libxposed/service/HotReloadResult.java",
+      "sinceApi": 101,
+      "summary": "Hot reload completion status.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/service/Status.html",
+      "constants": [],
+      "methods": []
+    },
+    {
       "name": "io.github.libxposed.service.RemotePreferences",
-      "type": "final class",
-      "summary": "Modern secure SharedPreferences implementation over IPC. Overcomes Android 7.0+ world-readable file restrictions.",
+      "simpleName": "RemotePreferences",
+      "type": "class",
+      "packageName": "io.github.libxposed.service",
+      "filePath": "service/service/src/main/java/io/github/libxposed/service/RemotePreferences.java",
+      "sinceApi": 101,
+      "summary": "class RemotePreferences",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/service/RemotePreferences.html",
+      "constants": [
+        {
+          "name": "TAG",
+          "type": "String",
+          "value": "\"RemotePreferences\"",
+          "doc": ""
+        },
+        {
+          "name": "CONTENT",
+          "type": "Object",
+          "value": "new Object()",
+          "doc": ""
+        },
+        {
+          "name": "EXECUTOR",
+          "type": "ExecutorService",
+          "value": "Executors.newSingleThreadExecutor()",
+          "doc": ""
+        }
+      ],
       "methods": [
-        { "name": "getAll", "signature": "Map<String, ?> getAll()", "doc": "Returns an unmodifiable snapshot copy of all key-value pairs." },
-        { "name": "getString", "signature": "String getString(String key, String defValue)", "doc": "Retrieves String value." },
-        { "name": "getInt", "signature": "int getInt(String key, int defValue)", "doc": "Retrieves int value." },
-        { "name": "getBoolean", "signature": "boolean getBoolean(String key, boolean defValue)", "doc": "Retrieves boolean value." },
-        { "name": "getLong", "signature": "long getLong(String key, long defValue)", "doc": "Retrieves long value." },
-        { "name": "getFloat", "signature": "float getFloat(String key, float defValue)", "doc": "Retrieves float value." },
-        { "name": "getStringSet", "signature": "Set<String> getStringSet(String key, Set<String> defValues)", "doc": "Retrieves Set<String> value." },
-        { "name": "contains", "signature": "boolean contains(String key)", "doc": "Checks if preference key exists." },
-        { "name": "registerOnSharedPreferenceChangeListener", "signature": "void registerOnSharedPreferenceChangeListener(OnSharedPreferenceChangeListener listener)", "doc": "Registers a reactive listener triggered when preferences update." }
+        {
+          "name": "RemotePreferences",
+          "signature": "private RemotePreferences(XposedService service, String group)",
+          "returnType": "private",
+          "params": [
+            "XposedService service",
+            "String group"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 38
+        },
+        {
+          "name": "newInstance",
+          "signature": "RemotePreferences newInstance(XposedService service, String group)",
+          "returnType": "RemotePreferences",
+          "params": [
+            "XposedService service",
+            "String group"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 44
+        },
+        {
+          "name": "RemoteException",
+          "signature": "throw new RemoteException(\"Framework returns null\")",
+          "returnType": "throw new",
+          "params": [
+            "\"Framework returns null\""
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 46
+        },
+        {
+          "name": "RemotePreferences",
+          "signature": "new RemotePreferences(service, group)",
+          "returnType": "new",
+          "params": [
+            "service",
+            "group"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 47
+        },
+        {
+          "name": "onDelete",
+          "signature": "void onDelete()",
+          "returnType": "void",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 54
+        },
+        {
+          "name": "getAll",
+          "signature": "Map<String, ?> getAll()",
+          "returnType": "Map<String, ?>",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 59
+        },
+        {
+          "name": "getString",
+          "signature": "String getString(String key, @Nullable String defValue)",
+          "returnType": "String",
+          "params": [
+            "String key",
+            "@Nullable String defValue"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 65
+        },
+        {
+          "name": "getStringSet",
+          "signature": "Set<String> getStringSet(String key, @Nullable Set<String> defValues)",
+          "returnType": "Set<String>",
+          "params": [
+            "String key",
+            "@Nullable Set<String> defValues"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 71
+        },
+        {
+          "name": "getInt",
+          "signature": "int getInt(String key, int defValue)",
+          "returnType": "int",
+          "params": [
+            "String key",
+            "int defValue"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 76
+        },
+        {
+          "name": "getLong",
+          "signature": "long getLong(String key, long defValue)",
+          "returnType": "long",
+          "params": [
+            "String key",
+            "long defValue"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 82
+        },
+        {
+          "name": "getFloat",
+          "signature": "float getFloat(String key, float defValue)",
+          "returnType": "float",
+          "params": [
+            "String key",
+            "float defValue"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 88
+        },
+        {
+          "name": "getBoolean",
+          "signature": "boolean getBoolean(String key, boolean defValue)",
+          "returnType": "boolean",
+          "params": [
+            "String key",
+            "boolean defValue"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 94
+        },
+        {
+          "name": "contains",
+          "signature": "boolean contains(String key)",
+          "returnType": "boolean",
+          "params": [
+            "String key"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 100
+        },
+        {
+          "name": "registerOnSharedPreferenceChangeListener",
+          "signature": "void registerOnSharedPreferenceChangeListener(OnSharedPreferenceChangeListener listener)",
+          "returnType": "void",
+          "params": [
+            "OnSharedPreferenceChangeListener listener"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 105
+        },
+        {
+          "name": "unregisterOnSharedPreferenceChangeListener",
+          "signature": "void unregisterOnSharedPreferenceChangeListener(OnSharedPreferenceChangeListener listener)",
+          "returnType": "void",
+          "params": [
+            "OnSharedPreferenceChangeListener listener"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 110
+        },
+        {
+          "name": "edit",
+          "signature": "Editor edit()",
+          "returnType": "Editor",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 115
+        },
+        {
+          "name": "Editor",
+          "signature": "return new Editor()",
+          "returnType": "return new",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 116
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.service.RemotePreferences.Editor",
+      "simpleName": "Editor",
+      "type": "class",
+      "packageName": "io.github.libxposed.service",
+      "filePath": "service/service/src/main/java/io/github/libxposed/service/RemotePreferences.java",
+      "sinceApi": 101,
+      "summary": "class Editor",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/service/Editor.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "put",
+          "signature": "void put(String key, @NonNull Object value)",
+          "returnType": "void",
+          "params": [
+            "String key",
+            "@NonNull Object value"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 125
+        },
+        {
+          "name": "putString",
+          "signature": "Editor putString(String key, @Nullable String value)",
+          "returnType": "Editor",
+          "params": [
+            "String key",
+            "@Nullable String value"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 131
+        },
+        {
+          "name": "put",
+          "signature": "else put(key, value)",
+          "returnType": "else",
+          "params": [
+            "key",
+            "value"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 133
+        },
+        {
+          "name": "putStringSet",
+          "signature": "Editor putStringSet(String key, @Nullable Set<String> values)",
+          "returnType": "Editor",
+          "params": [
+            "String key",
+            "@Nullable Set<String> values"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 138
+        },
+        {
+          "name": "put",
+          "signature": "else put(key, values)",
+          "returnType": "else",
+          "params": [
+            "key",
+            "values"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 140
+        },
+        {
+          "name": "putInt",
+          "signature": "Editor putInt(String key, int value)",
+          "returnType": "Editor",
+          "params": [
+            "String key",
+            "int value"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 145
+        },
+        {
+          "name": "putLong",
+          "signature": "Editor putLong(String key, long value)",
+          "returnType": "Editor",
+          "params": [
+            "String key",
+            "long value"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 151
+        },
+        {
+          "name": "putFloat",
+          "signature": "Editor putFloat(String key, float value)",
+          "returnType": "Editor",
+          "params": [
+            "String key",
+            "float value"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 157
+        },
+        {
+          "name": "putBoolean",
+          "signature": "Editor putBoolean(String key, boolean value)",
+          "returnType": "Editor",
+          "params": [
+            "String key",
+            "boolean value"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 163
+        },
+        {
+          "name": "remove",
+          "signature": "Editor remove(String key)",
+          "returnType": "Editor",
+          "params": [
+            "String key"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 169
+        },
+        {
+          "name": "clear",
+          "signature": "Editor clear()",
+          "returnType": "Editor",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 176
+        },
+        {
+          "name": "doUpdate",
+          "signature": "void doUpdate()",
+          "returnType": "void",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 183
+        },
+        {
+          "name": "buildCommitBundle",
+          "signature": "Bundle buildCommitBundle()",
+          "returnType": "Bundle",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 210
+        },
+        {
+          "name": "Bundle",
+          "signature": "new Bundle()",
+          "returnType": "new",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 212
+        },
+        {
+          "name": "doCommit",
+          "signature": "boolean doCommit(Bundle bundle)",
+          "returnType": "boolean",
+          "params": [
+            "Bundle bundle"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 219
+        },
+        {
+          "name": "commit",
+          "signature": "boolean commit()",
+          "returnType": "boolean",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 232
+        },
+        {
+          "name": "doCommit",
+          "signature": "return doCommit(bundle)",
+          "returnType": "return",
+          "params": [
+            "bundle"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 236
+        },
+        {
+          "name": "apply",
+          "signature": "void apply()",
+          "returnType": "void",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 240
+        },
+        {
+          "name": "doCommit",
+          "signature": "> doCommit(bundle)",
+          "returnType": ">",
+          "params": [
+            "bundle"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 244
+        }
       ]
     },
     {
       "name": "io.github.libxposed.service.XposedProvider",
-      "type": "class extends ContentProvider",
-      "summary": "Internal Direct-Boot-aware ContentProvider exported by the module app to receive IBinder connection from LSPosed/Xposed framework."
+      "simpleName": "XposedProvider",
+      "type": "class",
+      "packageName": "io.github.libxposed.service",
+      "filePath": "service/service/src/main/java/io/github/libxposed/service/XposedProvider.java",
+      "sinceApi": 101,
+      "summary": "class XposedProvider",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/service/XposedProvider.html",
+      "constants": [
+        {
+          "name": "TAG",
+          "type": "String",
+          "value": "\"XposedProvider\"",
+          "doc": ""
+        }
+      ],
+      "methods": [
+        {
+          "name": "onCreate",
+          "signature": "boolean onCreate()",
+          "returnType": "boolean",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 22
+        },
+        {
+          "name": "query",
+          "signature": "Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder)",
+          "returnType": "Cursor",
+          "params": [
+            "@NonNull Uri uri",
+            "@Nullable String[] projection",
+            "@Nullable String selection",
+            "@Nullable String[] selectionArgs",
+            "@Nullable String sortOrder"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 32
+        },
+        {
+          "name": "getType",
+          "signature": "String getType(@NonNull Uri uri)",
+          "returnType": "String",
+          "params": [
+            "@NonNull Uri uri"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 38
+        },
+        {
+          "name": "insert",
+          "signature": "Uri insert(@NonNull Uri uri, @Nullable ContentValues values)",
+          "returnType": "Uri",
+          "params": [
+            "@NonNull Uri uri",
+            "@Nullable ContentValues values"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 44
+        },
+        {
+          "name": "delete",
+          "signature": "int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs)",
+          "returnType": "int",
+          "params": [
+            "@NonNull Uri uri",
+            "@Nullable String selection",
+            "@Nullable String[] selectionArgs"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 49
+        },
+        {
+          "name": "update",
+          "signature": "int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs)",
+          "returnType": "int",
+          "params": [
+            "@NonNull Uri uri",
+            "@Nullable ContentValues values",
+            "@Nullable String selection",
+            "@Nullable String[] selectionArgs"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 54
+        },
+        {
+          "name": "call",
+          "signature": "Bundle call(@NonNull String method, @Nullable String arg, @Nullable Bundle extras)",
+          "returnType": "Bundle",
+          "params": [
+            "@NonNull String method",
+            "@Nullable String arg",
+            "@Nullable Bundle extras"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 60
+        },
+        {
+          "name": "Bundle",
+          "signature": "return new Bundle()",
+          "returnType": "return new",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 67
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.service.XposedService",
+      "simpleName": "XposedService",
+      "type": "class",
+      "packageName": "io.github.libxposed.service",
+      "filePath": "service/service/src/main/java/io/github/libxposed/service/XposedService.java",
+      "sinceApi": 101,
+      "summary": "class XposedService",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/service/XposedService.html",
+      "constants": [
+        {
+          "name": "API_101",
+          "type": "int",
+          "value": "IXposedService.API_101",
+          "doc": "API version 101."
+        },
+        {
+          "name": "API_102",
+          "type": "int",
+          "value": "IXposedService.API_102",
+          "doc": "API version 102. <p>API additions:</p> <ul> <li>Running hooked targets can be queried.</li> <li>Hot reload can be requested for a hooked target when permitted by the framework.</li> </ul>"
+        },
+        {
+          "name": "PROP_CAP_SYSTEM",
+          "type": "long",
+          "value": "IXposedService.PROP_CAP_SYSTEM",
+          "doc": "The framework has the capability to hook system_server and other system processes."
+        },
+        {
+          "name": "PROP_CAP_REMOTE",
+          "type": "long",
+          "value": "IXposedService.PROP_CAP_REMOTE",
+          "doc": "The framework provides remote preferences and remote files support."
+        },
+        {
+          "name": "PROP_RT_API_PROTECTION",
+          "type": "long",
+          "value": "IXposedService.PROP_RT_API_PROTECTION",
+          "doc": "The framework disallows accessing Xposed API via reflection or dynamically loaded code."
+        }
+      ],
+      "methods": [
+        {
+          "name": "asInterface",
+          "signature": "IXposedService asInterface()",
+          "returnType": "IXposedService",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 129
+        },
+        {
+          "name": "requireApi",
+          "signature": "void requireApi(int api)",
+          "returnType": "void",
+          "params": [
+            "int api"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 133
+        },
+        {
+          "name": "UnsupportedOperationException",
+          "signature": "throw new UnsupportedOperationException(\"Requires Xposed service API \" + api)",
+          "returnType": "throw new",
+          "params": [
+            "\"Requires Xposed service API \" + api"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 135
+        },
+        {
+          "name": "getApiVersion",
+          "signature": "int getApiVersion()",
+          "returnType": "int",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Get the Xposed API version of current implementation. @return API version @throws ServiceException If the service is dead or an error occurred",
+          "line": 145
+        },
+        {
+          "name": "ServiceException",
+          "signature": "throw new ServiceException(e)",
+          "returnType": "throw new",
+          "params": [
+            "e"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 149
+        },
+        {
+          "name": "getFrameworkName",
+          "signature": "String getFrameworkName()",
+          "returnType": "String",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Get the Xposed framework name of current implementation. @return Framework name @throws ServiceException If the service is dead or an error occurred",
+          "line": 160
+        },
+        {
+          "name": "ServiceException",
+          "signature": "throw new ServiceException(e)",
+          "returnType": "throw new",
+          "params": [
+            "e"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 164
+        },
+        {
+          "name": "getFrameworkVersion",
+          "signature": "String getFrameworkVersion()",
+          "returnType": "String",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Get the Xposed framework version of current implementation. @return Framework version @throws ServiceException If the service is dead or an error occurred",
+          "line": 175
+        },
+        {
+          "name": "ServiceException",
+          "signature": "throw new ServiceException(e)",
+          "returnType": "throw new",
+          "params": [
+            "e"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 179
+        },
+        {
+          "name": "getFrameworkVersionCode",
+          "signature": "long getFrameworkVersionCode()",
+          "returnType": "long",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Get the Xposed framework version code of current implementation. @return Framework version code @throws ServiceException If the service is dead or an error occurred",
+          "line": 189
+        },
+        {
+          "name": "ServiceException",
+          "signature": "throw new ServiceException(e)",
+          "returnType": "throw new",
+          "params": [
+            "e"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 193
+        },
+        {
+          "name": "getFrameworkProperties",
+          "signature": "long getFrameworkProperties()",
+          "returnType": "long",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Gets the Xposed framework properties. Properties with prefix PROP_RT_ may change among launches. @return Framework properties @throws ServiceException If the service is dead or an error occurred",
+          "line": 204
+        },
+        {
+          "name": "ServiceException",
+          "signature": "throw new ServiceException(e)",
+          "returnType": "throw new",
+          "params": [
+            "e"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 208
+        },
+        {
+          "name": "getScope",
+          "signature": "List<String> getScope()",
+          "returnType": "List<String>",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Get the application scope of current module. @return Module scope @throws ServiceException If the service is dead or an error occurred",
+          "line": 219
+        },
+        {
+          "name": "ServiceException",
+          "signature": "throw new ServiceException(e)",
+          "returnType": "throw new",
+          "params": [
+            "e"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 223
+        },
+        {
+          "name": "requestScope",
+          "signature": "void requestScope(@NonNull List<String> packages, @NonNull OnScopeEventListener callback)",
+          "returnType": "void",
+          "params": [
+            "@NonNull List<String> packages",
+            "@NonNull OnScopeEventListener callback"
+          ],
+          "sinceApi": 101,
+          "doc": "Request to add a new app to the module scope. @param packages Packages to be added @param callback Callback to be invoked when the request is completed or error occurred @throws ServiceException If the service is dead or an error occurred",
+          "line": 234
+        },
+        {
+          "name": "ServiceException",
+          "signature": "throw new ServiceException(e)",
+          "returnType": "throw new",
+          "params": [
+            "e"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 238
+        },
+        {
+          "name": "removeScope",
+          "signature": "void removeScope(@NonNull List<String> packages)",
+          "returnType": "void",
+          "params": [
+            "@NonNull List<String> packages"
+          ],
+          "sinceApi": 101,
+          "doc": "Remove an app from the module scope. @param packages Packages to be removed @throws ServiceException If the service is dead or an error occurred",
+          "line": 248
+        },
+        {
+          "name": "ServiceException",
+          "signature": "throw new ServiceException(e)",
+          "returnType": "throw new",
+          "params": [
+            "e"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 252
+        },
+        {
+          "name": "getRunningTargets",
+          "signature": "List<HookedTarget> getRunningTargets()",
+          "returnType": "List<HookedTarget>",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Get a list of currently running processes that are hooked by the module. <p> Returned targets can be passed to {@link #hotReloadModule(HookedTarget, Bundle, HotReloadCallback)}. The pid, uid, process name, and loaded version code are diagnostic values only. </p> @return The list of hooked processes @throws UnsupportedOperationException If the framework does not support service API 102 @throws ServiceException              If the service is dead or an error occurred",
+          "line": 270
+        },
+        {
+          "name": "ServiceException",
+          "signature": "throw new ServiceException(\"Framework returns null\")",
+          "returnType": "throw new",
+          "params": [
+            "\"Framework returns null\""
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 274
+        },
+        {
+          "name": "ServiceException",
+          "signature": "throw new ServiceException(\"Framework returns null target\")",
+          "returnType": "throw new",
+          "params": [
+            "\"Framework returns null target\""
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 277
+        },
+        {
+          "name": "ServiceException",
+          "signature": "throw new ServiceException(e)",
+          "returnType": "throw new",
+          "params": [
+            "e"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 282
+        },
+        {
+          "name": "onHotReloadResult",
+          "signature": "void onHotReloadResult(int code, String message)",
+          "returnType": "void",
+          "params": [
+            "int code",
+            "String message"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 326
+        },
+        {
+          "name": "ServiceException",
+          "signature": "throw new ServiceException(e)",
+          "returnType": "throw new",
+          "params": [
+            "e"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 339
+        },
+        {
+          "name": "toHookedTarget",
+          "signature": "HookedTarget toHookedTarget(HookedProcess process)",
+          "returnType": "HookedTarget",
+          "params": [
+            "HookedProcess process"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 346
+        },
+        {
+          "name": "ServiceException",
+          "signature": "throw new ServiceException(\"Framework returns target with null processName\")",
+          "returnType": "throw new",
+          "params": [
+            "\"Framework returns target with null processName\""
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 348
+        },
+        {
+          "name": "toHookedTargetState",
+          "signature": "State toHookedTargetState(int state)",
+          "returnType": "State",
+          "params": [
+            "int state"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 360
+        },
+        {
+          "name": "ServiceException",
+          "signature": "> throw new ServiceException(\"Invalid hooked target state: \" + state)",
+          "returnType": "> throw new",
+          "params": [
+            "\"Invalid hooked target state: \" + state"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 366
+        },
+        {
+          "name": "getRemotePreferences",
+          "signature": "SharedPreferences getRemotePreferences(@NonNull String group)",
+          "returnType": "SharedPreferences",
+          "params": [
+            "@NonNull String group"
+          ],
+          "sinceApi": 101,
+          "doc": "Get remote preferences from Xposed framework. If the group does not exist, it will be created. @param group Group name @return The preferences @throws ServiceException              If the service is dead or an error occurred @throws UnsupportedOperationException If the framework does not have remote capability",
+          "line": 379
+        },
+        {
+          "name": "ServiceException",
+          "signature": "throw new ServiceException(e)",
+          "returnType": "throw new",
+          "params": [
+            "e"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 384
+        },
+        {
+          "name": "deleteRemotePreferences",
+          "signature": "void deleteRemotePreferences(@NonNull String group)",
+          "returnType": "void",
+          "params": [
+            "@NonNull String group"
+          ],
+          "sinceApi": 101,
+          "doc": "Delete a group of remote preferences. @param group Group name @throws ServiceException              If the service is dead or an error occurred @throws UnsupportedOperationException If the framework does not have remote capability",
+          "line": 396
+        },
+        {
+          "name": "ServiceException",
+          "signature": "throw new ServiceException(e)",
+          "returnType": "throw new",
+          "params": [
+            "e"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 402
+        },
+        {
+          "name": "listRemoteFiles",
+          "signature": "String[] listRemoteFiles()",
+          "returnType": "String[]",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "List all files in the module's shared data directory. @return The file list @throws ServiceException              If the service is dead or an error occurred @throws UnsupportedOperationException If the framework does not have remote capability",
+          "line": 414
+        },
+        {
+          "name": "ServiceException",
+          "signature": "throw new ServiceException(\"Framework returns null\")",
+          "returnType": "throw new",
+          "params": [
+            "\"Framework returns null\""
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 417
+        },
+        {
+          "name": "ServiceException",
+          "signature": "throw new ServiceException(e)",
+          "returnType": "throw new",
+          "params": [
+            "e"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 420
+        },
+        {
+          "name": "openRemoteFile",
+          "signature": "ParcelFileDescriptor openRemoteFile(@NonNull String name)",
+          "returnType": "ParcelFileDescriptor",
+          "params": [
+            "@NonNull String name"
+          ],
+          "sinceApi": 101,
+          "doc": "Open a file in the module's shared data directory. The file will be created if not exists. @param name File name, must not contain path separators and . or .. @return The file descriptor @throws ServiceException              If the service is dead or an error occurred @throws UnsupportedOperationException If the framework does not have remote capability",
+          "line": 433
+        },
+        {
+          "name": "ServiceException",
+          "signature": "throw new ServiceException(\"Framework returns null\")",
+          "returnType": "throw new",
+          "params": [
+            "\"Framework returns null\""
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 436
+        },
+        {
+          "name": "ServiceException",
+          "signature": "throw new ServiceException(e)",
+          "returnType": "throw new",
+          "params": [
+            "e"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 439
+        },
+        {
+          "name": "deleteRemoteFile",
+          "signature": "boolean deleteRemoteFile(@NonNull String name)",
+          "returnType": "boolean",
+          "params": [
+            "@NonNull String name"
+          ],
+          "sinceApi": 101,
+          "doc": "Delete a file in the module's shared data directory. @param name File name, must not contain path separators and . or .. @return true if successful, false if the file does not exist @throws ServiceException              If the service is dead or an error occurred @throws UnsupportedOperationException If the framework does not have remote capability",
+          "line": 451
+        },
+        {
+          "name": "ServiceException",
+          "signature": "throw new ServiceException(e)",
+          "returnType": "throw new",
+          "params": [
+            "e"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 455
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.service.XposedService.ServiceException",
+      "simpleName": "ServiceException",
+      "type": "class",
+      "packageName": "io.github.libxposed.service",
+      "filePath": "service/service/src/main/java/io/github/libxposed/service/XposedService.java",
+      "sinceApi": 101,
+      "summary": "class ServiceException",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/service/ServiceException.html",
+      "constants": [],
+      "methods": []
+    },
+    {
+      "name": "io.github.libxposed.service.XposedService.OnScopeEventListener",
+      "simpleName": "OnScopeEventListener",
+      "type": "interface",
+      "packageName": "io.github.libxposed.service",
+      "filePath": "service/service/src/main/java/io/github/libxposed/service/XposedService.java",
+      "sinceApi": 101,
+      "summary": "Callback interface for module scope request.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/service/OnScopeEventListener.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "onScopeRequestApproved",
+          "signature": "void onScopeRequestApproved(@NonNull List<String> approved)",
+          "returnType": "void",
+          "params": [
+            "@NonNull List<String> approved"
+          ],
+          "sinceApi": 101,
+          "doc": "Callback when the request is approved. @param approved Approved packages for the request",
+          "line": 76
+        },
+        {
+          "name": "onScopeRequestFailed",
+          "signature": "void onScopeRequestFailed(@NonNull String message)",
+          "returnType": "void",
+          "params": [
+            "@NonNull String message"
+          ],
+          "sinceApi": 101,
+          "doc": "Callback when the request is failed. @param message Error message",
+          "line": 84
+        },
+        {
+          "name": "asInterface",
+          "signature": "IXposedScopeCallback asInterface()",
+          "returnType": "IXposedScopeCallback",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 87
+        },
+        {
+          "name": "onScopeRequestApproved",
+          "signature": "void onScopeRequestApproved(List<String> approved)",
+          "returnType": "void",
+          "params": [
+            "List<String> approved"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 90
+        },
+        {
+          "name": "onScopeRequestFailed",
+          "signature": "void onScopeRequestFailed(String message)",
+          "returnType": "void",
+          "params": [
+            "String message"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 96
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.service.XposedService.HotReloadCallback",
+      "simpleName": "HotReloadCallback",
+      "type": "interface",
+      "packageName": "io.github.libxposed.service",
+      "filePath": "service/service/src/main/java/io/github/libxposed/service/XposedService.java",
+      "sinceApi": 101,
+      "summary": "Callback interface for hot reload requests.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/service/HotReloadCallback.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "onHotReloadResult",
+          "signature": "void onHotReloadResult(@NonNull HookedTarget target, @NonNull HotReloadResult result)",
+          "returnType": "void",
+          "params": [
+            "@NonNull HookedTarget target",
+            "@NonNull HotReloadResult result"
+          ],
+          "sinceApi": 101,
+          "doc": "Called when hot reload completes or fails. <p> This callback may run on a Binder thread. Dispatch to the main thread before touching UI. </p> @param target The target process passed to {@link #hotReloadModule(HookedTarget, Bundle, HotReloadCallback)} @param result The hot reload result",
+          "line": 119
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.service.XposedServiceHelper",
+      "simpleName": "XposedServiceHelper",
+      "type": "class",
+      "packageName": "io.github.libxposed.service",
+      "filePath": "service/service/src/main/java/io/github/libxposed/service/XposedServiceHelper.java",
+      "sinceApi": 101,
+      "summary": "class XposedServiceHelper",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/service/XposedServiceHelper.html",
+      "constants": [
+        {
+          "name": "TAG",
+          "type": "String",
+          "value": "\"XposedServiceHelper\"",
+          "doc": ""
+        }
+      ],
+      "methods": [
+        {
+          "name": "onBinderReceived",
+          "signature": "void onBinderReceived(IBinder binder)",
+          "returnType": "void",
+          "params": [
+            "IBinder binder"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 36
+        },
+        {
+          "name": "XposedService",
+          "signature": "new XposedService(IXposedService.Stub.asInterface(binder)",
+          "returnType": "new",
+          "params": [
+            "IXposedService.Stub.asInterface(binder"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 40
+        },
+        {
+          "name": "registerListener",
+          "signature": "void registerListener(OnServiceListener listener)",
+          "returnType": "void",
+          "params": [
+            "OnServiceListener listener"
+          ],
+          "sinceApi": 101,
+          "doc": "Register a ServiceListener to receive service binders from Xposed frameworks.<br/> This method should only be called once. @param listener Listener to register",
+          "line": 59
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.service.XposedServiceHelper.OnServiceListener",
+      "simpleName": "OnServiceListener",
+      "type": "interface",
+      "packageName": "io.github.libxposed.service",
+      "filePath": "service/service/src/main/java/io/github/libxposed/service/XposedServiceHelper.java",
+      "sinceApi": 101,
+      "summary": "Callback interface for Xposed service.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/service/OnServiceListener.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "onServiceBind",
+          "signature": "void onServiceBind(@NonNull XposedService service)",
+          "returnType": "void",
+          "params": [
+            "@NonNull XposedService service"
+          ],
+          "sinceApi": 101,
+          "doc": "Callback when the service is connected.<br/> This method could be called multiple times if multiple Xposed frameworks exist. @param service Service instance",
+          "line": 24
+        },
+        {
+          "name": "onServiceDied",
+          "signature": "void onServiceDied(@NonNull XposedService service)",
+          "returnType": "void",
+          "params": [
+            "@NonNull XposedService service"
+          ],
+          "sinceApi": 101,
+          "doc": "Callback when the service is dead.",
+          "line": 29
+        }
+      ]
     }
   ],
   "aidl": [

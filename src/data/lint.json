@@ -5,12 +5,22 @@
   "annotations": [
     {
       "name": "io.github.libxposed.annotation.SinceApi",
-      "target": ["TYPE", "METHOD", "CONSTRUCTOR", "FIELD"],
+      "target": [
+        "TYPE",
+        "METHOD",
+        "CONSTRUCTOR",
+        "FIELD"
+      ],
       "doc": "Annotates an API element with the minimum LibXposed API version required (e.g. 101, 102). Modules targeting lower API versions trigger a lint error when referencing it."
     },
     {
       "name": "io.github.libxposed.annotation.InternalApi",
-      "target": ["TYPE", "METHOD", "CONSTRUCTOR", "FIELD"],
+      "target": [
+        "TYPE",
+        "METHOD",
+        "CONSTRUCTOR",
+        "FIELD"
+      ],
       "doc": "Marks framework internal classes or methods. Calling these from module code triggers lint warnings/errors and breaks module portability."
     }
   ],
@@ -33,6 +43,1634 @@
         "Hook IDs and atomic replacement (HookBuilder.setId, HookHandle.replaceHook)",
         "Modules can stop receiving subsequent lifecycle callbacks",
         "Enforces strict block against calling legacy de.robv.android.xposed APIs"
+      ]
+    }
+  ],
+  "classes": [
+    {
+      "name": "io.github.libxposed.annotation.InternalApi",
+      "simpleName": "InternalApi",
+      "type": "@interface",
+      "packageName": "io.github.libxposed.annotation",
+      "filePath": "lint/annotation/src/main/java/io/github/libxposed/annotation/InternalApi.java",
+      "sinceApi": 101,
+      "summary": "Denotes an API element reserved for Xposed framework implementations. Xposed modules must not call APIs annotated with this annotation.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/annotation/InternalApi.html",
+      "constants": [],
+      "methods": []
+    },
+    {
+      "name": "io.github.libxposed.annotation.SinceApi",
+      "simpleName": "SinceApi",
+      "type": "@interface",
+      "packageName": "io.github.libxposed.annotation",
+      "filePath": "lint/annotation/src/main/java/io/github/libxposed/annotation/SinceApi.java",
+      "sinceApi": 101,
+      "summary": "Denotes the Xposed API version where the annotated API element was introduced.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/annotation/SinceApi.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "value",
+          "signature": "int value()",
+          "returnType": "int",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "The first Xposed API version that includes the annotated element. @return The first Xposed API version that includes the annotated element.",
+          "line": 31
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.lint.InternalApiDetector",
+      "simpleName": "InternalApiDetector",
+      "type": "class",
+      "packageName": "io.github.libxposed.lint",
+      "filePath": "lint/lint/src/main/java/io/github/libxposed/lint/InternalApiDetector.java",
+      "sinceApi": 101,
+      "summary": "Reports libxposed APIs that are reserved for Xposed framework implementations.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/lint/InternalApiDetector.html",
+      "constants": [
+        {
+          "name": "INTERNAL_API",
+          "type": "String",
+          "value": "\"io.github.libxposed.annotation.InternalApi\"",
+          "doc": ""
+        }
+      ],
+      "methods": [
+        {
+          "name": "InternalApiDetector",
+          "signature": "public InternalApiDetector()",
+          "returnType": "public",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Creates the detector used by Android lint.",
+          "line": 38
+        },
+        {
+          "name": "Implementation",
+          "signature": "new Implementation(InternalApiDetector.class, Scope.JAVA_FILE_SCOPE)",
+          "returnType": "new",
+          "params": [
+            "InternalApiDetector.class",
+            "Scope.JAVA_FILE_SCOPE"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 49
+        },
+        {
+          "name": "getApplicableUastTypes",
+          "signature": "List<Class<? extends UElement>> getApplicableUastTypes()",
+          "returnType": "List<Class<? extends UElement>>",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 57
+        },
+        {
+          "name": "createUastHandler",
+          "signature": "UElementHandler createUastHandler(@NotNull JavaContext context)",
+          "returnType": "UElementHandler",
+          "params": [
+            "@NotNull JavaContext context"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 62
+        },
+        {
+          "name": "UElementHandler",
+          "signature": "return new UElementHandler()",
+          "returnType": "return new",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 63
+        },
+        {
+          "name": "visitCallExpression",
+          "signature": "void visitCallExpression(@NotNull UCallExpression node)",
+          "returnType": "void",
+          "params": [
+            "@NotNull UCallExpression node"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 65
+        },
+        {
+          "name": "visitSimpleNameReferenceExpression",
+          "signature": "void visitSimpleNameReferenceExpression(@NotNull USimpleNameReferenceExpression node)",
+          "returnType": "void",
+          "params": [
+            "@NotNull USimpleNameReferenceExpression node"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 70
+        },
+        {
+          "name": "isInsideCallExpression",
+          "signature": "boolean isInsideCallExpression(UElement node)",
+          "returnType": "boolean",
+          "params": [
+            "UElement node"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 85
+        },
+        {
+          "name": "checkUsage",
+          "signature": "void checkUsage(JavaContext context, UElement node, PsiModifierListOwner owner)",
+          "returnType": "void",
+          "params": [
+            "JavaContext context",
+            "UElement node",
+            "PsiModifierListOwner owner"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 96
+        },
+        {
+          "name": "isXposedModuleProject",
+          "signature": "boolean isXposedModuleProject(JavaContext context)",
+          "returnType": "boolean",
+          "params": [
+            "JavaContext context"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 108
+        },
+        {
+          "name": "hasModuleProp",
+          "signature": "boolean hasModuleProp(Path projectDir)",
+          "returnType": "boolean",
+          "params": [
+            "Path projectDir"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 113
+        },
+        {
+          "name": "findInternalApiOwner",
+          "signature": "PsiModifierListOwner findInternalApiOwner(PsiModifierListOwner owner)",
+          "returnType": "PsiModifierListOwner",
+          "params": [
+            "PsiModifierListOwner owner"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 129
+        },
+        {
+          "name": "findInternalApiOwner",
+          "signature": "return findInternalApiOwner(psiClass.getContainingClass()",
+          "returnType": "return",
+          "params": [
+            "psiClass.getContainingClass("
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 138
+        },
+        {
+          "name": "findInternalApiOwner",
+          "signature": "return findInternalApiOwner(method.getContainingClass()",
+          "returnType": "return",
+          "params": [
+            "method.getContainingClass("
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 141
+        },
+        {
+          "name": "findInternalApiOwner",
+          "signature": "return findInternalApiOwner(field.getContainingClass()",
+          "returnType": "return",
+          "params": [
+            "field.getContainingClass("
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 144
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.lint.LibXposedIssueRegistry",
+      "simpleName": "LibXposedIssueRegistry",
+      "type": "class",
+      "packageName": "io.github.libxposed.lint",
+      "filePath": "lint/lint/src/main/java/io/github/libxposed/lint/LibXposedIssueRegistry.java",
+      "sinceApi": 101,
+      "summary": "Registers lint checks shipped with libxposed.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/lint/LibXposedIssueRegistry.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "LibXposedIssueRegistry",
+          "signature": "public LibXposedIssueRegistry()",
+          "returnType": "public",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Creates the issue registry used by Android lint.",
+          "line": 25
+        },
+        {
+          "name": "getIssues",
+          "signature": "List<Issue> getIssues()",
+          "returnType": "List<Issue>",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 30
+        },
+        {
+          "name": "getVendor",
+          "signature": "Vendor getVendor()",
+          "returnType": "Vendor",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 35
+        },
+        {
+          "name": "getApi",
+          "signature": "int getApi()",
+          "returnType": "int",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 40
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.lint.SinceApiDetector",
+      "simpleName": "SinceApiDetector",
+      "type": "class",
+      "packageName": "io.github.libxposed.lint",
+      "filePath": "lint/lint/src/main/java/io/github/libxposed/lint/SinceApiDetector.java",
+      "sinceApi": 101,
+      "summary": "Reports libxposed API usages that require a higher Xposed API than the module declares.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/lint/SinceApiDetector.html",
+      "constants": [
+        {
+          "name": "SINCE_API",
+          "type": "String",
+          "value": "\"io.github.libxposed.annotation.SinceApi\"",
+          "doc": ""
+        },
+        {
+          "name": "UNKNOWN_API",
+          "type": "int",
+          "value": "-1",
+          "doc": ""
+        }
+      ],
+      "methods": [
+        {
+          "name": "SinceApiDetector",
+          "signature": "public SinceApiDetector()",
+          "returnType": "public",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Creates the detector used by Android lint.",
+          "line": 58
+        },
+        {
+          "name": "Implementation",
+          "signature": "new Implementation(SinceApiDetector.class, Scope.JAVA_FILE_SCOPE)",
+          "returnType": "new",
+          "params": [
+            "SinceApiDetector.class",
+            "Scope.JAVA_FILE_SCOPE"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 70
+        },
+        {
+          "name": "getApplicableUastTypes",
+          "signature": "List<Class<? extends UElement>> getApplicableUastTypes()",
+          "returnType": "List<Class<? extends UElement>>",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 91
+        },
+        {
+          "name": "createUastHandler",
+          "signature": "UElementHandler createUastHandler(@NotNull JavaContext context)",
+          "returnType": "UElementHandler",
+          "params": [
+            "@NotNull JavaContext context"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 96
+        },
+        {
+          "name": "UElementHandler",
+          "signature": "return new UElementHandler()",
+          "returnType": "return new",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 97
+        },
+        {
+          "name": "visitCallExpression",
+          "signature": "void visitCallExpression(@NotNull UCallExpression node)",
+          "returnType": "void",
+          "params": [
+            "@NotNull UCallExpression node"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 99
+        },
+        {
+          "name": "visitSimpleNameReferenceExpression",
+          "signature": "void visitSimpleNameReferenceExpression(@NotNull USimpleNameReferenceExpression node)",
+          "returnType": "void",
+          "params": [
+            "@NotNull USimpleNameReferenceExpression node"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 104
+        },
+        {
+          "name": "checkUsage",
+          "signature": "void checkUsage(JavaContext context, UElement node, PsiModifierListOwner owner)",
+          "returnType": "void",
+          "params": [
+            "JavaContext context",
+            "UElement node",
+            "PsiModifierListOwner owner"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 116
+        },
+        {
+          "name": "getMinApi",
+          "signature": "int getMinApi(JavaContext context)",
+          "returnType": "int",
+          "params": [
+            "JavaContext context"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 139
+        },
+        {
+          "name": "isInsideSinceApiOverride",
+          "signature": "boolean isInsideSinceApiOverride(JavaContext context, UElement node, int requiredApi)",
+          "returnType": "boolean",
+          "params": [
+            "JavaContext context",
+            "UElement node",
+            "int requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 144
+        },
+        {
+          "name": "getSuperMethod",
+          "signature": "PsiMethod getSuperMethod(JavaContext context, PsiMethod method)",
+          "returnType": "PsiMethod",
+          "params": [
+            "JavaContext context",
+            "PsiMethod method"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 159
+        },
+        {
+          "name": "readMinApi",
+          "signature": "int readMinApi(Path projectDir)",
+          "returnType": "int",
+          "params": [
+            "Path projectDir"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 168
+        },
+        {
+          "name": "readMinApiFromModuleProp",
+          "signature": "int readMinApiFromModuleProp(Path moduleProp)",
+          "returnType": "int",
+          "params": [
+            "Path moduleProp"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 193
+        },
+        {
+          "name": "Properties",
+          "signature": "new Properties()",
+          "returnType": "new",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 194
+        },
+        {
+          "name": "getRequiredApi",
+          "signature": "Integer getRequiredApi(PsiModifierListOwner owner)",
+          "returnType": "Integer",
+          "params": [
+            "PsiModifierListOwner owner"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 211
+        },
+        {
+          "name": "getRequiredApi",
+          "signature": "return getRequiredApi(psiClass.getContainingClass()",
+          "returnType": "return",
+          "params": [
+            "psiClass.getContainingClass("
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 221
+        },
+        {
+          "name": "getRequiredApi",
+          "signature": "return getRequiredApi(method.getContainingClass()",
+          "returnType": "return",
+          "params": [
+            "method.getContainingClass("
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 224
+        },
+        {
+          "name": "getRequiredApi",
+          "signature": "return getRequiredApi(field.getContainingClass()",
+          "returnType": "return",
+          "params": [
+            "field.getContainingClass("
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 227
+        },
+        {
+          "name": "getDirectSinceApi",
+          "signature": "Integer getDirectSinceApi(PsiModifierListOwner owner)",
+          "returnType": "Integer",
+          "params": [
+            "PsiModifierListOwner owner"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 232
+        },
+        {
+          "name": "getAnnotationIntValue",
+          "signature": "return getAnnotationIntValue(annotation)",
+          "returnType": "return",
+          "params": [
+            "annotation"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 237
+        },
+        {
+          "name": "getAnnotationIntValue",
+          "signature": "Integer getAnnotationIntValue(PsiAnnotation annotation)",
+          "returnType": "Integer",
+          "params": [
+            "PsiAnnotation annotation"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 240
+        },
+        {
+          "name": "isGuarded",
+          "signature": "boolean isGuarded(UElement node, int requiredApi)",
+          "returnType": "boolean",
+          "params": [
+            "UElement node",
+            "int requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 269
+        },
+        {
+          "name": "isGuardedByPriorExit",
+          "signature": "boolean isGuardedByPriorExit(UExpression expression, int requiredApi)",
+          "returnType": "boolean",
+          "params": [
+            "UExpression expression",
+            "int requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 290
+        },
+        {
+          "name": "hasPriorExitGuard",
+          "signature": "return hasPriorExitGuard(blockExpression.getExpressions()",
+          "returnType": "return",
+          "params": [
+            "blockExpression.getExpressions("
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 293
+        },
+        {
+          "name": "hasPriorExitGuard",
+          "signature": "return hasPriorExitGuard(expressionList.getExpressions()",
+          "returnType": "return",
+          "params": [
+            "expressionList.getExpressions("
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 296
+        },
+        {
+          "name": "hasPriorExitGuard",
+          "signature": "boolean hasPriorExitGuard(List<UExpression> expressions, UExpression expression, int requiredApi)",
+          "returnType": "boolean",
+          "params": [
+            "List<UExpression> expressions",
+            "UExpression expression",
+            "int requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 301
+        },
+        {
+          "name": "indexOfExpression",
+          "signature": "int indexOfExpression(List<UExpression> expressions, UExpression expression)",
+          "returnType": "int",
+          "params": [
+            "List<UExpression> expressions",
+            "UExpression expression"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 315
+        },
+        {
+          "name": "ifExpressionExitsTowardSafeApi",
+          "signature": "boolean ifExpressionExitsTowardSafeApi(UIfExpression ifExpression, int requiredApi)",
+          "returnType": "boolean",
+          "params": [
+            "UIfExpression ifExpression",
+            "int requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 324
+        },
+        {
+          "name": "branchAlwaysExits",
+          "signature": "boolean branchAlwaysExits(UElement element)",
+          "returnType": "boolean",
+          "params": [
+            "UElement element"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 332
+        },
+        {
+          "name": "expressionsAlwaysExit",
+          "signature": "return expressionsAlwaysExit(blockExpression.getExpressions()",
+          "returnType": "return",
+          "params": [
+            "blockExpression.getExpressions("
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 337
+        },
+        {
+          "name": "expressionsAlwaysExit",
+          "signature": "return expressionsAlwaysExit(expressionList.getExpressions()",
+          "returnType": "return",
+          "params": [
+            "expressionList.getExpressions("
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 340
+        },
+        {
+          "name": "branchAlwaysExits",
+          "signature": "return branchAlwaysExits(ifExpression.getThenExpression()",
+          "returnType": "return",
+          "params": [
+            "ifExpression.getThenExpression("
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 343
+        },
+        {
+          "name": "expressionsAlwaysExit",
+          "signature": "boolean expressionsAlwaysExit(List<UExpression> expressions)",
+          "returnType": "boolean",
+          "params": [
+            "List<UExpression> expressions"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 349
+        },
+        {
+          "name": "isWithin",
+          "signature": "boolean isWithin(UElement node, UElement ancestor)",
+          "returnType": "boolean",
+          "params": [
+            "UElement node",
+            "UElement ancestor"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 358
+        },
+        {
+          "name": "conditionImpliesAtLeast",
+          "signature": "boolean conditionImpliesAtLeast(UExpression condition, int requiredApi)",
+          "returnType": "boolean",
+          "params": [
+            "UExpression condition",
+            "int requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 372
+        },
+        {
+          "name": "sourceConditionImpliesAtLeast",
+          "signature": "return sourceConditionImpliesAtLeast(condition, requiredApi)",
+          "returnType": "return",
+          "params": [
+            "condition",
+            "requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 374
+        },
+        {
+          "name": "conditionImpliesAtLeast",
+          "signature": "return conditionImpliesAtLeast(binary.getLeftOperand()",
+          "returnType": "return",
+          "params": [
+            "binary.getLeftOperand("
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 379
+        },
+        {
+          "name": "conditionImpliesAtLeast",
+          "signature": "return conditionImpliesAtLeast(binary.getLeftOperand()",
+          "returnType": "return",
+          "params": [
+            "binary.getLeftOperand("
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 383
+        },
+        {
+          "name": "comparisonImpliesAtLeast",
+          "signature": "return comparisonImpliesAtLeast(operator, rightConstant, requiredApi)",
+          "returnType": "return",
+          "params": [
+            "operator",
+            "rightConstant",
+            "requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 393
+        },
+        {
+          "name": "reversedComparisonImpliesAtLeast",
+          "signature": "return reversedComparisonImpliesAtLeast(operator, leftConstant, requiredApi)",
+          "returnType": "return",
+          "params": [
+            "operator",
+            "leftConstant",
+            "requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 396
+        },
+        {
+          "name": "sourceConditionImpliesAtLeast",
+          "signature": "return sourceConditionImpliesAtLeast(condition, requiredApi)",
+          "returnType": "return",
+          "params": [
+            "condition",
+            "requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 398
+        },
+        {
+          "name": "conditionFalseImpliesAtLeast",
+          "signature": "boolean conditionFalseImpliesAtLeast(UExpression condition, int requiredApi)",
+          "returnType": "boolean",
+          "params": [
+            "UExpression condition",
+            "int requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 401
+        },
+        {
+          "name": "sourceConditionFalseImpliesAtLeast",
+          "signature": "return sourceConditionFalseImpliesAtLeast(condition, requiredApi)",
+          "returnType": "return",
+          "params": [
+            "condition",
+            "requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 403
+        },
+        {
+          "name": "conditionFalseImpliesAtLeast",
+          "signature": "return conditionFalseImpliesAtLeast(binary.getLeftOperand()",
+          "returnType": "return",
+          "params": [
+            "binary.getLeftOperand("
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 408
+        },
+        {
+          "name": "conditionFalseImpliesAtLeast",
+          "signature": "return conditionFalseImpliesAtLeast(binary.getLeftOperand()",
+          "returnType": "return",
+          "params": [
+            "binary.getLeftOperand("
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 412
+        },
+        {
+          "name": "comparisonFalseImpliesAtLeast",
+          "signature": "return comparisonFalseImpliesAtLeast(operator, rightConstant, requiredApi)",
+          "returnType": "return",
+          "params": [
+            "operator",
+            "rightConstant",
+            "requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 422
+        },
+        {
+          "name": "reversedComparisonFalseImpliesAtLeast",
+          "signature": "return reversedComparisonFalseImpliesAtLeast(operator, leftConstant, requiredApi)",
+          "returnType": "return",
+          "params": [
+            "operator",
+            "leftConstant",
+            "requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 425
+        },
+        {
+          "name": "sourceConditionFalseImpliesAtLeast",
+          "signature": "return sourceConditionFalseImpliesAtLeast(condition, requiredApi)",
+          "returnType": "return",
+          "params": [
+            "condition",
+            "requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 427
+        },
+        {
+          "name": "comparisonImpliesAtLeast",
+          "signature": "boolean comparisonImpliesAtLeast(UastBinaryOperator operator, int value, int requiredApi)",
+          "returnType": "boolean",
+          "params": [
+            "UastBinaryOperator operator",
+            "int value",
+            "int requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 430
+        },
+        {
+          "name": "reversedComparisonImpliesAtLeast",
+          "signature": "boolean reversedComparisonImpliesAtLeast(UastBinaryOperator operator, int value, int requiredApi)",
+          "returnType": "boolean",
+          "params": [
+            "UastBinaryOperator operator",
+            "int value",
+            "int requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 443
+        },
+        {
+          "name": "comparisonFalseImpliesAtLeast",
+          "signature": "boolean comparisonFalseImpliesAtLeast(UastBinaryOperator operator, int value, int requiredApi)",
+          "returnType": "boolean",
+          "params": [
+            "UastBinaryOperator operator",
+            "int value",
+            "int requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 456
+        },
+        {
+          "name": "reversedComparisonFalseImpliesAtLeast",
+          "signature": "boolean reversedComparisonFalseImpliesAtLeast(UastBinaryOperator operator, int value, int requiredApi)",
+          "returnType": "boolean",
+          "params": [
+            "UastBinaryOperator operator",
+            "int value",
+            "int requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 466
+        },
+        {
+          "name": "isApiVersionExpression",
+          "signature": "boolean isApiVersionExpression(UExpression expression)",
+          "returnType": "boolean",
+          "params": [
+            "UExpression expression"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 476
+        },
+        {
+          "name": "getIntConstant",
+          "signature": "Integer getIntConstant(UExpression expression)",
+          "returnType": "Integer",
+          "params": [
+            "UExpression expression"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 497
+        },
+        {
+          "name": "getApiConstantFromSource",
+          "signature": "return getApiConstantFromSource(expression.asSourceString()",
+          "returnType": "return",
+          "params": [
+            "expression.asSourceString("
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 517
+        },
+        {
+          "name": "sourceConditionImpliesAtLeast",
+          "signature": "boolean sourceConditionImpliesAtLeast(UExpression condition, int requiredApi)",
+          "returnType": "boolean",
+          "params": [
+            "UExpression condition",
+            "int requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 520
+        },
+        {
+          "name": "comparisonImpliesAtLeast",
+          "signature": "return comparisonImpliesAtLeast(matcher.group(1)",
+          "returnType": "return",
+          "params": [
+            "matcher.group(1"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 524
+        },
+        {
+          "name": "reversedComparisonImpliesAtLeast",
+          "signature": "return reversedComparisonImpliesAtLeast(matcher.group(3)",
+          "returnType": "return",
+          "params": [
+            "matcher.group(3"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 528
+        },
+        {
+          "name": "sourceConditionFalseImpliesAtLeast",
+          "signature": "boolean sourceConditionFalseImpliesAtLeast(UExpression condition, int requiredApi)",
+          "returnType": "boolean",
+          "params": [
+            "UExpression condition",
+            "int requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 533
+        },
+        {
+          "name": "comparisonFalseImpliesAtLeast",
+          "signature": "return comparisonFalseImpliesAtLeast(matcher.group(1)",
+          "returnType": "return",
+          "params": [
+            "matcher.group(1"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 537
+        },
+        {
+          "name": "reversedComparisonFalseImpliesAtLeast",
+          "signature": "return reversedComparisonFalseImpliesAtLeast(matcher.group(3)",
+          "returnType": "return",
+          "params": [
+            "matcher.group(3"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 541
+        },
+        {
+          "name": "comparisonImpliesAtLeast",
+          "signature": "boolean comparisonImpliesAtLeast(String operator, int value, int requiredApi)",
+          "returnType": "boolean",
+          "params": [
+            "String operator",
+            "int value",
+            "int requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 546
+        },
+        {
+          "name": "reversedComparisonImpliesAtLeast",
+          "signature": "boolean reversedComparisonImpliesAtLeast(String operator, int value, int requiredApi)",
+          "returnType": "boolean",
+          "params": [
+            "String operator",
+            "int value",
+            "int requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 554
+        },
+        {
+          "name": "comparisonFalseImpliesAtLeast",
+          "signature": "boolean comparisonFalseImpliesAtLeast(String operator, int value, int requiredApi)",
+          "returnType": "boolean",
+          "params": [
+            "String operator",
+            "int value",
+            "int requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 562
+        },
+        {
+          "name": "reversedComparisonFalseImpliesAtLeast",
+          "signature": "boolean reversedComparisonFalseImpliesAtLeast(String operator, int value, int requiredApi)",
+          "returnType": "boolean",
+          "params": [
+            "String operator",
+            "int value",
+            "int requiredApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 570
+        },
+        {
+          "name": "getApiConstantFromSource",
+          "signature": "Integer getApiConstantFromSource(String source)",
+          "returnType": "Integer",
+          "params": [
+            "String source"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 578
+        },
+        {
+          "name": "getApiValue",
+          "signature": "int getApiValue(String value, String apiGroup)",
+          "returnType": "int",
+          "params": [
+            "String value",
+            "String apiGroup"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 586
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.lint.InternalApiDetectorTest",
+      "simpleName": "InternalApiDetectorTest",
+      "type": "class",
+      "packageName": "io.github.libxposed.lint",
+      "filePath": "lint/lint/src/test/java/io/github/libxposed/lint/InternalApiDetectorTest.java",
+      "sinceApi": 101,
+      "summary": "class InternalApiDetectorTest",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/lint/InternalApiDetectorTest.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "getDetector",
+          "signature": "Detector getDetector()",
+          "returnType": "Detector",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 12
+        },
+        {
+          "name": "InternalApiDetector",
+          "signature": "return new InternalApiDetector()",
+          "returnType": "return new",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 13
+        },
+        {
+          "name": "getIssues",
+          "signature": "List<Issue> getIssues()",
+          "returnType": "List<Issue>",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 17
+        },
+        {
+          "name": "testReportsInternalMethodCall",
+          "signature": "void testReportsInternalMethodCall()",
+          "returnType": "void",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 21
+        },
+        {
+          "name": "testReportsInternalClassConstructorCall",
+          "signature": "void testReportsInternalClassConstructorCall()",
+          "returnType": "void",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 38
+        },
+        {
+          "name": "testReportsInternalFieldReferenceInsideCall",
+          "signature": "void testReportsInternalFieldReferenceInsideCall()",
+          "returnType": "void",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 55
+        },
+        {
+          "name": "testIgnoresInternalApiOutsideXposedModuleProject",
+          "signature": "void testIgnoresInternalApiOutsideXposedModuleProject()",
+          "returnType": "void",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 75
+        },
+        {
+          "name": "testIgnoresRegularApiInXposedModuleProject",
+          "signature": "void testIgnoresRegularApiInXposedModuleProject()",
+          "returnType": "void",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 91
+        },
+        {
+          "name": "moduleProp",
+          "signature": "TestFile moduleProp()",
+          "returnType": "TestFile",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 108
+        },
+        {
+          "name": "source",
+          "signature": "return source(\"src/main/resources/META-INF/xposed/module.prop\", \"minApiVersion=101\\n\")",
+          "returnType": "return",
+          "params": [
+            "\"src/main/resources/META-INF/xposed/module.prop\"",
+            "\"minApiVersion=101\\n\""
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 109
+        },
+        {
+          "name": "internalApiAnnotation",
+          "signature": "TestFile internalApiAnnotation()",
+          "returnType": "TestFile",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 112
+        },
+        {
+          "name": "internalApiStub",
+          "signature": "TestFile internalApiStub()",
+          "returnType": "TestFile",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 121
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.lint.InternalApiDetectorTest.TestModule",
+      "simpleName": "TestModule",
+      "type": "class",
+      "packageName": "io.github.libxposed.lint",
+      "filePath": "lint/lint/src/test/java/io/github/libxposed/lint/InternalApiDetectorTest.java",
+      "sinceApi": 101,
+      "summary": "class TestModule",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/lint/TestModule.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "test",
+          "signature": "void test(FrameworkBridge bridge)",
+          "returnType": "void",
+          "params": [
+            "FrameworkBridge bridge"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 30
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.lint.InternalApiDetectorTest.TestModule",
+      "simpleName": "TestModule",
+      "type": "class",
+      "packageName": "io.github.libxposed.lint",
+      "filePath": "lint/lint/src/test/java/io/github/libxposed/lint/InternalApiDetectorTest.java",
+      "sinceApi": 101,
+      "summary": "class TestModule",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/lint/TestModule.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "test",
+          "signature": "void test()",
+          "returnType": "void",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 47
+        },
+        {
+          "name": "FrameworkOnlyApi",
+          "signature": "new FrameworkOnlyApi()",
+          "returnType": "new",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 48
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.lint.InternalApiDetectorTest.TestModule",
+      "simpleName": "TestModule",
+      "type": "class",
+      "packageName": "io.github.libxposed.lint",
+      "filePath": "lint/lint/src/test/java/io/github/libxposed/lint/InternalApiDetectorTest.java",
+      "sinceApi": 101,
+      "summary": "class TestModule",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/lint/TestModule.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "test",
+          "signature": "void test()",
+          "returnType": "void",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 64
+        },
+        {
+          "name": "consume",
+          "signature": "void consume(Object value)",
+          "returnType": "void",
+          "params": [
+            "Object value"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 68
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.lint.InternalApiDetectorTest.TestModule",
+      "simpleName": "TestModule",
+      "type": "class",
+      "packageName": "io.github.libxposed.lint",
+      "filePath": "lint/lint/src/test/java/io/github/libxposed/lint/InternalApiDetectorTest.java",
+      "sinceApi": 101,
+      "summary": "class TestModule",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/lint/TestModule.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "test",
+          "signature": "void test(FrameworkBridge bridge)",
+          "returnType": "void",
+          "params": [
+            "FrameworkBridge bridge"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 83
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.lint.InternalApiDetectorTest.TestModule",
+      "simpleName": "TestModule",
+      "type": "class",
+      "packageName": "io.github.libxposed.lint",
+      "filePath": "lint/lint/src/test/java/io/github/libxposed/lint/InternalApiDetectorTest.java",
+      "sinceApi": 101,
+      "summary": "class TestModule",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/lint/TestModule.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "test",
+          "signature": "void test(PublicApi api)",
+          "returnType": "void",
+          "params": [
+            "PublicApi api"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 100
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.lint.InternalApiDetectorTest.InternalApi",
+      "simpleName": "InternalApi",
+      "type": "@interface",
+      "packageName": "io.github.libxposed.lint",
+      "filePath": "lint/lint/src/test/java/io/github/libxposed/lint/InternalApiDetectorTest.java",
+      "sinceApi": 101,
+      "summary": "@interface InternalApi",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/lint/InternalApi.html",
+      "constants": [],
+      "methods": []
+    },
+    {
+      "name": "io.github.libxposed.lint.InternalApiDetectorTest.FrameworkBridge",
+      "simpleName": "FrameworkBridge",
+      "type": "class",
+      "packageName": "io.github.libxposed.lint",
+      "filePath": "lint/lint/src/test/java/io/github/libxposed/lint/InternalApiDetectorTest.java",
+      "sinceApi": 101,
+      "summary": "class FrameworkBridge",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/lint/FrameworkBridge.html",
+      "constants": [
+        {
+          "name": "INTERNAL_FIELD",
+          "type": "Object",
+          "value": "new Object()",
+          "doc": ""
+        }
+      ],
+      "methods": [
+        {
+          "name": "attachFramework",
+          "signature": "void attachFramework(Object base, Runnable detachImpl)",
+          "returnType": "void",
+          "params": [
+            "Object base",
+            "Runnable detachImpl"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 132
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.lint.InternalApiDetectorTest.FrameworkOnlyApi",
+      "simpleName": "FrameworkOnlyApi",
+      "type": "class",
+      "packageName": "io.github.libxposed.lint",
+      "filePath": "lint/lint/src/test/java/io/github/libxposed/lint/InternalApiDetectorTest.java",
+      "sinceApi": 101,
+      "summary": "class FrameworkOnlyApi",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/lint/FrameworkOnlyApi.html",
+      "constants": [],
+      "methods": []
+    },
+    {
+      "name": "io.github.libxposed.lint.InternalApiDetectorTest.PublicApi",
+      "simpleName": "PublicApi",
+      "type": "class",
+      "packageName": "io.github.libxposed.lint",
+      "filePath": "lint/lint/src/test/java/io/github/libxposed/lint/InternalApiDetectorTest.java",
+      "sinceApi": 101,
+      "summary": "class PublicApi",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/lint/PublicApi.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "call",
+          "signature": "void call()",
+          "returnType": "void",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 141
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.lint.SinceApiDetectorTest",
+      "simpleName": "SinceApiDetectorTest",
+      "type": "class",
+      "packageName": "io.github.libxposed.lint",
+      "filePath": "lint/lint/src/test/java/io/github/libxposed/lint/SinceApiDetectorTest.java",
+      "sinceApi": 101,
+      "summary": "class SinceApiDetectorTest",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/lint/SinceApiDetectorTest.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "getDetector",
+          "signature": "Detector getDetector()",
+          "returnType": "Detector",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 13
+        },
+        {
+          "name": "SinceApiDetector",
+          "signature": "return new SinceApiDetector()",
+          "returnType": "return new",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 14
+        },
+        {
+          "name": "getIssues",
+          "signature": "List<Issue> getIssues()",
+          "returnType": "List<Issue>",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 18
+        },
+        {
+          "name": "testReportsUnguardedNewApiUsage",
+          "signature": "void testReportsUnguardedNewApiUsage()",
+          "returnType": "void",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 22
+        },
+        {
+          "name": "testAcceptsEarlyReturnApiVersionGuard",
+          "signature": "void testAcceptsEarlyReturnApiVersionGuard()",
+          "returnType": "void",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 39
+        },
+        {
+          "name": "testAcceptsKotlinEarlyReturnApiVersionGuard",
+          "signature": "void testAcceptsKotlinEarlyReturnApiVersionGuard()",
+          "returnType": "void",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 59
+        },
+        {
+          "name": "moduleProp",
+          "signature": "TestFile moduleProp()",
+          "returnType": "TestFile",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 79
+        },
+        {
+          "name": "source",
+          "signature": "return source(\"src/main/resources/META-INF/xposed/module.prop\", \"minApiVersion=101\\n\")",
+          "returnType": "return",
+          "params": [
+            "\"src/main/resources/META-INF/xposed/module.prop\"",
+            "\"minApiVersion=101\\n\""
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 80
+        },
+        {
+          "name": "sinceApiAnnotation",
+          "signature": "TestFile sinceApiAnnotation()",
+          "returnType": "TestFile",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 83
+        },
+        {
+          "name": "newApiStub",
+          "signature": "TestFile newApiStub()",
+          "returnType": "TestFile",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 93
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.lint.SinceApiDetectorTest.TestModule",
+      "simpleName": "TestModule",
+      "type": "class",
+      "packageName": "io.github.libxposed.lint",
+      "filePath": "lint/lint/src/test/java/io/github/libxposed/lint/SinceApiDetectorTest.java",
+      "sinceApi": 101,
+      "summary": "class TestModule",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/lint/TestModule.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "test",
+          "signature": "void test(NewApi api)",
+          "returnType": "void",
+          "params": [
+            "NewApi api"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 31
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.lint.SinceApiDetectorTest.TestModule",
+      "simpleName": "TestModule",
+      "type": "class",
+      "packageName": "io.github.libxposed.lint",
+      "filePath": "lint/lint/src/test/java/io/github/libxposed/lint/SinceApiDetectorTest.java",
+      "sinceApi": 101,
+      "summary": "class TestModule",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/lint/TestModule.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "test",
+          "signature": "void test(NewApi api)",
+          "returnType": "void",
+          "params": [
+            "NewApi api"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 50
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.lint.SinceApiDetectorTest.TestModule",
+      "simpleName": "TestModule",
+      "type": "class",
+      "packageName": "io.github.libxposed.lint",
+      "filePath": "lint/lint/src/test/java/io/github/libxposed/lint/SinceApiDetectorTest.java",
+      "sinceApi": 101,
+      "summary": "class TestModule",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/lint/TestModule.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "test",
+          "signature": "fun test(api: NewApi)",
+          "returnType": "fun",
+          "params": [
+            "api: NewApi"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 70
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.lint.SinceApiDetectorTest.SinceApi",
+      "simpleName": "SinceApi",
+      "type": "@interface",
+      "packageName": "io.github.libxposed.lint",
+      "filePath": "lint/lint/src/test/java/io/github/libxposed/lint/SinceApiDetectorTest.java",
+      "sinceApi": 101,
+      "summary": "@interface SinceApi",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/lint/SinceApi.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "value",
+          "signature": "int value()",
+          "returnType": "int",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 88
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.lint.SinceApiDetectorTest.NewApi",
+      "simpleName": "NewApi",
+      "type": "class",
+      "packageName": "io.github.libxposed.lint",
+      "filePath": "lint/lint/src/test/java/io/github/libxposed/lint/SinceApiDetectorTest.java",
+      "sinceApi": 101,
+      "summary": "class NewApi",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/lint/NewApi.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "newApi",
+          "signature": "void newApi()",
+          "returnType": "void",
+          "params": [],
+          "sinceApi": 102,
+          "doc": "",
+          "line": 101
+        }
       ]
     }
   ]

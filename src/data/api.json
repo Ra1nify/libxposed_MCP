@@ -5,70 +5,185 @@
   "javadocBaseUrl": "https://libxposed.github.io/api/",
   "classes": [
     {
-      "name": "io.github.libxposed.api.XposedInterface",
-      "type": "interface",
+      "name": "io.github.libxposed.api.error.HookFailedError",
+      "simpleName": "HookFailedError",
+      "type": "class",
+      "packageName": "io.github.libxposed.api.error",
+      "filePath": "api/api/src/main/java/io/github/libxposed/api/error/HookFailedError.java",
       "sinceApi": 101,
-      "summary": "Core interface providing operations for modules on application processes (hooking, invokers, remote preferences, logging, deoptimization).",
+      "summary": "Thrown to indicate that a hook failed due to framework internal error. <p> Design Note: This inherits from {@link Error} rather than {@link RuntimeException} because hook failures are considered fatal framework bugs. Module developers <b>should not</b> attempt to catch this error to provide fallbacks. Instead, please report the issue to the framework maintainers so it can be fixed at the root. </p>",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/error/HookFailedError.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "HookFailedError",
+          "signature": "public HookFailedError(String message)",
+          "returnType": "public",
+          "params": [
+            "String message"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 14
+        },
+        {
+          "name": "HookFailedError",
+          "signature": "public HookFailedError(String message, Throwable cause)",
+          "returnType": "public",
+          "params": [
+            "String message",
+            "Throwable cause"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 18
+        },
+        {
+          "name": "HookFailedError",
+          "signature": "public HookFailedError(Throwable cause)",
+          "returnType": "public",
+          "params": [
+            "Throwable cause"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.api.error.XposedFrameworkError",
+      "simpleName": "XposedFrameworkError",
+      "type": "class",
+      "packageName": "io.github.libxposed.api.error",
+      "filePath": "api/api/src/main/java/io/github/libxposed/api/error/XposedFrameworkError.java",
+      "sinceApi": 101,
+      "summary": "Thrown to indicate that the Xposed framework function is broken.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/error/XposedFrameworkError.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "XposedFrameworkError",
+          "signature": "public XposedFrameworkError(String message)",
+          "returnType": "public",
+          "params": [
+            "String message"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 8
+        },
+        {
+          "name": "XposedFrameworkError",
+          "signature": "public XposedFrameworkError(String message, Throwable cause)",
+          "returnType": "public",
+          "params": [
+            "String message",
+            "Throwable cause"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 12
+        },
+        {
+          "name": "XposedFrameworkError",
+          "signature": "public XposedFrameworkError(Throwable cause)",
+          "returnType": "public",
+          "params": [
+            "Throwable cause"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.api.package-info",
+      "simpleName": "package-info",
+      "type": "package-info",
+      "packageName": "io.github.libxposed.api",
+      "filePath": "api/api/src/main/java/io/github/libxposed/api/package-info.java",
+      "sinceApi": 101,
+      "summary": "Package-level documentation and module interface specification.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/package-summary.html",
+      "methods": [],
+      "constants": []
+    },
+    {
+      "name": "io.github.libxposed.api.XposedInterface",
+      "simpleName": "XposedInterface",
+      "type": "interface",
+      "packageName": "io.github.libxposed.api",
+      "filePath": "api/api/src/main/java/io/github/libxposed/api/XposedInterface.java",
+      "sinceApi": 101,
+      "summary": "Xposed interface for modules to operate on application processes.",
       "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/XposedInterface.html",
       "constants": [
-        { "name": "API_101", "type": "int", "value": "101", "doc": "Initial modern API level. Modules cannot inject into zygote; loaded only in target app process scope." },
-        { "name": "API_102", "type": "int", "value": "102", "doc": "API level 102. Introduces hot reloading, hook IDs and atomic replacement, and blocks legacy de.robv.android.xposed calls." },
-        { "name": "LIB_API", "type": "int", "value": "102", "doc": "Static version of the compile-time library API." },
-        { "name": "PROP_CAP_SYSTEM", "type": "long", "value": "1L", "doc": "Framework capability: can hook system_server and system processes." },
-        { "name": "PROP_CAP_REMOTE", "type": "long", "value": "1L << 1", "doc": "Framework capability: supports remote preferences and remote files." },
-        { "name": "PROP_RT_API_PROTECTION", "type": "long", "value": "1L << 2", "doc": "Framework runtime property: disallows accessing Xposed API via reflection or dynamically loaded code." },
-        { "name": "PRIORITY_DEFAULT", "type": "int", "value": "50", "doc": "Default hook priority." },
-        { "name": "PRIORITY_LOWEST", "type": "int", "value": "Integer.MIN_VALUE", "doc": "Executes at the end of the interceptor chain." },
-        { "name": "PRIORITY_HIGHEST", "type": "int", "value": "Integer.MAX_VALUE", "doc": "Executes at the beginning of the interceptor chain." }
+        {
+          "name": "API_101",
+          "type": "int",
+          "value": "101",
+          "doc": "API version 101. <p>Behavior changes: all modules</p> <ul> <li>Modules cannot be injected into zygote; they are only loaded within the process of the scope.</li> </ul> <p>Behavior changes: Modules targeting 101 or higher</p> <ul> <li>This is the first API version.</li> </ul>"
+        },
+        {
+          "name": "API_102",
+          "type": "int",
+          "value": "102",
+          "doc": "API version 102. <p>New features</p> <ul> <li>Hot reload allows modules to be updated without restarting the process.</li> <li>Module entries can stop receiving subsequent lifecycle callbacks.</li> <li>Hooks can be atomically replaced by api or same id.</li> </ul> <p>Behavior changes: Modules targeting 102 or higher</p> <ul> <li>Libxposed modules can not call legacy {@code de.robv.android.xposed} APIs.</li> </ul>"
+        },
+        {
+          "name": "LIB_API",
+          "type": "int",
+          "value": "API_102",
+          "doc": "The API version of this <b>library</b>. This is a static value for the framework. Modules should use {@link #getApiVersion()} to check the API version at runtime."
+        },
+        {
+          "name": "PROP_CAP_SYSTEM",
+          "type": "long",
+          "value": "1L",
+          "doc": "The framework has the capability to hook system_server and other system processes."
+        },
+        {
+          "name": "PROP_CAP_REMOTE",
+          "type": "long",
+          "value": "1L << 1",
+          "doc": "The framework provides remote preferences and remote files support."
+        },
+        {
+          "name": "PROP_RT_API_PROTECTION",
+          "type": "long",
+          "value": "1L << 2",
+          "doc": "The framework disallows accessing Xposed API via reflection or dynamically loaded code."
+        },
+        {
+          "name": "PRIORITY_DEFAULT",
+          "type": "int",
+          "value": "50",
+          "doc": "The default hook priority."
+        },
+        {
+          "name": "PRIORITY_LOWEST",
+          "type": "int",
+          "value": "Integer.MIN_VALUE",
+          "doc": "Execute at the end of the interception chain."
+        },
+        {
+          "name": "PRIORITY_HIGHEST",
+          "type": "int",
+          "value": "Integer.MAX_VALUE",
+          "doc": "Execute at the beginning of the interception chain."
+        }
       ],
       "methods": [
         {
-          "name": "hook",
-          "signature": "HookBuilder hook(@NonNull Executable origin)",
-          "returnType": "HookBuilder",
-          "params": ["origin: Executable (Method or Constructor to hook)"],
-          "sinceApi": 101,
-          "doc": "Initiates hook creation for a method or constructor. Returns a fluent HookBuilder."
-        },
-        {
-          "name": "hookClassInitializer",
-          "signature": "HookBuilder hookClassInitializer(@NonNull Class<?> origin)",
-          "returnType": "HookBuilder",
-          "params": ["origin: Class<?> whose static initializer (<clinit>) to hook"],
-          "sinceApi": 101,
-          "doc": "Hooks class static initializer (<clinit>). Treated as static void() with no args. If class is already initialized, hook will never trigger."
-        },
-        {
-          "name": "deoptimize",
-          "signature": "boolean deoptimize(@NonNull Executable executable)",
-          "returnType": "boolean",
-          "params": ["executable: Executable to deoptimize"],
-          "sinceApi": 101,
-          "doc": "Forces ART to deoptimize the caller to prevent inlining of small methods that prevent hooks from executing."
-        },
-        {
-          "name": "getInvoker",
-          "signature": "Invoker<?, Method> getInvoker(@NonNull Method method)",
-          "returnType": "Invoker<?, Method>",
-          "params": ["method: Method"],
-          "sinceApi": 101,
-          "doc": "Gets an invoker bypassing access checks. Can be configured to invoke original method or specific chain slice via setType()."
-        },
-        {
-          "name": "getInvoker",
-          "signature": "<T> CtorInvoker<T> getInvoker(@NonNull Constructor<T> constructor)",
-          "returnType": "CtorInvoker<T>",
-          "params": ["constructor: Constructor<T>"],
-          "sinceApi": 101,
-          "doc": "Gets a constructor invoker to create instances bypassing access checks or with special initialization."
-        },
-        {
           "name": "getApiVersion",
-          "signature": "default int getApiVersion()",
+          "signature": "int getApiVersion()",
           "returnType": "int",
           "params": [],
           "sinceApi": 101,
-          "doc": "Returns the runtime Xposed framework API level (e.g. 101 or 102)."
+          "doc": "Gets the runtime Xposed API version. Framework implementations <b>must not</b> override this method.",
+          "line": 445
         },
         {
           "name": "getFrameworkName",
@@ -76,7 +191,8 @@
           "returnType": "String",
           "params": [],
           "sinceApi": 101,
-          "doc": "Returns framework implementation name (e.g. LSPosed)."
+          "doc": "Gets the Xposed framework name of current implementation.",
+          "line": 453
         },
         {
           "name": "getFrameworkVersion",
@@ -84,7 +200,8 @@
           "returnType": "String",
           "params": [],
           "sinceApi": 101,
-          "doc": "Returns framework version string."
+          "doc": "Gets the Xposed framework version of current implementation.",
+          "line": 459
         },
         {
           "name": "getFrameworkVersionCode",
@@ -92,7 +209,8 @@
           "returnType": "long",
           "params": [],
           "sinceApi": 101,
-          "doc": "Returns framework version code."
+          "doc": "Gets the Xposed framework version code of current implementation.",
+          "line": 464
         },
         {
           "name": "getFrameworkProperties",
@@ -100,15 +218,90 @@
           "returnType": "long",
           "params": [],
           "sinceApi": 101,
-          "doc": "Returns bitmask of framework capabilities and runtime properties."
+          "doc": "Gets the Xposed framework properties. Properties with prefix {@code PROP_RT_} may change among launches.",
+          "line": 470
+        },
+        {
+          "name": "hook",
+          "signature": "HookBuilder hook(@NonNull Executable origin)",
+          "returnType": "HookBuilder",
+          "params": [
+            "@NonNull Executable origin"
+          ],
+          "sinceApi": 101,
+          "doc": "Hook a method / constructor. @param origin The executable to be hooked @return The builder for the hook",
+          "line": 479
+        },
+        {
+          "name": "hookClassInitializer",
+          "signature": "HookBuilder hookClassInitializer(@NonNull Class<?> origin)",
+          "returnType": "HookBuilder",
+          "params": [
+            "@NonNull Class<?> origin"
+          ],
+          "sinceApi": 101,
+          "doc": "Hook the static initializer ({@code <clinit>}) of a class. <p>The static initializer is treated as a regular {@code static void()} method with no parameters. Accordingly, in the {@link Chain} passed to the hooker:</p> <ul> <li>{@link Chain#getExecutable()} returns a synthetic {@link Method} representing the static initializer.</li> <li>{@link Chain#getThisObject()} always returns {@code null}.</li> <li>{@link Chain#getArgs()} returns an empty list.</li> <li>{@link Chain#proceed()} returns {@code null}.</li> </ul> <p>Note: If the class is already initialized, the hook will never be called.</p> @param origin The class whose static initializer is to be hooked @return The builder for the hook",
+          "line": 500
+        },
+        {
+          "name": "deoptimize",
+          "signature": "boolean deoptimize(@NonNull Executable executable)",
+          "returnType": "boolean",
+          "params": [
+            "@NonNull Executable executable"
+          ],
+          "sinceApi": 101,
+          "doc": "Deoptimizes a method / constructor in case hooked callee is not called because of inline. <p>By deoptimizing the method, the runtime will fall back to calling all callees without inlining. For example, when a short hooked method B is invoked by method A, the callback to B is not invoked after hooking, which may mean A has inlined B inside its method body. To force A to call the hooked B, you can deoptimize A and then your hook can take effect.</p> <p>Generally, you need to find all the callers of your hooked callee, and that can hardly be achieved (but you can still search all callers by using <a href=\"https://github.com/LuckyPray/DexKit\">DexKit</a>). Use this method if you are sure the deoptimized callers are all you need. Otherwise, it would be better to change the hook point or to deoptimize the whole app manually (by simply reinstalling the app without uninstall).</p> @param executable The method / constructor to deoptimize @return Indicate whether the deoptimizing succeed or not",
+          "line": 518
+        },
+        {
+          "name": "getInvoker",
+          "signature": "Invoker<?, Method> getInvoker(@NonNull Method method)",
+          "returnType": "Invoker<?, Method>",
+          "params": [
+            "@NonNull Method method"
+          ],
+          "sinceApi": 101,
+          "doc": "Get a method invoker for the given method. Invocations through invokers will bypass access checks. The default type of the invoker is {@link Invoker.Type.Chain#FULL}. @param method The method to get the invoker for @return The method invoker",
+          "line": 528
+        },
+        {
+          "name": "getInvoker",
+          "signature": "CtorInvoker<T> getInvoker(@NonNull Constructor<T> constructor)",
+          "returnType": "CtorInvoker<T>",
+          "params": [
+            "@NonNull Constructor<T> constructor"
+          ],
+          "sinceApi": 101,
+          "doc": "Get a constructor invoker for the given constructor. Invocations through invokers will bypass access checks. The default type of the invoker is {@link Invoker.Type.Chain#FULL}. @param constructor The constructor to get the invoker for @param <T>         The type of the constructor @return The constructor invoker",
+          "line": 539
         },
         {
           "name": "log",
-          "signature": "void log(int priority, @Nullable String tag, @NonNull String msg, @Nullable Throwable tr = null)",
+          "signature": "void log(int priority, @Nullable String tag, @NonNull String msg)",
           "returnType": "void",
-          "params": ["priority: int (android.util.Log)", "tag: String?", "msg: String", "tr: Throwable?"],
+          "params": [
+            "int priority",
+            "@Nullable String tag",
+            "@NonNull String msg"
+          ],
           "sinceApi": 101,
-          "doc": "Writes a message to the Xposed system log."
+          "doc": "Writes a message to the Xposed log. @param priority The log priority, see {@link android.util.Log} @param tag      The log tag @param msg      The log message",
+          "line": 548
+        },
+        {
+          "name": "log",
+          "signature": "void log(int priority, @Nullable String tag, @NonNull String msg, @Nullable Throwable tr)",
+          "returnType": "void",
+          "params": [
+            "int priority",
+            "@Nullable String tag",
+            "@NonNull String msg",
+            "@Nullable Throwable tr"
+          ],
+          "sinceApi": 101,
+          "doc": "Writes a message to the Xposed log. @param priority The log priority, see {@link android.util.Log} @param tag      The log tag @param msg      The log message @param tr       An exception to log",
+          "line": 558
         },
         {
           "name": "getModuleApplicationInfo",
@@ -116,15 +309,19 @@
           "returnType": "ApplicationInfo",
           "params": [],
           "sinceApi": 101,
-          "doc": "Returns the ApplicationInfo for the module itself (sourceDir, nativeLibraryDir, etc.)."
+          "doc": "Gets the application info of the module.",
+          "line": 564
         },
         {
           "name": "getRemotePreferences",
           "signature": "SharedPreferences getRemotePreferences(@NonNull String group)",
           "returnType": "SharedPreferences",
-          "params": ["group: String"],
+          "params": [
+            "@NonNull String group"
+          ],
           "sinceApi": 101,
-          "doc": "Retrieves read-only cross-process preferences stored in the Xposed framework for this module."
+          "doc": "Gets remote preferences stored in Xposed framework. Note that those are read-only in hooked apps. @param group Group name @return The preferences @throws UnsupportedOperationException If the framework is embedded",
+          "line": 574
         },
         {
           "name": "listRemoteFiles",
@@ -132,203 +329,910 @@
           "returnType": "String[]",
           "params": [],
           "sinceApi": 101,
-          "doc": "Lists files in the module's shared data directory provided by the framework."
+          "doc": "List all files in the module's shared data directory. @return The file list @throws UnsupportedOperationException If the framework is embedded",
+          "line": 583
         },
         {
           "name": "openRemoteFile",
-          "signature": "ParcelFileDescriptor openRemoteFile(@NonNull String name) throws FileNotFoundException",
+          "signature": "ParcelFileDescriptor openRemoteFile(@NonNull String name)",
           "returnType": "ParcelFileDescriptor",
-          "params": ["name: String (filename without path separators)"],
+          "params": [
+            "@NonNull String name"
+          ],
           "sinceApi": 101,
-          "doc": "Opens a read-only ParcelFileDescriptor to a file in module's shared data directory."
+          "doc": "Open a file in the module's shared data directory. The file is opened in read-only mode. @param name File name, must not contain path separators and . or .. @return The file descriptor @throws FileNotFoundException         If the file does not exist or the path is forbidden @throws UnsupportedOperationException If the framework is embedded",
+          "line": 594
         }
       ]
     },
     {
-      "name": "io.github.libxposed.api.XposedInterface.Hooker",
+      "name": "io.github.libxposed.api.XposedInterface.Invoker",
+      "simpleName": "Invoker",
       "type": "interface",
+      "packageName": "io.github.libxposed.api",
+      "filePath": "api/api/src/main/java/io/github/libxposed/api/XposedInterface.java",
       "sinceApi": 101,
-      "summary": "Functional interface for intercepting method or constructor calls.",
-      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/XposedInterface.Hooker.html",
+      "summary": "Invoker for a method or constructor. Invocations through invokers will bypass access checks.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/Invoker.html",
+      "constants": [
+        {
+          "name": "ORIGIN",
+          "type": "Origin",
+          "value": "new Origin()",
+          "doc": "Type of the invoker, which determines the hook chain to be invoked A convenience constant for {@link Origin}."
+        }
+      ],
       "methods": [
         {
-          "name": "intercept",
-          "signature": "Object intercept(@NonNull Chain chain) throws Throwable",
-          "returnType": "Object",
-          "params": ["chain: Chain (interceptor invocation chain)"],
+          "name": "setType",
+          "signature": "T setType(@NonNull Type type)",
+          "returnType": "T",
+          "params": [
+            "@NonNull Type type"
+          ],
           "sinceApi": 101,
-          "doc": "Intercepts execution. Call chain.proceed() to execute target or next hooker. Modify return value or throw exceptions as needed. For void/constructors, return value is ignored."
+          "doc": "Sets the type of the invoker, which determines the hook chain to be invoked",
+          "line": 122
+        },
+        {
+          "name": "invoke",
+          "signature": "Object invoke(Object thisObject, Object... args)",
+          "returnType": "Object",
+          "params": [
+            "Object thisObject",
+            "Object... args"
+          ],
+          "sinceApi": 101,
+          "doc": "Invokes the method (or the constructor as a method) through the hook chain determined by the invoker's type. @param thisObject For non-static calls, the {@code this} pointer, otherwise {@code null} @param args       The arguments used for the method call @return The result returned from the invoked method <p>For void methods and constructors, always returns {@code null}.</p> @see Method#invoke(Object, Object...)",
+          "line": 134
+        },
+        {
+          "name": "invokeSpecial",
+          "signature": "Object invokeSpecial(@NonNull Object thisObject, Object... args)",
+          "returnType": "Object",
+          "params": [
+            "@NonNull Object thisObject",
+            "Object... args"
+          ],
+          "sinceApi": 101,
+          "doc": "Invokes the special (non-virtual) method (or the constructor as a method) on a given object instance, similar to the functionality of {@code CallNonVirtual<type>Method} in JNI, which invokes an instance (nonstatic) method on a Java object. This method is useful when you need to call a specific method on an object, bypassing any overridden methods in subclasses and directly invoking the method defined in the specified class. <p>This method is useful when you need to call {@code super.xxx()} in a hooked constructor.</p> @param thisObject The {@code this} pointer @param args       The arguments used for the method call @return The result returned from the invoked method <p>For void methods and constructors, always returns {@code null}.</p> @see Method#invoke(Object, Object...)",
+          "line": 151
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.api.XposedInterface.Invoker.Origin",
+      "simpleName": "Origin",
+      "type": "record",
+      "packageName": "io.github.libxposed.api",
+      "filePath": "api/api/src/main/java/io/github/libxposed/api/XposedInterface.java",
+      "sinceApi": 101,
+      "summary": "Invokes the original executable, skipping all hooks.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/Origin.html",
+      "constants": [],
+      "methods": []
+    },
+    {
+      "name": "io.github.libxposed.api.XposedInterface.Invoker.Chain",
+      "simpleName": "Chain",
+      "type": "record",
+      "packageName": "io.github.libxposed.api",
+      "filePath": "api/api/src/main/java/io/github/libxposed/api/XposedInterface.java",
+      "sinceApi": 101,
+      "summary": "Invokes the executable starting from the middle of the hook chain, skipping all hooks with priority higher than the given value. @param maxPriority The maximum priority of hooks to include in the chain",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/Chain.html",
+      "constants": [
+        {
+          "name": "FULL",
+          "type": "Chain",
+          "value": "new Chain(PRIORITY_HIGHEST)",
+          "doc": "Invoking the executable with full hook chain."
+        }
+      ],
+      "methods": []
+    },
+    {
+      "name": "io.github.libxposed.api.XposedInterface.CtorInvoker",
+      "simpleName": "CtorInvoker",
+      "type": "interface",
+      "packageName": "io.github.libxposed.api",
+      "filePath": "api/api/src/main/java/io/github/libxposed/api/XposedInterface.java",
+      "sinceApi": 101,
+      "summary": "Invoker for a constructor. @param <T> The type of the constructor",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/CtorInvoker.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "newInstance",
+          "signature": "T newInstance(Object... args)",
+          "returnType": "T",
+          "params": [
+            "Object... args"
+          ],
+          "sinceApi": 101,
+          "doc": "Creates a new instance through the hook chain determined by the invoker's type. @param args The arguments used for the construction @return The instance created and initialized by the constructor @see Constructor#newInstance(Object...)",
+          "line": 168
+        },
+        {
+          "name": "newInstanceSpecial",
+          "signature": "U newInstanceSpecial(@NonNull Class<U> subClass, Object... args)",
+          "returnType": "U",
+          "params": [
+            "@NonNull Class<U> subClass",
+            "Object... args"
+          ],
+          "sinceApi": 101,
+          "doc": "Creates a new instance of the given subclass, but initializes it with a parent constructor. This could leave the object in an invalid state, where the subclass constructor is not called and the fields of the subclass are not initialized. <p>This method is useful when you need to initialize some fields in the subclass by yourself.</p> @param <U>      The type of the subclass @param subClass The subclass to create a new instance @param args     The arguments used for the construction @return The instance of subclass initialized by the constructor @see Constructor#newInstance(Object...)",
+          "line": 184
         }
       ]
     },
     {
       "name": "io.github.libxposed.api.XposedInterface.Chain",
+      "simpleName": "Chain",
       "type": "interface",
+      "packageName": "io.github.libxposed.api",
+      "filePath": "api/api/src/main/java/io/github/libxposed/api/XposedInterface.java",
       "sinceApi": 101,
-      "summary": "Represents the ongoing interception execution chain.",
-      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/XposedInterface.Chain.html",
+      "summary": "Interceptor chain for a method or constructor. Chain objects cannot be shared among threads or reused after {@link Hooker#intercept(Chain)} ends.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/Chain.html",
+      "constants": [],
       "methods": [
-        { "name": "getExecutable", "signature": "Executable getExecutable()", "returnType": "Executable", "sinceApi": 101, "doc": "Returns the method or constructor being hooked." },
-        { "name": "getThisObject", "signature": "Object getThisObject()", "returnType": "Object", "sinceApi": 101, "doc": "Returns receiver object, or null for static methods." },
-        { "name": "getArgs", "signature": "List<Object> getArgs()", "returnType": "List<Object>", "sinceApi": 101, "doc": "Returns immutable list of current arguments." },
-        { "name": "getArg", "signature": "Object getArg(int index)", "returnType": "Object", "sinceApi": 101, "doc": "Returns argument at specified index with bounds checking." },
-        { "name": "proceed", "signature": "Object proceed() throws Throwable", "returnType": "Object", "sinceApi": 101, "doc": "Proceeds down chain with original arguments and receiver." },
-        { "name": "proceed", "signature": "Object proceed(@NonNull Object[] args) throws Throwable", "returnType": "Object", "sinceApi": 101, "doc": "Proceeds down chain with replaced arguments." },
-        { "name": "proceedWith", "signature": "Object proceedWith(@NonNull Object thisObject) throws Throwable", "returnType": "Object", "sinceApi": 101, "doc": "Proceeds down chain with replaced receiver." },
-        { "name": "proceedWith", "signature": "Object proceedWith(@NonNull Object thisObject, @NonNull Object[] args) throws Throwable", "returnType": "Object", "sinceApi": 101, "doc": "Proceeds down chain with replaced receiver and arguments." }
+        {
+          "name": "getExecutable",
+          "signature": "Executable getExecutable()",
+          "returnType": "Executable",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Gets the method / constructor being hooked.",
+          "line": 196
+        },
+        {
+          "name": "getThisObject",
+          "signature": "Object getThisObject()",
+          "returnType": "Object",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Gets the {@code this} pointer for the call, or {@code null} for static methods.",
+          "line": 201
+        },
+        {
+          "name": "getArgs",
+          "signature": "List<Object> getArgs()",
+          "returnType": "List<Object>",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Gets the arguments. The returned list is immutable. If you want to change the arguments, you should call {@code proceed(Object...)} or {@code proceedWith(Object, Object...)} with the new arguments.",
+          "line": 209
+        },
+        {
+          "name": "getArg",
+          "signature": "Object getArg(int index)",
+          "returnType": "Object",
+          "params": [
+            "int index"
+          ],
+          "sinceApi": 101,
+          "doc": "Gets the argument at the given index. @param index The argument index @return The argument at the given index @throws IndexOutOfBoundsException if index is out of bounds @throws ClassCastException        if the argument cannot be cast to the expected type",
+          "line": 219
+        },
+        {
+          "name": "proceed",
+          "signature": "Object proceed()",
+          "returnType": "Object",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Proceeds to the next interceptor in the chain with the same arguments and {@code this} pointer. @return The result returned from next interceptor or the original executable if current interceptor is the last one in the chain. <p>For void methods and constructors, always returns {@code null}.</p> @throws Throwable if any interceptor or the original executable throws an exception",
+          "line": 229
+        },
+        {
+          "name": "proceed",
+          "signature": "Object proceed(@NonNull Object[] args)",
+          "returnType": "Object",
+          "params": [
+            "@NonNull Object[] args"
+          ],
+          "sinceApi": 101,
+          "doc": "Proceeds to the next interceptor in the chain with the given arguments and the same {@code this} pointer. @param args The arguments used for the call @return The result returned from next interceptor or the original executable if current interceptor is the last one in the chain. <p>For void methods and constructors, always returns {@code null}.</p> @throws Throwable if any interceptor or the original executable throws an exception",
+          "line": 240
+        },
+        {
+          "name": "proceedWith",
+          "signature": "Object proceedWith(@NonNull Object thisObject)",
+          "returnType": "Object",
+          "params": [
+            "@NonNull Object thisObject"
+          ],
+          "sinceApi": 101,
+          "doc": "Proceeds to the next interceptor in this chain with the same arguments and the given {@code this} object. Static method interceptors should not call this method. <p>This changes only the receiver used by the rest of the current chain. It does not change the executable returned by {@link #getExecutable()}, select a different override, or switch to another executable's hook chain. When this chain reaches its end, the framework invokes the original implementation of {@link #getExecutable()} on {@code thisObject}.</p> <p>For example, if {@link #getExecutable()} is {@code Parent.foo}, calling this method with a {@code Child} object still invokes the original {@code Parent.foo} on that object. It does not dispatch to {@code Child.foo} or run hooks registered for {@code Child.foo}. Use an {@link Invoker} to start a new invocation when virtual dispatch is desired.</p> <p>{@code thisObject} must be an instance of the declaring class of {@link #getExecutable()}.</p> @param thisObject The {@code this} object for the call @return The result returned from the next interceptor, or from the original executable if the current interceptor is the last one in the chain. <p>For void methods and constructors, always returns {@code null}.</p> @throws IllegalArgumentException if {@code thisObject} is not compatible with the declaring class of {@link #getExecutable()} @throws Throwable if any interceptor or the original executable throws an exception",
+          "line": 267
+        },
+        {
+          "name": "proceedWith",
+          "signature": "Object proceedWith(@NonNull Object thisObject, @NonNull Object[] args)",
+          "returnType": "Object",
+          "params": [
+            "@NonNull Object thisObject",
+            "@NonNull Object[] args"
+          ],
+          "sinceApi": 101,
+          "doc": "Proceeds to the next interceptor in this chain with the given arguments and {@code this} object. Static method interceptors should not call this method. <p>This changes the receiver and arguments used by the rest of the current chain, but not which executable the chain belongs to. It does not select a different override or switch to another executable's hook chain. When this chain reaches its end, the framework invokes the original implementation of {@link #getExecutable()} on {@code thisObject}, using {@code args}.</p> <p>For example, if {@link #getExecutable()} is {@code Parent.foo}, calling this method with a {@code Child} object still invokes the original {@code Parent.foo} on that object. It does not dispatch to {@code Child.foo} or run hooks registered for {@code Child.foo}. Use an {@link Invoker} to start a new invocation when virtual dispatch is desired.</p> <p>{@code thisObject} must be an instance of the declaring class of {@link #getExecutable()}.</p> @param thisObject The {@code this} object for the call @param args       The arguments used for the call @return The result returned from the next interceptor, or from the original executable if the current interceptor is the last one in the chain. <p>For void methods and constructors, always returns {@code null}.</p> @throws IllegalArgumentException if {@code thisObject} is not compatible with the declaring class of {@link #getExecutable()} @throws Throwable if any interceptor or the original executable throws an exception",
+          "line": 296
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.api.XposedInterface.Hooker",
+      "simpleName": "Hooker",
+      "type": "interface",
+      "packageName": "io.github.libxposed.api",
+      "filePath": "api/api/src/main/java/io/github/libxposed/api/XposedInterface.java",
+      "sinceApi": 101,
+      "summary": "Hooker for a method or constructor.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/Hooker.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "intercept",
+          "signature": "Object intercept(@NonNull Chain chain)",
+          "returnType": "Object",
+          "params": [
+            "@NonNull Chain chain"
+          ],
+          "sinceApi": 101,
+          "doc": "Intercepts a method / constructor call. @param chain The interceptor chain for the call @return The result to be returned from the interceptor. If the hooker does not want to change the result, it should call {@code chain.proceed()} and return its result. <p>For void methods and constructors, the return value is ignored by the framework.</p> @throws Throwable Throw any exception from the interceptor. The exception will propagate to the caller if not caught by any interceptor.",
+          "line": 313
+        }
       ]
     },
     {
       "name": "io.github.libxposed.api.XposedInterface.HookHandle",
+      "simpleName": "HookHandle",
       "type": "interface",
+      "packageName": "io.github.libxposed.api",
+      "filePath": "api/api/src/main/java/io/github/libxposed/api/XposedInterface.java",
       "sinceApi": 101,
-      "summary": "Handle returned when a hook is registered. Allows unhooking and atomic replacement.",
-      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/XposedInterface.HookHandle.html",
+      "summary": "Handle for a hook.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/HookHandle.html",
+      "constants": [],
       "methods": [
-        { "name": "getExecutable", "signature": "Executable getExecutable()", "returnType": "Executable", "sinceApi": 101, "doc": "Gets the hooked executable." },
-        { "name": "unhook", "signature": "void unhook()", "returnType": "void", "sinceApi": 101, "doc": "Removes the hook. Idempotent." },
-        { "name": "getId", "signature": "String getId()", "returnType": "String?", "sinceApi": 102, "doc": "Gets the unique hook ID, or null." },
-        { "name": "replaceHook", "signature": "HookHandle replaceHook(@NonNull Hooker hooker)", "returnType": "HookHandle", "sinceApi": 102, "doc": "Atomically replaces this hook with a new hooker without changing priority, exception mode, or ID." }
+        {
+          "name": "getExecutable",
+          "signature": "Executable getExecutable()",
+          "returnType": "Executable",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Gets the method / constructor being hooked.",
+          "line": 324
+        },
+        {
+          "name": "unhook",
+          "signature": "void unhook()",
+          "returnType": "void",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Cancels the hook. This method is idempotent. It is safe to call this method multiple times.",
+          "line": 329
+        },
+        {
+          "name": "getId",
+          "signature": "String getId()",
+          "returnType": "String",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Gets the unique id of the hook, or null if the hook is not assigned with an id.",
+          "line": 336
+        },
+        {
+          "name": "replaceHook",
+          "signature": "HookHandle replaceHook(@NonNull Hooker hooker)",
+          "returnType": "HookHandle",
+          "params": [
+            "@NonNull Hooker hooker"
+          ],
+          "sinceApi": 101,
+          "doc": "Atomically replaces this hook with a new hooker and returns the new hook handle. <p> The replacement keeps the executable, priority, exception handling mode, and id of this hook. For a hook with an id, this targets the same hook as creating a new hook on the same executable with the same id. This method is the handle-based form of replacement and can also replace a hook without an id. It is useful during hot reloading when new code receives old hook handles from {@link XposedModuleInterface.HotReloadedParam#getOldHookHandles()}. After a successful replacement, this handle is no longer valid. </p> <p>The hook chain is snapshot based. Replacing a hook while a call is running does not affect that in-flight call.</p> @param hooker The new hooker object @return The new handle for the replaced hook @throws IllegalArgumentException if hooker is invalid @throws IllegalStateException    if this hook handle is no longer valid @throws HookFailedError          if replacement fails due to framework internal error",
+          "line": 359
+        }
       ]
+    },
+    {
+      "name": "io.github.libxposed.api.XposedInterface.ExceptionMode",
+      "simpleName": "ExceptionMode",
+      "type": "enum",
+      "packageName": "io.github.libxposed.api",
+      "filePath": "api/api/src/main/java/io/github/libxposed/api/XposedInterface.java",
+      "sinceApi": 101,
+      "summary": "Exception handling mode for hookers. This determines how the framework handles exceptions thrown by hookers. The default mode is {@link ExceptionMode#DEFAULT}.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/ExceptionMode.html",
+      "constants": [],
+      "methods": []
     },
     {
       "name": "io.github.libxposed.api.XposedInterface.HookBuilder",
+      "simpleName": "HookBuilder",
       "type": "interface",
+      "packageName": "io.github.libxposed.api",
+      "filePath": "api/api/src/main/java/io/github/libxposed/api/XposedInterface.java",
       "sinceApi": 101,
-      "summary": "Fluent builder for configuring a hook.",
-      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/XposedInterface.HookBuilder.html",
+      "summary": "Builder for configuring a hook.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/HookBuilder.html",
+      "constants": [],
       "methods": [
-        { "name": "setPriority", "signature": "HookBuilder setPriority(int priority)", "returnType": "HookBuilder", "sinceApi": 101, "doc": "Sets priority (higher runs earlier)." },
-        { "name": "setExceptionMode", "signature": "HookBuilder setExceptionMode(@NonNull ExceptionMode mode)", "returnType": "HookBuilder", "sinceApi": 101, "doc": "Sets DEFAULT, PROTECTIVE, or PASSTHROUGH." },
-        { "name": "setId", "signature": "HookBuilder setId(@Nullable String id)", "returnType": "HookBuilder", "sinceApi": 102, "doc": "Sets hook ID for atomic replacement across reloads." },
-        { "name": "intercept", "signature": "HookHandle intercept(@NonNull Hooker hooker)", "returnType": "HookHandle", "sinceApi": 101, "doc": "Attaches hooker and registers the hook." }
-      ]
-    },
-    {
-      "name": "io.github.libxposed.api.XposedInterface.Invoker",
-      "type": "interface",
-      "sinceApi": 101,
-      "summary": "Invoker for method calls bypassing access checks.",
-      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/XposedInterface.Invoker.html",
-      "methods": [
-        { "name": "setType", "signature": "T setType(@NonNull Type type)", "returnType": "T", "sinceApi": 101, "doc": "Sets invocation type: Invoker.Type.ORIGIN to skip hooks, or Invoker.Type.Chain to invoke hook chain." },
-        { "name": "invoke", "signature": "Object invoke(Object thisObject, Object... args) throws ...", "returnType": "Object", "sinceApi": 101, "doc": "Invokes the method (virtual dispatch)." },
-        { "name": "invokeSpecial", "signature": "Object invokeSpecial(@NonNull Object thisObject, Object... args) throws ...", "returnType": "Object", "sinceApi": 101, "doc": "Invokes non-virtual method directly on class (similar to super call)." }
-      ]
-    },
-    {
-      "name": "io.github.libxposed.api.XposedInterface.CtorInvoker",
-      "type": "interface",
-      "sinceApi": 101,
-      "summary": "Invoker for constructor calls bypassing access checks.",
-      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/XposedInterface.CtorInvoker.html",
-      "methods": [
-        { "name": "newInstance", "signature": "T newInstance(Object... args) throws ...", "returnType": "T", "sinceApi": 101, "doc": "Instantiates object through constructor." },
-        { "name": "newInstanceSpecial", "signature": "<U> U newInstanceSpecial(@NonNull Class<U> subClass, Object... args) throws ...", "returnType": "U", "sinceApi": 101, "doc": "Instantiates subclass initialized with parent constructor." }
-      ]
-    },
-    {
-      "name": "io.github.libxposed.api.XposedModule",
-      "type": "abstract class",
-      "sinceApi": 101,
-      "summary": "Base class that every modern LibXposed module entry must extend.",
-      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/XposedModule.html",
-      "methods": [
-        { "name": "onModuleLoaded", "signature": "void onModuleLoaded(@NonNull ModuleLoadedParam param)", "returnType": "void", "sinceApi": 101, "doc": "Called when the module is loaded into target process." },
-        { "name": "onPackageLoaded", "signature": "void onPackageLoaded(@NonNull PackageLoadedParam param)", "returnType": "void", "sinceApi": 101, "doc": "Called when an APK package has loaded." },
-        { "name": "onPackageReady", "signature": "void onPackageReady(@NonNull PackageReadyParam param)", "returnType": "void", "sinceApi": 101, "doc": "Called when application classloader and context are fully initialized. Recommended place for most hooks." },
-        { "name": "onSystemServerStarting", "signature": "void onSystemServerStarting(@NonNull SystemServerStartingParam param)", "returnType": "void", "sinceApi": 101, "doc": "Called when Android system_server is starting." },
-        { "name": "onHotReloading", "signature": "boolean onHotReloading(@NonNull HotReloadingParam param)", "returnType": "boolean", "sinceApi": 102, "doc": "Called before hot reload occurs. Return true to proceed, save state with param.setSavedInstanceState()." },
-        { "name": "onHotReloaded", "signature": "void onHotReloaded(@NonNull HotReloadedParam param)", "returnType": "void", "sinceApi": 102, "doc": "Called after hot reload succeeds. Restore state and clean old hooks via param.getOldHookHandles()." }
+        {
+          "name": "setPriority",
+          "signature": "HookBuilder setPriority(int priority)",
+          "returnType": "HookBuilder",
+          "params": [
+            "int priority"
+          ],
+          "sinceApi": 101,
+          "doc": "Sets the priority of the hook. Hooks with higher priority will be called before hooks with lower priority. The default priority is {@link XposedInterface#PRIORITY_DEFAULT}. @param priority The priority of the hook @return The builder itself for chaining",
+          "line": 404
+        },
+        {
+          "name": "setExceptionMode",
+          "signature": "HookBuilder setExceptionMode(@NonNull ExceptionMode mode)",
+          "returnType": "HookBuilder",
+          "params": [
+            "@NonNull ExceptionMode mode"
+          ],
+          "sinceApi": 101,
+          "doc": "Sets the exception handling mode for the hook. The default mode is {@link ExceptionMode#DEFAULT}. @param mode The exception handling mode @return The builder itself for chaining",
+          "line": 412
+        },
+        {
+          "name": "intercept",
+          "signature": "HookHandle intercept(@NonNull Hooker hooker)",
+          "returnType": "HookHandle",
+          "params": [
+            "@NonNull Hooker hooker"
+          ],
+          "sinceApi": 101,
+          "doc": "Sets the hooker for the method / constructor and builds the hook. @param hooker The hooker object @return The handle for the hook @throws IllegalArgumentException if origin is framework internal or {@link Constructor#newInstance}, or hooker is invalid @throws HookFailedError          if hook fails due to framework internal error",
+          "line": 424
+        },
+        {
+          "name": "setId",
+          "signature": "HookBuilder setId(@Nullable String id)",
+          "returnType": "HookBuilder",
+          "params": [
+            "@Nullable String id"
+          ],
+          "sinceApi": 101,
+          "doc": "Sets a unique id for the hook, default to {@code null}. An id is used for exclusively identifying a hook in the same module on the executable. A new hook with the same id in the same module on the executable will replace the old one atomically, and the old hook handle will be invalid. Hook ids are isolated between modules. <p>The hook chain is snapshot based. Replacing or adding a hook while a call is running does not affect that in-flight call.</p> @param id The id for the hook. It can be null if you don't care about replacing the hook later. @return The builder itself for chaining",
+          "line": 439
+        }
       ]
     },
     {
       "name": "io.github.libxposed.api.XposedInterfaceWrapper",
+      "simpleName": "XposedInterfaceWrapper",
       "type": "class",
+      "packageName": "io.github.libxposed.api",
+      "filePath": "api/api/src/main/java/io/github/libxposed/api/XposedInterfaceWrapper.java",
       "sinceApi": 101,
-      "summary": "Wrapper of XposedInterface used by module entry classes to shield framework implementation details and manage entry detachment.",
+      "summary": "Wrapper of {@link XposedInterface} used by modules to shield framework implementation details.",
       "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/XposedInterfaceWrapper.html",
+      "constants": [],
       "methods": [
         {
-          "name": "detach",
-          "signature": "public final void detach()",
+          "name": "attachFramework",
+          "signature": "void attachFramework(@NonNull XposedInterface base, @NonNull Runnable detachImpl)",
           "returnType": "void",
-          "sinceApi": 102,
-          "doc": "Stops all subsequent lifecycle callbacks (onPackageLoaded, onHotReloading, etc.) for the current module entry in current process. Only lifecycle callbacks are stopped; all XposedInterface APIs remain functional."
+          "params": [
+            "@NonNull XposedInterface base",
+            "@NonNull Runnable detachImpl"
+          ],
+          "sinceApi": 101,
+          "doc": "Attaches the framework interface to the module. Modules <b>must not</b> call this method. It is reserved for framework implementations and may change without compatibility guarantees. @param base       The framework interface @param detachImpl The implementation of {@link #detach()}",
+          "line": 35
         },
         {
-          "name": "attachFramework",
-          "signature": "public final void attachFramework(@NonNull XposedInterface base, @NonNull Runnable detachImpl)",
-          "returnType": "void",
+          "name": "IllegalStateException",
+          "signature": "throw new IllegalStateException(\"Framework already attached\")",
+          "returnType": "throw new",
+          "params": [
+            "\"Framework already attached\""
+          ],
           "sinceApi": 101,
-          "doc": "Internal framework attachment method annotated with @InternalApi. Modules MUST NOT invoke this method directly."
+          "doc": "",
+          "line": 37
+        },
+        {
+          "name": "ensureAttached",
+          "signature": "void ensureAttached()",
+          "returnType": "void",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 43
+        },
+        {
+          "name": "IllegalStateException",
+          "signature": "throw new IllegalStateException(\"Framework not attached\")",
+          "returnType": "throw new",
+          "params": [
+            "\"Framework not attached\""
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 45
+        },
+        {
+          "name": "detach",
+          "signature": "void detach()",
+          "returnType": "void",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Stops all subsequent lifecycle callbacks for the <b>current module entry</b> in the current process. After this method is called, the framework removes its reference to the entry instance and will no longer invoke any lifecycle callbacks (such as {@link XposedModuleInterface#onPackageLoaded}, {@link XposedModuleInterface#onHotReloading}, etc.) on the entry instance that called this method. Only lifecycle callbacks are affected; all {@link XposedInterface} APIs remain fully functional. <p>If the module declares multiple entry classes, only the entry that calls this method is affected. Other entries continue to receive their lifecycle callbacks as normal.</p> <p>This method is idempotent. Calling it multiple times has the same effect as calling it once.</p> <p>If the module expects its classloader to become collectible after detaching, it must also remove module-owned references and execution contexts that keep module objects reachable, such as installed hooks, Java threads, and callbacks held by system or app objects. If native code is still running after all Java references to the module classloader are cleared, later runtime unloading of native libraries may crash the process; this is a module lifecycle bug.</p> <p>Typical use cases include:</p> <ul> <li>The module entry has finished all its initialization work and no longer needs to respond to further package loading events.</li> <li>For modules that target multiple apps with a dedicated entry class per app: if the entry detects it is not loaded in its target app, it can call this method immediately to avoid receiving any further callbacks.</li> <li>Calling this method together with unhooking all registered hooks, so that the module classloader can be garbage collected when no longer needed.</li> </ul>",
+          "line": 82
+        },
+        {
+          "name": "getApiVersion",
+          "signature": "int getApiVersion()",
+          "returnType": "int",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 88
+        },
+        {
+          "name": "getFrameworkName",
+          "signature": "String getFrameworkName()",
+          "returnType": "String",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 95
+        },
+        {
+          "name": "getFrameworkVersion",
+          "signature": "String getFrameworkVersion()",
+          "returnType": "String",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 102
+        },
+        {
+          "name": "getFrameworkVersionCode",
+          "signature": "long getFrameworkVersionCode()",
+          "returnType": "long",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 108
+        },
+        {
+          "name": "getFrameworkProperties",
+          "signature": "long getFrameworkProperties()",
+          "returnType": "long",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 114
+        },
+        {
+          "name": "hook",
+          "signature": "HookBuilder hook(@NonNull Executable origin)",
+          "returnType": "HookBuilder",
+          "params": [
+            "@NonNull Executable origin"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 121
+        },
+        {
+          "name": "hookClassInitializer",
+          "signature": "HookBuilder hookClassInitializer(@NonNull Class<?> origin)",
+          "returnType": "HookBuilder",
+          "params": [
+            "@NonNull Class<?> origin"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 128
+        },
+        {
+          "name": "deoptimize",
+          "signature": "boolean deoptimize(@NonNull Executable executable)",
+          "returnType": "boolean",
+          "params": [
+            "@NonNull Executable executable"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 134
+        },
+        {
+          "name": "getInvoker",
+          "signature": "Invoker<?, Method> getInvoker(@NonNull Method method)",
+          "returnType": "Invoker<?, Method>",
+          "params": [
+            "@NonNull Method method"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 141
+        },
+        {
+          "name": "getInvoker",
+          "signature": "CtorInvoker<T> getInvoker(@NonNull Constructor<T> constructor)",
+          "returnType": "CtorInvoker<T>",
+          "params": [
+            "@NonNull Constructor<T> constructor"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 148
+        },
+        {
+          "name": "log",
+          "signature": "void log(int priority, @Nullable String tag, @NonNull String msg)",
+          "returnType": "void",
+          "params": [
+            "int priority",
+            "@Nullable String tag",
+            "@NonNull String msg"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 154
+        },
+        {
+          "name": "log",
+          "signature": "void log(int priority, @Nullable String tag, @NonNull String msg, @Nullable Throwable tr)",
+          "returnType": "void",
+          "params": [
+            "int priority",
+            "@Nullable String tag",
+            "@NonNull String msg",
+            "@Nullable Throwable tr"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 160
+        },
+        {
+          "name": "getRemotePreferences",
+          "signature": "SharedPreferences getRemotePreferences(@NonNull String name)",
+          "returnType": "SharedPreferences",
+          "params": [
+            "@NonNull String name"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 167
+        },
+        {
+          "name": "getModuleApplicationInfo",
+          "signature": "ApplicationInfo getModuleApplicationInfo()",
+          "returnType": "ApplicationInfo",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 174
+        },
+        {
+          "name": "listRemoteFiles",
+          "signature": "String[] listRemoteFiles()",
+          "returnType": "String[]",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 181
+        },
+        {
+          "name": "openRemoteFile",
+          "signature": "ParcelFileDescriptor openRemoteFile(@NonNull String name)",
+          "returnType": "ParcelFileDescriptor",
+          "params": [
+            "@NonNull String name"
+          ],
+          "sinceApi": 101,
+          "doc": "",
+          "line": 188
         }
       ]
+    },
+    {
+      "name": "io.github.libxposed.api.XposedModule",
+      "simpleName": "XposedModule",
+      "type": "class",
+      "packageName": "io.github.libxposed.api",
+      "filePath": "api/api/src/main/java/io/github/libxposed/api/XposedModule.java",
+      "sinceApi": 101,
+      "summary": "Super class which all Xposed module entry classes should extend.<br/> Entry classes will be instantiated once for each loaded module generation in a process.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/XposedModule.html",
+      "constants": [],
+      "methods": []
     },
     {
       "name": "io.github.libxposed.api.XposedModuleInterface",
+      "simpleName": "XposedModuleInterface",
       "type": "interface",
+      "packageName": "io.github.libxposed.api",
+      "filePath": "api/api/src/main/java/io/github/libxposed/api/XposedModuleInterface.java",
       "sinceApi": 101,
-      "summary": "Container for lifecycle callback signatures and parameter interfaces (ModuleLoadedParam, PackageLoadedParam, PackageReadyParam, SystemServerStartingParam, HotReloadingParam, HotReloadedParam).",
+      "summary": "Interface for module initialization.",
       "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/XposedModuleInterface.html",
+      "constants": [],
       "methods": [
         {
           "name": "onModuleLoaded",
-          "signature": "default void onModuleLoaded(@NonNull ModuleLoadedParam param)",
+          "signature": "void onModuleLoaded(@NonNull ModuleLoadedParam param)",
           "returnType": "void",
+          "params": [
+            "@NonNull ModuleLoadedParam param"
+          ],
           "sinceApi": 101,
-          "doc": "Called when initial module generation is loaded into target process."
+          "doc": "Gets notified when a module generation is loaded into the target process. <p> This callback is called for the initial module load. Hot reload does not automatically replay this callback or package lifecycle callbacks; modules that opt into hot reload should override {@link #onHotReloaded(HotReloadedParam)} and explicitly install or replace the hooks they need. @param param Information about the process in which the module is loaded @throws RuntimeException Everything the callback throws is caught and logged.",
+          "line": 183
         },
         {
           "name": "onPackageLoaded",
-          "signature": "default void onPackageLoaded(@NonNull PackageLoadedParam param)",
+          "signature": "void onPackageLoaded(@NonNull PackageLoadedParam param)",
           "returnType": "void",
+          "params": [
+            "@NonNull PackageLoadedParam param"
+          ],
           "sinceApi": 101,
-          "doc": "Called when an APK package has loaded into process and default classloader is ready."
+          "doc": "Gets notified when a {@link android.R.attr#hasCode} package is loaded into the process. This is the time when the default classloader is ready but before the instantiation of {@link AppComponentFactory}. <p> This callback is invoked only once for each package name loaded into the process, note that a process may load multiple packages, such as {@link android.R.attr#sharedUserId} and {@link Context#createPackageContext(String, int)} with {@link Context#CONTEXT_INCLUDE_CODE}. <p> In system server, the first callback is replaced by {@link #onSystemServerStarting(SystemServerStartingParam)}, so {@code param.isFirstPackage()} is never {@code true} here. @param param Information about the package being loaded @throws RuntimeException Everything the callback throws is caught and logged.",
+          "line": 203
         },
         {
           "name": "onPackageReady",
-          "signature": "default void onPackageReady(@NonNull PackageReadyParam param)",
+          "signature": "void onPackageReady(@NonNull PackageReadyParam param)",
           "returnType": "void",
+          "params": [
+            "@NonNull PackageReadyParam param"
+          ],
           "sinceApi": 101,
-          "doc": "Called when AppComponentFactory has instantiated classloader and is ready to create Application. Recommended place for most hooks."
+          "doc": "Gets notified when {@link AppComponentFactory} has instantiated the classloader and is ready to create {@link android.app.Application}. <p> This callback is invoked only once for each package name loaded into the process, note that a process may load multiple packages, such as {@link android.R.attr#sharedUserId} and {@link Context#createPackageContext(String, int)} with {@link Context#CONTEXT_INCLUDE_CODE}. <p> In system server, the first callback is replaced by {@link #onSystemServerStarting(SystemServerStartingParam)}, so {@code param.isFirstPackage()} is never {@code true} here. @param param Information about the package being loaded @throws RuntimeException Everything the callback throws is caught and logged.",
+          "line": 221
         },
         {
           "name": "onSystemServerStarting",
-          "signature": "default void onSystemServerStarting(@NonNull SystemServerStartingParam param)",
+          "signature": "void onSystemServerStarting(@NonNull SystemServerStartingParam param)",
           "returnType": "void",
+          "params": [
+            "@NonNull SystemServerStartingParam param"
+          ],
           "sinceApi": 101,
-          "doc": "Called when system server is ready to start critical services."
+          "doc": "Gets notified when system server is ready to start critical services. In system server, this callback replaces the first callback phase of {@link #onPackageLoaded(PackageLoadedParam)} and {@link #onPackageReady(PackageReadyParam)}. @param param Information about system server @throws RuntimeException Everything the callback throws is caught and logged.",
+          "line": 233
         },
         {
           "name": "onHotReloading",
-          "signature": "default boolean onHotReloading(@NonNull HotReloadingParam param)",
+          "signature": "boolean onHotReloading(@NonNull HotReloadingParam param)",
           "returnType": "boolean",
-          "sinceApi": 102,
-          "doc": "Called in old code before module is reloaded. Return true to allow reload, or false to reject. Save state with param.setSavedInstanceState()."
+          "params": [
+            "@NonNull HotReloadingParam param"
+          ],
+          "sinceApi": 101,
+          "doc": "Gets notified when the module is about to be reloaded. This callback is called when hot reloading is triggered through the service, or by app updating if {@code autoHotReload} is set to true in {@code module.prop}. App-update hot reloading still proceeds only if this callback returns {@code true}. <p>This callback runs in <b>old</b> code.</p> <p> Hot reloads are serialized per target. Before the old hook handle list is captured, the framework freezes old code so further hook registrations from old code fail. In-flight hook calls keep using the hook chain snapshot that was active when they started. </p> <p> Returning {@code true} declares that the old generation is ready to be retired. Before returning {@code true}, modules must stop all module-owned Java and native threads, unregister native hooks and external callbacks, release JNI global references to module-classloader objects, and clear references to module objects stored by system or app classes. </p> <p> Returning {@code false} rejects the hot reload request. For service-triggered requests, this is reported as {@code HotReloadResult.Status.FAILED} with a null message. If this callback or the subsequent reload operation throws, the request is reported as failed with a framework-provided diagnostic message. </p> @param param Information about the hot reloading event @return {@code true} to allow hot reloading to proceed, {@code false} to cancel hot reloading",
+          "line": 265
         },
         {
           "name": "onHotReloaded",
-          "signature": "default void onHotReloaded(@NonNull HotReloadedParam param)",
+          "signature": "void onHotReloaded(@NonNull HotReloadedParam param)",
           "returnType": "void",
-          "sinceApi": 102,
-          "doc": "Called in new code after reload succeeds. Package callbacks are not automatically replayed. Restore state with param.getSavedInstanceState() and replace/unhook old hooks via param.getOldHookHandles()."
+          "params": [
+            "@NonNull HotReloadedParam param"
+          ],
+          "sinceApi": 101,
+          "doc": "Gets notified when the module has been reloaded. <p>This callback runs in <b>new</b> code.</p> <p> Package lifecycle callbacks are not automatically replayed after hot reload. Override this method to atomically replace old hooks through {@link XposedInterface.HookHandle#replaceHook(XposedInterface.Hooker)}, remove hooks that should not survive, or perform reload-specific initialization. The default implementation only unhooks all old hooks. </p> <p> The framework keeps the previous module generation strongly reachable until this callback finishes. After this callback returns or throws, the framework releases all references it owns to the old generation, except for references required by old hooks that remain installed and any references kept by module code. Classloader collection and unloading of native libraries associated with it are runtime-dependent and are not guaranteed to happen immediately. </p> <p> The framework does not call {@code UnregisterNatives}, {@code JNI_OnUnload}, or {@code dlclose} as part of hot reload. If all old Java references are removed while old native threads, callbacks, hooks, or JNI global references are still active, any resulting crash or undefined behavior is a module bug. </p> @param param Information about the hot reloaded event",
+          "line": 296
         }
       ]
     },
     {
-      "name": "io.github.libxposed.api.error.HookFailedError",
-      "type": "class extends Error",
+      "name": "io.github.libxposed.api.XposedModuleInterface.ModuleLoadedParam",
+      "simpleName": "ModuleLoadedParam",
+      "type": "interface",
+      "packageName": "io.github.libxposed.api",
+      "filePath": "api/api/src/main/java/io/github/libxposed/api/XposedModuleInterface.java",
       "sinceApi": 101,
-      "summary": "Unchecked error thrown when a hook operation fails due to framework internal error.",
-      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/error/HookFailedError.html"
+      "summary": "Wraps information about the process in which the module is loaded. This information only indicates the state at the time of loading and will not be updated.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/ModuleLoadedParam.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "isSystemServer",
+          "signature": "boolean isSystemServer()",
+          "returnType": "boolean",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Returns whether the current process is system server. @return {@code true} if the current process is system server",
+          "line": 32
+        },
+        {
+          "name": "getProcessName",
+          "signature": "String getProcessName()",
+          "returnType": "String",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Gets the process name. @return The process name",
+          "line": 40
+        }
+      ]
     },
     {
-      "name": "io.github.libxposed.api.error.XposedFrameworkError",
-      "type": "class extends Error",
+      "name": "io.github.libxposed.api.XposedModuleInterface.PackageLoadedParam",
+      "simpleName": "PackageLoadedParam",
+      "type": "interface",
+      "packageName": "io.github.libxposed.api",
+      "filePath": "api/api/src/main/java/io/github/libxposed/api/XposedModuleInterface.java",
       "sinceApi": 101,
-      "summary": "Unchecked error thrown when the framework encounters an unrecoverable internal error.",
-      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/error/XposedFrameworkError.html"
+      "summary": "Wraps information about the package being loaded. This information only indicates the state at the time of loading and will not be updated.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/PackageLoadedParam.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "getPackageName",
+          "signature": "String getPackageName()",
+          "returnType": "String",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Gets the package name of the current package. @return The package name.",
+          "line": 54
+        },
+        {
+          "name": "getApplicationInfo",
+          "signature": "ApplicationInfo getApplicationInfo()",
+          "returnType": "ApplicationInfo",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Gets the {@link ApplicationInfo} of the current package. @return The ApplicationInfo.",
+          "line": 62
+        },
+        {
+          "name": "isFirstPackage",
+          "signature": "boolean isFirstPackage()",
+          "returnType": "boolean",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Returns whether this is the first and main package loaded in the process. @return {@code true} if this is the first package.",
+          "line": 69
+        },
+        {
+          "name": "getDefaultClassLoader",
+          "signature": "ClassLoader getDefaultClassLoader()",
+          "returnType": "ClassLoader",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Gets the default classloader of the current package. This is the classloader that loads the package's code, resources and custom {@link AppComponentFactory}.",
+          "line": 77
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.api.XposedModuleInterface.PackageReadyParam",
+      "simpleName": "PackageReadyParam",
+      "type": "interface",
+      "packageName": "io.github.libxposed.api",
+      "filePath": "api/api/src/main/java/io/github/libxposed/api/XposedModuleInterface.java",
+      "sinceApi": 101,
+      "summary": "Wraps information about the package whose classloader is ready. This information only indicates the state at the time of loading and will not be updated.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/PackageReadyParam.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "getClassLoader",
+          "signature": "ClassLoader getClassLoader()",
+          "returnType": "ClassLoader",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Gets the classloader of the current package. It may be different from {@link #getDefaultClassLoader()} if the package has a custom {@link AppComponentFactory} that creates a different classloader.",
+          "line": 91
+        },
+        {
+          "name": "getAppComponentFactory",
+          "signature": "AppComponentFactory getAppComponentFactory()",
+          "returnType": "AppComponentFactory",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Gets the {@link AppComponentFactory} of the current package.",
+          "line": 98
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.api.XposedModuleInterface.SystemServerStartingParam",
+      "simpleName": "SystemServerStartingParam",
+      "type": "interface",
+      "packageName": "io.github.libxposed.api",
+      "filePath": "api/api/src/main/java/io/github/libxposed/api/XposedModuleInterface.java",
+      "sinceApi": 101,
+      "summary": "Wraps information about system server. This information only indicates the state at the time of loading and will not be updated.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/SystemServerStartingParam.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "getClassLoader",
+          "signature": "ClassLoader getClassLoader()",
+          "returnType": "ClassLoader",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Gets the class loader of system server.",
+          "line": 110
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.api.XposedModuleInterface.HotReloadingParam",
+      "simpleName": "HotReloadingParam",
+      "type": "interface",
+      "packageName": "io.github.libxposed.api",
+      "filePath": "api/api/src/main/java/io/github/libxposed/api/XposedModuleInterface.java",
+      "sinceApi": 101,
+      "summary": "Wraps information about the hot reloading event.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/HotReloadingParam.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "getExtras",
+          "signature": "Bundle getExtras()",
+          "returnType": "Bundle",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Gets the data passed from the module app when triggering hot reload through the service. This can be null if the app passes {@code null} or the hot reload is triggered by app updating. The bundle should contain only values that can be unmarshalled without the module's class loader, such as primitive values, strings, arrays, and framework {@link Bundle} instances.",
+          "line": 125
+        },
+        {
+          "name": "setSavedInstanceState",
+          "signature": "void setSavedInstanceState(@Nullable Object outState)",
+          "returnType": "void",
+          "params": [
+            "@Nullable Object outState"
+          ],
+          "sinceApi": 101,
+          "doc": "Sets the data to be passed to the new code after hot reloading. This can be retrieved in {@link #onHotReloaded(HotReloadedParam)}. The saved state must not contain objects created under the old module classloader because retaining them in the new generation can keep the old generation strongly reachable after hot reload. Use classloader-neutral values to transfer state. <p> Implementations should reject old-module-classloader objects when they are detected. This check is a diagnostic aid, not a complete object graph verifier; passing an undetected old-module object is still a module lifecycle bug. </p> @param outState The data to be passed to the new code after hot reloading @throws IllegalArgumentException if {@code outState} contains an object detected as being created under the old module classloader",
+          "line": 143
+        }
+      ]
+    },
+    {
+      "name": "io.github.libxposed.api.XposedModuleInterface.HotReloadedParam",
+      "simpleName": "HotReloadedParam",
+      "type": "interface",
+      "packageName": "io.github.libxposed.api",
+      "filePath": "api/api/src/main/java/io/github/libxposed/api/XposedModuleInterface.java",
+      "sinceApi": 101,
+      "summary": "Wraps information about the hot reloaded event.",
+      "javadocUrl": "https://libxposed.github.io/api/io/github/libxposed/api/HotReloadedParam.html",
+      "constants": [],
+      "methods": [
+        {
+          "name": "getExtras",
+          "signature": "Bundle getExtras()",
+          "returnType": "Bundle",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Gets the data passed from the module app when triggering hot reload. This can be null if the app passes {@code null} or the hot reload is triggered by app updating.",
+          "line": 156
+        },
+        {
+          "name": "getSavedInstanceState",
+          "signature": "Object getSavedInstanceState()",
+          "returnType": "Object",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Gets the data set in {@link HotReloadingParam#setSavedInstanceState(Object)}.",
+          "line": 162
+        },
+        {
+          "name": "getOldHookHandles",
+          "signature": "HookHandle> getOldHookHandles()",
+          "returnType": "HookHandle>",
+          "params": [],
+          "sinceApi": 101,
+          "doc": "Gets a list of hook handles created by the previous generation of this module. The new code can choose to remove or atomically replace these hooks with new ones through {@link XposedInterface.HookHandle#replaceHook(XposedInterface.Hooker)}.",
+          "line": 170
+        }
+      ]
     }
   ]
 }

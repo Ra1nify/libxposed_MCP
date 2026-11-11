@@ -36665,70 +36665,185 @@ var api_default = {
   javadocBaseUrl: "https://libxposed.github.io/api/",
   classes: [
     {
-      name: "io.github.libxposed.api.XposedInterface",
-      type: "interface",
+      name: "io.github.libxposed.api.error.HookFailedError",
+      simpleName: "HookFailedError",
+      type: "class",
+      packageName: "io.github.libxposed.api.error",
+      filePath: "api/api/src/main/java/io/github/libxposed/api/error/HookFailedError.java",
       sinceApi: 101,
-      summary: "Core interface providing operations for modules on application processes (hooking, invokers, remote preferences, logging, deoptimization).",
+      summary: "Thrown to indicate that a hook failed due to framework internal error. <p> Design Note: This inherits from {@link Error} rather than {@link RuntimeException} because hook failures are considered fatal framework bugs. Module developers <b>should not</b> attempt to catch this error to provide fallbacks. Instead, please report the issue to the framework maintainers so it can be fixed at the root. </p>",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/error/HookFailedError.html",
+      constants: [],
+      methods: [
+        {
+          name: "HookFailedError",
+          signature: "public HookFailedError(String message)",
+          returnType: "public",
+          params: [
+            "String message"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 14
+        },
+        {
+          name: "HookFailedError",
+          signature: "public HookFailedError(String message, Throwable cause)",
+          returnType: "public",
+          params: [
+            "String message",
+            "Throwable cause"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 18
+        },
+        {
+          name: "HookFailedError",
+          signature: "public HookFailedError(Throwable cause)",
+          returnType: "public",
+          params: [
+            "Throwable cause"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 22
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.api.error.XposedFrameworkError",
+      simpleName: "XposedFrameworkError",
+      type: "class",
+      packageName: "io.github.libxposed.api.error",
+      filePath: "api/api/src/main/java/io/github/libxposed/api/error/XposedFrameworkError.java",
+      sinceApi: 101,
+      summary: "Thrown to indicate that the Xposed framework function is broken.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/error/XposedFrameworkError.html",
+      constants: [],
+      methods: [
+        {
+          name: "XposedFrameworkError",
+          signature: "public XposedFrameworkError(String message)",
+          returnType: "public",
+          params: [
+            "String message"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 8
+        },
+        {
+          name: "XposedFrameworkError",
+          signature: "public XposedFrameworkError(String message, Throwable cause)",
+          returnType: "public",
+          params: [
+            "String message",
+            "Throwable cause"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 12
+        },
+        {
+          name: "XposedFrameworkError",
+          signature: "public XposedFrameworkError(Throwable cause)",
+          returnType: "public",
+          params: [
+            "Throwable cause"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 16
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.api.package-info",
+      simpleName: "package-info",
+      type: "package-info",
+      packageName: "io.github.libxposed.api",
+      filePath: "api/api/src/main/java/io/github/libxposed/api/package-info.java",
+      sinceApi: 101,
+      summary: "Package-level documentation and module interface specification.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/package-summary.html",
+      methods: [],
+      constants: []
+    },
+    {
+      name: "io.github.libxposed.api.XposedInterface",
+      simpleName: "XposedInterface",
+      type: "interface",
+      packageName: "io.github.libxposed.api",
+      filePath: "api/api/src/main/java/io/github/libxposed/api/XposedInterface.java",
+      sinceApi: 101,
+      summary: "Xposed interface for modules to operate on application processes.",
       javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/XposedInterface.html",
       constants: [
-        { name: "API_101", type: "int", value: "101", doc: "Initial modern API level. Modules cannot inject into zygote; loaded only in target app process scope." },
-        { name: "API_102", type: "int", value: "102", doc: "API level 102. Introduces hot reloading, hook IDs and atomic replacement, and blocks legacy de.robv.android.xposed calls." },
-        { name: "LIB_API", type: "int", value: "102", doc: "Static version of the compile-time library API." },
-        { name: "PROP_CAP_SYSTEM", type: "long", value: "1L", doc: "Framework capability: can hook system_server and system processes." },
-        { name: "PROP_CAP_REMOTE", type: "long", value: "1L << 1", doc: "Framework capability: supports remote preferences and remote files." },
-        { name: "PROP_RT_API_PROTECTION", type: "long", value: "1L << 2", doc: "Framework runtime property: disallows accessing Xposed API via reflection or dynamically loaded code." },
-        { name: "PRIORITY_DEFAULT", type: "int", value: "50", doc: "Default hook priority." },
-        { name: "PRIORITY_LOWEST", type: "int", value: "Integer.MIN_VALUE", doc: "Executes at the end of the interceptor chain." },
-        { name: "PRIORITY_HIGHEST", type: "int", value: "Integer.MAX_VALUE", doc: "Executes at the beginning of the interceptor chain." }
+        {
+          name: "API_101",
+          type: "int",
+          value: "101",
+          doc: "API version 101. <p>Behavior changes: all modules</p> <ul> <li>Modules cannot be injected into zygote; they are only loaded within the process of the scope.</li> </ul> <p>Behavior changes: Modules targeting 101 or higher</p> <ul> <li>This is the first API version.</li> </ul>"
+        },
+        {
+          name: "API_102",
+          type: "int",
+          value: "102",
+          doc: "API version 102. <p>New features</p> <ul> <li>Hot reload allows modules to be updated without restarting the process.</li> <li>Module entries can stop receiving subsequent lifecycle callbacks.</li> <li>Hooks can be atomically replaced by api or same id.</li> </ul> <p>Behavior changes: Modules targeting 102 or higher</p> <ul> <li>Libxposed modules can not call legacy {@code de.robv.android.xposed} APIs.</li> </ul>"
+        },
+        {
+          name: "LIB_API",
+          type: "int",
+          value: "API_102",
+          doc: "The API version of this <b>library</b>. This is a static value for the framework. Modules should use {@link #getApiVersion()} to check the API version at runtime."
+        },
+        {
+          name: "PROP_CAP_SYSTEM",
+          type: "long",
+          value: "1L",
+          doc: "The framework has the capability to hook system_server and other system processes."
+        },
+        {
+          name: "PROP_CAP_REMOTE",
+          type: "long",
+          value: "1L << 1",
+          doc: "The framework provides remote preferences and remote files support."
+        },
+        {
+          name: "PROP_RT_API_PROTECTION",
+          type: "long",
+          value: "1L << 2",
+          doc: "The framework disallows accessing Xposed API via reflection or dynamically loaded code."
+        },
+        {
+          name: "PRIORITY_DEFAULT",
+          type: "int",
+          value: "50",
+          doc: "The default hook priority."
+        },
+        {
+          name: "PRIORITY_LOWEST",
+          type: "int",
+          value: "Integer.MIN_VALUE",
+          doc: "Execute at the end of the interception chain."
+        },
+        {
+          name: "PRIORITY_HIGHEST",
+          type: "int",
+          value: "Integer.MAX_VALUE",
+          doc: "Execute at the beginning of the interception chain."
+        }
       ],
       methods: [
         {
-          name: "hook",
-          signature: "HookBuilder hook(@NonNull Executable origin)",
-          returnType: "HookBuilder",
-          params: ["origin: Executable (Method or Constructor to hook)"],
-          sinceApi: 101,
-          doc: "Initiates hook creation for a method or constructor. Returns a fluent HookBuilder."
-        },
-        {
-          name: "hookClassInitializer",
-          signature: "HookBuilder hookClassInitializer(@NonNull Class<?> origin)",
-          returnType: "HookBuilder",
-          params: ["origin: Class<?> whose static initializer (<clinit>) to hook"],
-          sinceApi: 101,
-          doc: "Hooks class static initializer (<clinit>). Treated as static void() with no args. If class is already initialized, hook will never trigger."
-        },
-        {
-          name: "deoptimize",
-          signature: "boolean deoptimize(@NonNull Executable executable)",
-          returnType: "boolean",
-          params: ["executable: Executable to deoptimize"],
-          sinceApi: 101,
-          doc: "Forces ART to deoptimize the caller to prevent inlining of small methods that prevent hooks from executing."
-        },
-        {
-          name: "getInvoker",
-          signature: "Invoker<?, Method> getInvoker(@NonNull Method method)",
-          returnType: "Invoker<?, Method>",
-          params: ["method: Method"],
-          sinceApi: 101,
-          doc: "Gets an invoker bypassing access checks. Can be configured to invoke original method or specific chain slice via setType()."
-        },
-        {
-          name: "getInvoker",
-          signature: "<T> CtorInvoker<T> getInvoker(@NonNull Constructor<T> constructor)",
-          returnType: "CtorInvoker<T>",
-          params: ["constructor: Constructor<T>"],
-          sinceApi: 101,
-          doc: "Gets a constructor invoker to create instances bypassing access checks or with special initialization."
-        },
-        {
           name: "getApiVersion",
-          signature: "default int getApiVersion()",
+          signature: "int getApiVersion()",
           returnType: "int",
           params: [],
           sinceApi: 101,
-          doc: "Returns the runtime Xposed framework API level (e.g. 101 or 102)."
+          doc: "Gets the runtime Xposed API version. Framework implementations <b>must not</b> override this method.",
+          line: 445
         },
         {
           name: "getFrameworkName",
@@ -36736,7 +36851,8 @@ var api_default = {
           returnType: "String",
           params: [],
           sinceApi: 101,
-          doc: "Returns framework implementation name (e.g. LSPosed)."
+          doc: "Gets the Xposed framework name of current implementation.",
+          line: 453
         },
         {
           name: "getFrameworkVersion",
@@ -36744,7 +36860,8 @@ var api_default = {
           returnType: "String",
           params: [],
           sinceApi: 101,
-          doc: "Returns framework version string."
+          doc: "Gets the Xposed framework version of current implementation.",
+          line: 459
         },
         {
           name: "getFrameworkVersionCode",
@@ -36752,7 +36869,8 @@ var api_default = {
           returnType: "long",
           params: [],
           sinceApi: 101,
-          doc: "Returns framework version code."
+          doc: "Gets the Xposed framework version code of current implementation.",
+          line: 464
         },
         {
           name: "getFrameworkProperties",
@@ -36760,15 +36878,90 @@ var api_default = {
           returnType: "long",
           params: [],
           sinceApi: 101,
-          doc: "Returns bitmask of framework capabilities and runtime properties."
+          doc: "Gets the Xposed framework properties. Properties with prefix {@code PROP_RT_} may change among launches.",
+          line: 470
+        },
+        {
+          name: "hook",
+          signature: "HookBuilder hook(@NonNull Executable origin)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull Executable origin"
+          ],
+          sinceApi: 101,
+          doc: "Hook a method / constructor. @param origin The executable to be hooked @return The builder for the hook",
+          line: 479
+        },
+        {
+          name: "hookClassInitializer",
+          signature: "HookBuilder hookClassInitializer(@NonNull Class<?> origin)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull Class<?> origin"
+          ],
+          sinceApi: 101,
+          doc: "Hook the static initializer ({@code <clinit>}) of a class. <p>The static initializer is treated as a regular {@code static void()} method with no parameters. Accordingly, in the {@link Chain} passed to the hooker:</p> <ul> <li>{@link Chain#getExecutable()} returns a synthetic {@link Method} representing the static initializer.</li> <li>{@link Chain#getThisObject()} always returns {@code null}.</li> <li>{@link Chain#getArgs()} returns an empty list.</li> <li>{@link Chain#proceed()} returns {@code null}.</li> </ul> <p>Note: If the class is already initialized, the hook will never be called.</p> @param origin The class whose static initializer is to be hooked @return The builder for the hook",
+          line: 500
+        },
+        {
+          name: "deoptimize",
+          signature: "boolean deoptimize(@NonNull Executable executable)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Executable executable"
+          ],
+          sinceApi: 101,
+          doc: 'Deoptimizes a method / constructor in case hooked callee is not called because of inline. <p>By deoptimizing the method, the runtime will fall back to calling all callees without inlining. For example, when a short hooked method B is invoked by method A, the callback to B is not invoked after hooking, which may mean A has inlined B inside its method body. To force A to call the hooked B, you can deoptimize A and then your hook can take effect.</p> <p>Generally, you need to find all the callers of your hooked callee, and that can hardly be achieved (but you can still search all callers by using <a href="https://github.com/LuckyPray/DexKit">DexKit</a>). Use this method if you are sure the deoptimized callers are all you need. Otherwise, it would be better to change the hook point or to deoptimize the whole app manually (by simply reinstalling the app without uninstall).</p> @param executable The method / constructor to deoptimize @return Indicate whether the deoptimizing succeed or not',
+          line: 518
+        },
+        {
+          name: "getInvoker",
+          signature: "Invoker<?, Method> getInvoker(@NonNull Method method)",
+          returnType: "Invoker<?, Method>",
+          params: [
+            "@NonNull Method method"
+          ],
+          sinceApi: 101,
+          doc: "Get a method invoker for the given method. Invocations through invokers will bypass access checks. The default type of the invoker is {@link Invoker.Type.Chain#FULL}. @param method The method to get the invoker for @return The method invoker",
+          line: 528
+        },
+        {
+          name: "getInvoker",
+          signature: "CtorInvoker<T> getInvoker(@NonNull Constructor<T> constructor)",
+          returnType: "CtorInvoker<T>",
+          params: [
+            "@NonNull Constructor<T> constructor"
+          ],
+          sinceApi: 101,
+          doc: "Get a constructor invoker for the given constructor. Invocations through invokers will bypass access checks. The default type of the invoker is {@link Invoker.Type.Chain#FULL}. @param constructor The constructor to get the invoker for @param <T>         The type of the constructor @return The constructor invoker",
+          line: 539
         },
         {
           name: "log",
-          signature: "void log(int priority, @Nullable String tag, @NonNull String msg, @Nullable Throwable tr = null)",
+          signature: "void log(int priority, @Nullable String tag, @NonNull String msg)",
           returnType: "void",
-          params: ["priority: int (android.util.Log)", "tag: String?", "msg: String", "tr: Throwable?"],
+          params: [
+            "int priority",
+            "@Nullable String tag",
+            "@NonNull String msg"
+          ],
           sinceApi: 101,
-          doc: "Writes a message to the Xposed system log."
+          doc: "Writes a message to the Xposed log. @param priority The log priority, see {@link android.util.Log} @param tag      The log tag @param msg      The log message",
+          line: 548
+        },
+        {
+          name: "log",
+          signature: "void log(int priority, @Nullable String tag, @NonNull String msg, @Nullable Throwable tr)",
+          returnType: "void",
+          params: [
+            "int priority",
+            "@Nullable String tag",
+            "@NonNull String msg",
+            "@Nullable Throwable tr"
+          ],
+          sinceApi: 101,
+          doc: "Writes a message to the Xposed log. @param priority The log priority, see {@link android.util.Log} @param tag      The log tag @param msg      The log message @param tr       An exception to log",
+          line: 558
         },
         {
           name: "getModuleApplicationInfo",
@@ -36776,15 +36969,19 @@ var api_default = {
           returnType: "ApplicationInfo",
           params: [],
           sinceApi: 101,
-          doc: "Returns the ApplicationInfo for the module itself (sourceDir, nativeLibraryDir, etc.)."
+          doc: "Gets the application info of the module.",
+          line: 564
         },
         {
           name: "getRemotePreferences",
           signature: "SharedPreferences getRemotePreferences(@NonNull String group)",
           returnType: "SharedPreferences",
-          params: ["group: String"],
+          params: [
+            "@NonNull String group"
+          ],
           sinceApi: 101,
-          doc: "Retrieves read-only cross-process preferences stored in the Xposed framework for this module."
+          doc: "Gets remote preferences stored in Xposed framework. Note that those are read-only in hooked apps. @param group Group name @return The preferences @throws UnsupportedOperationException If the framework is embedded",
+          line: 574
         },
         {
           name: "listRemoteFiles",
@@ -36792,203 +36989,910 @@ var api_default = {
           returnType: "String[]",
           params: [],
           sinceApi: 101,
-          doc: "Lists files in the module's shared data directory provided by the framework."
+          doc: "List all files in the module's shared data directory. @return The file list @throws UnsupportedOperationException If the framework is embedded",
+          line: 583
         },
         {
           name: "openRemoteFile",
-          signature: "ParcelFileDescriptor openRemoteFile(@NonNull String name) throws FileNotFoundException",
+          signature: "ParcelFileDescriptor openRemoteFile(@NonNull String name)",
           returnType: "ParcelFileDescriptor",
-          params: ["name: String (filename without path separators)"],
+          params: [
+            "@NonNull String name"
+          ],
           sinceApi: 101,
-          doc: "Opens a read-only ParcelFileDescriptor to a file in module's shared data directory."
+          doc: "Open a file in the module's shared data directory. The file is opened in read-only mode. @param name File name, must not contain path separators and . or .. @return The file descriptor @throws FileNotFoundException         If the file does not exist or the path is forbidden @throws UnsupportedOperationException If the framework is embedded",
+          line: 594
         }
       ]
     },
     {
-      name: "io.github.libxposed.api.XposedInterface.Hooker",
+      name: "io.github.libxposed.api.XposedInterface.Invoker",
+      simpleName: "Invoker",
       type: "interface",
+      packageName: "io.github.libxposed.api",
+      filePath: "api/api/src/main/java/io/github/libxposed/api/XposedInterface.java",
       sinceApi: 101,
-      summary: "Functional interface for intercepting method or constructor calls.",
-      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/XposedInterface.Hooker.html",
+      summary: "Invoker for a method or constructor. Invocations through invokers will bypass access checks.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/Invoker.html",
+      constants: [
+        {
+          name: "ORIGIN",
+          type: "Origin",
+          value: "new Origin()",
+          doc: "Type of the invoker, which determines the hook chain to be invoked A convenience constant for {@link Origin}."
+        }
+      ],
       methods: [
         {
-          name: "intercept",
-          signature: "Object intercept(@NonNull Chain chain) throws Throwable",
-          returnType: "Object",
-          params: ["chain: Chain (interceptor invocation chain)"],
+          name: "setType",
+          signature: "T setType(@NonNull Type type)",
+          returnType: "T",
+          params: [
+            "@NonNull Type type"
+          ],
           sinceApi: 101,
-          doc: "Intercepts execution. Call chain.proceed() to execute target or next hooker. Modify return value or throw exceptions as needed. For void/constructors, return value is ignored."
+          doc: "Sets the type of the invoker, which determines the hook chain to be invoked",
+          line: 122
+        },
+        {
+          name: "invoke",
+          signature: "Object invoke(Object thisObject, Object... args)",
+          returnType: "Object",
+          params: [
+            "Object thisObject",
+            "Object... args"
+          ],
+          sinceApi: 101,
+          doc: "Invokes the method (or the constructor as a method) through the hook chain determined by the invoker's type. @param thisObject For non-static calls, the {@code this} pointer, otherwise {@code null} @param args       The arguments used for the method call @return The result returned from the invoked method <p>For void methods and constructors, always returns {@code null}.</p> @see Method#invoke(Object, Object...)",
+          line: 134
+        },
+        {
+          name: "invokeSpecial",
+          signature: "Object invokeSpecial(@NonNull Object thisObject, Object... args)",
+          returnType: "Object",
+          params: [
+            "@NonNull Object thisObject",
+            "Object... args"
+          ],
+          sinceApi: 101,
+          doc: "Invokes the special (non-virtual) method (or the constructor as a method) on a given object instance, similar to the functionality of {@code CallNonVirtual<type>Method} in JNI, which invokes an instance (nonstatic) method on a Java object. This method is useful when you need to call a specific method on an object, bypassing any overridden methods in subclasses and directly invoking the method defined in the specified class. <p>This method is useful when you need to call {@code super.xxx()} in a hooked constructor.</p> @param thisObject The {@code this} pointer @param args       The arguments used for the method call @return The result returned from the invoked method <p>For void methods and constructors, always returns {@code null}.</p> @see Method#invoke(Object, Object...)",
+          line: 151
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.api.XposedInterface.Invoker.Origin",
+      simpleName: "Origin",
+      type: "record",
+      packageName: "io.github.libxposed.api",
+      filePath: "api/api/src/main/java/io/github/libxposed/api/XposedInterface.java",
+      sinceApi: 101,
+      summary: "Invokes the original executable, skipping all hooks.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/Origin.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.api.XposedInterface.Invoker.Chain",
+      simpleName: "Chain",
+      type: "record",
+      packageName: "io.github.libxposed.api",
+      filePath: "api/api/src/main/java/io/github/libxposed/api/XposedInterface.java",
+      sinceApi: 101,
+      summary: "Invokes the executable starting from the middle of the hook chain, skipping all hooks with priority higher than the given value. @param maxPriority The maximum priority of hooks to include in the chain",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/Chain.html",
+      constants: [
+        {
+          name: "FULL",
+          type: "Chain",
+          value: "new Chain(PRIORITY_HIGHEST)",
+          doc: "Invoking the executable with full hook chain."
+        }
+      ],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.api.XposedInterface.CtorInvoker",
+      simpleName: "CtorInvoker",
+      type: "interface",
+      packageName: "io.github.libxposed.api",
+      filePath: "api/api/src/main/java/io/github/libxposed/api/XposedInterface.java",
+      sinceApi: 101,
+      summary: "Invoker for a constructor. @param <T> The type of the constructor",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/CtorInvoker.html",
+      constants: [],
+      methods: [
+        {
+          name: "newInstance",
+          signature: "T newInstance(Object... args)",
+          returnType: "T",
+          params: [
+            "Object... args"
+          ],
+          sinceApi: 101,
+          doc: "Creates a new instance through the hook chain determined by the invoker's type. @param args The arguments used for the construction @return The instance created and initialized by the constructor @see Constructor#newInstance(Object...)",
+          line: 168
+        },
+        {
+          name: "newInstanceSpecial",
+          signature: "U newInstanceSpecial(@NonNull Class<U> subClass, Object... args)",
+          returnType: "U",
+          params: [
+            "@NonNull Class<U> subClass",
+            "Object... args"
+          ],
+          sinceApi: 101,
+          doc: "Creates a new instance of the given subclass, but initializes it with a parent constructor. This could leave the object in an invalid state, where the subclass constructor is not called and the fields of the subclass are not initialized. <p>This method is useful when you need to initialize some fields in the subclass by yourself.</p> @param <U>      The type of the subclass @param subClass The subclass to create a new instance @param args     The arguments used for the construction @return The instance of subclass initialized by the constructor @see Constructor#newInstance(Object...)",
+          line: 184
         }
       ]
     },
     {
       name: "io.github.libxposed.api.XposedInterface.Chain",
+      simpleName: "Chain",
       type: "interface",
+      packageName: "io.github.libxposed.api",
+      filePath: "api/api/src/main/java/io/github/libxposed/api/XposedInterface.java",
       sinceApi: 101,
-      summary: "Represents the ongoing interception execution chain.",
-      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/XposedInterface.Chain.html",
+      summary: "Interceptor chain for a method or constructor. Chain objects cannot be shared among threads or reused after {@link Hooker#intercept(Chain)} ends.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/Chain.html",
+      constants: [],
       methods: [
-        { name: "getExecutable", signature: "Executable getExecutable()", returnType: "Executable", sinceApi: 101, doc: "Returns the method or constructor being hooked." },
-        { name: "getThisObject", signature: "Object getThisObject()", returnType: "Object", sinceApi: 101, doc: "Returns receiver object, or null for static methods." },
-        { name: "getArgs", signature: "List<Object> getArgs()", returnType: "List<Object>", sinceApi: 101, doc: "Returns immutable list of current arguments." },
-        { name: "getArg", signature: "Object getArg(int index)", returnType: "Object", sinceApi: 101, doc: "Returns argument at specified index with bounds checking." },
-        { name: "proceed", signature: "Object proceed() throws Throwable", returnType: "Object", sinceApi: 101, doc: "Proceeds down chain with original arguments and receiver." },
-        { name: "proceed", signature: "Object proceed(@NonNull Object[] args) throws Throwable", returnType: "Object", sinceApi: 101, doc: "Proceeds down chain with replaced arguments." },
-        { name: "proceedWith", signature: "Object proceedWith(@NonNull Object thisObject) throws Throwable", returnType: "Object", sinceApi: 101, doc: "Proceeds down chain with replaced receiver." },
-        { name: "proceedWith", signature: "Object proceedWith(@NonNull Object thisObject, @NonNull Object[] args) throws Throwable", returnType: "Object", sinceApi: 101, doc: "Proceeds down chain with replaced receiver and arguments." }
+        {
+          name: "getExecutable",
+          signature: "Executable getExecutable()",
+          returnType: "Executable",
+          params: [],
+          sinceApi: 101,
+          doc: "Gets the method / constructor being hooked.",
+          line: 196
+        },
+        {
+          name: "getThisObject",
+          signature: "Object getThisObject()",
+          returnType: "Object",
+          params: [],
+          sinceApi: 101,
+          doc: "Gets the {@code this} pointer for the call, or {@code null} for static methods.",
+          line: 201
+        },
+        {
+          name: "getArgs",
+          signature: "List<Object> getArgs()",
+          returnType: "List<Object>",
+          params: [],
+          sinceApi: 101,
+          doc: "Gets the arguments. The returned list is immutable. If you want to change the arguments, you should call {@code proceed(Object...)} or {@code proceedWith(Object, Object...)} with the new arguments.",
+          line: 209
+        },
+        {
+          name: "getArg",
+          signature: "Object getArg(int index)",
+          returnType: "Object",
+          params: [
+            "int index"
+          ],
+          sinceApi: 101,
+          doc: "Gets the argument at the given index. @param index The argument index @return The argument at the given index @throws IndexOutOfBoundsException if index is out of bounds @throws ClassCastException        if the argument cannot be cast to the expected type",
+          line: 219
+        },
+        {
+          name: "proceed",
+          signature: "Object proceed()",
+          returnType: "Object",
+          params: [],
+          sinceApi: 101,
+          doc: "Proceeds to the next interceptor in the chain with the same arguments and {@code this} pointer. @return The result returned from next interceptor or the original executable if current interceptor is the last one in the chain. <p>For void methods and constructors, always returns {@code null}.</p> @throws Throwable if any interceptor or the original executable throws an exception",
+          line: 229
+        },
+        {
+          name: "proceed",
+          signature: "Object proceed(@NonNull Object[] args)",
+          returnType: "Object",
+          params: [
+            "@NonNull Object[] args"
+          ],
+          sinceApi: 101,
+          doc: "Proceeds to the next interceptor in the chain with the given arguments and the same {@code this} pointer. @param args The arguments used for the call @return The result returned from next interceptor or the original executable if current interceptor is the last one in the chain. <p>For void methods and constructors, always returns {@code null}.</p> @throws Throwable if any interceptor or the original executable throws an exception",
+          line: 240
+        },
+        {
+          name: "proceedWith",
+          signature: "Object proceedWith(@NonNull Object thisObject)",
+          returnType: "Object",
+          params: [
+            "@NonNull Object thisObject"
+          ],
+          sinceApi: 101,
+          doc: "Proceeds to the next interceptor in this chain with the same arguments and the given {@code this} object. Static method interceptors should not call this method. <p>This changes only the receiver used by the rest of the current chain. It does not change the executable returned by {@link #getExecutable()}, select a different override, or switch to another executable's hook chain. When this chain reaches its end, the framework invokes the original implementation of {@link #getExecutable()} on {@code thisObject}.</p> <p>For example, if {@link #getExecutable()} is {@code Parent.foo}, calling this method with a {@code Child} object still invokes the original {@code Parent.foo} on that object. It does not dispatch to {@code Child.foo} or run hooks registered for {@code Child.foo}. Use an {@link Invoker} to start a new invocation when virtual dispatch is desired.</p> <p>{@code thisObject} must be an instance of the declaring class of {@link #getExecutable()}.</p> @param thisObject The {@code this} object for the call @return The result returned from the next interceptor, or from the original executable if the current interceptor is the last one in the chain. <p>For void methods and constructors, always returns {@code null}.</p> @throws IllegalArgumentException if {@code thisObject} is not compatible with the declaring class of {@link #getExecutable()} @throws Throwable if any interceptor or the original executable throws an exception",
+          line: 267
+        },
+        {
+          name: "proceedWith",
+          signature: "Object proceedWith(@NonNull Object thisObject, @NonNull Object[] args)",
+          returnType: "Object",
+          params: [
+            "@NonNull Object thisObject",
+            "@NonNull Object[] args"
+          ],
+          sinceApi: 101,
+          doc: "Proceeds to the next interceptor in this chain with the given arguments and {@code this} object. Static method interceptors should not call this method. <p>This changes the receiver and arguments used by the rest of the current chain, but not which executable the chain belongs to. It does not select a different override or switch to another executable's hook chain. When this chain reaches its end, the framework invokes the original implementation of {@link #getExecutable()} on {@code thisObject}, using {@code args}.</p> <p>For example, if {@link #getExecutable()} is {@code Parent.foo}, calling this method with a {@code Child} object still invokes the original {@code Parent.foo} on that object. It does not dispatch to {@code Child.foo} or run hooks registered for {@code Child.foo}. Use an {@link Invoker} to start a new invocation when virtual dispatch is desired.</p> <p>{@code thisObject} must be an instance of the declaring class of {@link #getExecutable()}.</p> @param thisObject The {@code this} object for the call @param args       The arguments used for the call @return The result returned from the next interceptor, or from the original executable if the current interceptor is the last one in the chain. <p>For void methods and constructors, always returns {@code null}.</p> @throws IllegalArgumentException if {@code thisObject} is not compatible with the declaring class of {@link #getExecutable()} @throws Throwable if any interceptor or the original executable throws an exception",
+          line: 296
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.api.XposedInterface.Hooker",
+      simpleName: "Hooker",
+      type: "interface",
+      packageName: "io.github.libxposed.api",
+      filePath: "api/api/src/main/java/io/github/libxposed/api/XposedInterface.java",
+      sinceApi: 101,
+      summary: "Hooker for a method or constructor.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/Hooker.html",
+      constants: [],
+      methods: [
+        {
+          name: "intercept",
+          signature: "Object intercept(@NonNull Chain chain)",
+          returnType: "Object",
+          params: [
+            "@NonNull Chain chain"
+          ],
+          sinceApi: 101,
+          doc: "Intercepts a method / constructor call. @param chain The interceptor chain for the call @return The result to be returned from the interceptor. If the hooker does not want to change the result, it should call {@code chain.proceed()} and return its result. <p>For void methods and constructors, the return value is ignored by the framework.</p> @throws Throwable Throw any exception from the interceptor. The exception will propagate to the caller if not caught by any interceptor.",
+          line: 313
+        }
       ]
     },
     {
       name: "io.github.libxposed.api.XposedInterface.HookHandle",
+      simpleName: "HookHandle",
       type: "interface",
+      packageName: "io.github.libxposed.api",
+      filePath: "api/api/src/main/java/io/github/libxposed/api/XposedInterface.java",
       sinceApi: 101,
-      summary: "Handle returned when a hook is registered. Allows unhooking and atomic replacement.",
-      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/XposedInterface.HookHandle.html",
+      summary: "Handle for a hook.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/HookHandle.html",
+      constants: [],
       methods: [
-        { name: "getExecutable", signature: "Executable getExecutable()", returnType: "Executable", sinceApi: 101, doc: "Gets the hooked executable." },
-        { name: "unhook", signature: "void unhook()", returnType: "void", sinceApi: 101, doc: "Removes the hook. Idempotent." },
-        { name: "getId", signature: "String getId()", returnType: "String?", sinceApi: 102, doc: "Gets the unique hook ID, or null." },
-        { name: "replaceHook", signature: "HookHandle replaceHook(@NonNull Hooker hooker)", returnType: "HookHandle", sinceApi: 102, doc: "Atomically replaces this hook with a new hooker without changing priority, exception mode, or ID." }
+        {
+          name: "getExecutable",
+          signature: "Executable getExecutable()",
+          returnType: "Executable",
+          params: [],
+          sinceApi: 101,
+          doc: "Gets the method / constructor being hooked.",
+          line: 324
+        },
+        {
+          name: "unhook",
+          signature: "void unhook()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "Cancels the hook. This method is idempotent. It is safe to call this method multiple times.",
+          line: 329
+        },
+        {
+          name: "getId",
+          signature: "String getId()",
+          returnType: "String",
+          params: [],
+          sinceApi: 101,
+          doc: "Gets the unique id of the hook, or null if the hook is not assigned with an id.",
+          line: 336
+        },
+        {
+          name: "replaceHook",
+          signature: "HookHandle replaceHook(@NonNull Hooker hooker)",
+          returnType: "HookHandle",
+          params: [
+            "@NonNull Hooker hooker"
+          ],
+          sinceApi: 101,
+          doc: "Atomically replaces this hook with a new hooker and returns the new hook handle. <p> The replacement keeps the executable, priority, exception handling mode, and id of this hook. For a hook with an id, this targets the same hook as creating a new hook on the same executable with the same id. This method is the handle-based form of replacement and can also replace a hook without an id. It is useful during hot reloading when new code receives old hook handles from {@link XposedModuleInterface.HotReloadedParam#getOldHookHandles()}. After a successful replacement, this handle is no longer valid. </p> <p>The hook chain is snapshot based. Replacing a hook while a call is running does not affect that in-flight call.</p> @param hooker The new hooker object @return The new handle for the replaced hook @throws IllegalArgumentException if hooker is invalid @throws IllegalStateException    if this hook handle is no longer valid @throws HookFailedError          if replacement fails due to framework internal error",
+          line: 359
+        }
       ]
+    },
+    {
+      name: "io.github.libxposed.api.XposedInterface.ExceptionMode",
+      simpleName: "ExceptionMode",
+      type: "enum",
+      packageName: "io.github.libxposed.api",
+      filePath: "api/api/src/main/java/io/github/libxposed/api/XposedInterface.java",
+      sinceApi: 101,
+      summary: "Exception handling mode for hookers. This determines how the framework handles exceptions thrown by hookers. The default mode is {@link ExceptionMode#DEFAULT}.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/ExceptionMode.html",
+      constants: [],
+      methods: []
     },
     {
       name: "io.github.libxposed.api.XposedInterface.HookBuilder",
+      simpleName: "HookBuilder",
       type: "interface",
+      packageName: "io.github.libxposed.api",
+      filePath: "api/api/src/main/java/io/github/libxposed/api/XposedInterface.java",
       sinceApi: 101,
-      summary: "Fluent builder for configuring a hook.",
-      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/XposedInterface.HookBuilder.html",
+      summary: "Builder for configuring a hook.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/HookBuilder.html",
+      constants: [],
       methods: [
-        { name: "setPriority", signature: "HookBuilder setPriority(int priority)", returnType: "HookBuilder", sinceApi: 101, doc: "Sets priority (higher runs earlier)." },
-        { name: "setExceptionMode", signature: "HookBuilder setExceptionMode(@NonNull ExceptionMode mode)", returnType: "HookBuilder", sinceApi: 101, doc: "Sets DEFAULT, PROTECTIVE, or PASSTHROUGH." },
-        { name: "setId", signature: "HookBuilder setId(@Nullable String id)", returnType: "HookBuilder", sinceApi: 102, doc: "Sets hook ID for atomic replacement across reloads." },
-        { name: "intercept", signature: "HookHandle intercept(@NonNull Hooker hooker)", returnType: "HookHandle", sinceApi: 101, doc: "Attaches hooker and registers the hook." }
-      ]
-    },
-    {
-      name: "io.github.libxposed.api.XposedInterface.Invoker",
-      type: "interface",
-      sinceApi: 101,
-      summary: "Invoker for method calls bypassing access checks.",
-      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/XposedInterface.Invoker.html",
-      methods: [
-        { name: "setType", signature: "T setType(@NonNull Type type)", returnType: "T", sinceApi: 101, doc: "Sets invocation type: Invoker.Type.ORIGIN to skip hooks, or Invoker.Type.Chain to invoke hook chain." },
-        { name: "invoke", signature: "Object invoke(Object thisObject, Object... args) throws ...", returnType: "Object", sinceApi: 101, doc: "Invokes the method (virtual dispatch)." },
-        { name: "invokeSpecial", signature: "Object invokeSpecial(@NonNull Object thisObject, Object... args) throws ...", returnType: "Object", sinceApi: 101, doc: "Invokes non-virtual method directly on class (similar to super call)." }
-      ]
-    },
-    {
-      name: "io.github.libxposed.api.XposedInterface.CtorInvoker",
-      type: "interface",
-      sinceApi: 101,
-      summary: "Invoker for constructor calls bypassing access checks.",
-      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/XposedInterface.CtorInvoker.html",
-      methods: [
-        { name: "newInstance", signature: "T newInstance(Object... args) throws ...", returnType: "T", sinceApi: 101, doc: "Instantiates object through constructor." },
-        { name: "newInstanceSpecial", signature: "<U> U newInstanceSpecial(@NonNull Class<U> subClass, Object... args) throws ...", returnType: "U", sinceApi: 101, doc: "Instantiates subclass initialized with parent constructor." }
-      ]
-    },
-    {
-      name: "io.github.libxposed.api.XposedModule",
-      type: "abstract class",
-      sinceApi: 101,
-      summary: "Base class that every modern LibXposed module entry must extend.",
-      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/XposedModule.html",
-      methods: [
-        { name: "onModuleLoaded", signature: "void onModuleLoaded(@NonNull ModuleLoadedParam param)", returnType: "void", sinceApi: 101, doc: "Called when the module is loaded into target process." },
-        { name: "onPackageLoaded", signature: "void onPackageLoaded(@NonNull PackageLoadedParam param)", returnType: "void", sinceApi: 101, doc: "Called when an APK package has loaded." },
-        { name: "onPackageReady", signature: "void onPackageReady(@NonNull PackageReadyParam param)", returnType: "void", sinceApi: 101, doc: "Called when application classloader and context are fully initialized. Recommended place for most hooks." },
-        { name: "onSystemServerStarting", signature: "void onSystemServerStarting(@NonNull SystemServerStartingParam param)", returnType: "void", sinceApi: 101, doc: "Called when Android system_server is starting." },
-        { name: "onHotReloading", signature: "boolean onHotReloading(@NonNull HotReloadingParam param)", returnType: "boolean", sinceApi: 102, doc: "Called before hot reload occurs. Return true to proceed, save state with param.setSavedInstanceState()." },
-        { name: "onHotReloaded", signature: "void onHotReloaded(@NonNull HotReloadedParam param)", returnType: "void", sinceApi: 102, doc: "Called after hot reload succeeds. Restore state and clean old hooks via param.getOldHookHandles()." }
+        {
+          name: "setPriority",
+          signature: "HookBuilder setPriority(int priority)",
+          returnType: "HookBuilder",
+          params: [
+            "int priority"
+          ],
+          sinceApi: 101,
+          doc: "Sets the priority of the hook. Hooks with higher priority will be called before hooks with lower priority. The default priority is {@link XposedInterface#PRIORITY_DEFAULT}. @param priority The priority of the hook @return The builder itself for chaining",
+          line: 404
+        },
+        {
+          name: "setExceptionMode",
+          signature: "HookBuilder setExceptionMode(@NonNull ExceptionMode mode)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull ExceptionMode mode"
+          ],
+          sinceApi: 101,
+          doc: "Sets the exception handling mode for the hook. The default mode is {@link ExceptionMode#DEFAULT}. @param mode The exception handling mode @return The builder itself for chaining",
+          line: 412
+        },
+        {
+          name: "intercept",
+          signature: "HookHandle intercept(@NonNull Hooker hooker)",
+          returnType: "HookHandle",
+          params: [
+            "@NonNull Hooker hooker"
+          ],
+          sinceApi: 101,
+          doc: "Sets the hooker for the method / constructor and builds the hook. @param hooker The hooker object @return The handle for the hook @throws IllegalArgumentException if origin is framework internal or {@link Constructor#newInstance}, or hooker is invalid @throws HookFailedError          if hook fails due to framework internal error",
+          line: 424
+        },
+        {
+          name: "setId",
+          signature: "HookBuilder setId(@Nullable String id)",
+          returnType: "HookBuilder",
+          params: [
+            "@Nullable String id"
+          ],
+          sinceApi: 101,
+          doc: "Sets a unique id for the hook, default to {@code null}. An id is used for exclusively identifying a hook in the same module on the executable. A new hook with the same id in the same module on the executable will replace the old one atomically, and the old hook handle will be invalid. Hook ids are isolated between modules. <p>The hook chain is snapshot based. Replacing or adding a hook while a call is running does not affect that in-flight call.</p> @param id The id for the hook. It can be null if you don't care about replacing the hook later. @return The builder itself for chaining",
+          line: 439
+        }
       ]
     },
     {
       name: "io.github.libxposed.api.XposedInterfaceWrapper",
+      simpleName: "XposedInterfaceWrapper",
       type: "class",
+      packageName: "io.github.libxposed.api",
+      filePath: "api/api/src/main/java/io/github/libxposed/api/XposedInterfaceWrapper.java",
       sinceApi: 101,
-      summary: "Wrapper of XposedInterface used by module entry classes to shield framework implementation details and manage entry detachment.",
+      summary: "Wrapper of {@link XposedInterface} used by modules to shield framework implementation details.",
       javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/XposedInterfaceWrapper.html",
+      constants: [],
       methods: [
         {
-          name: "detach",
-          signature: "public final void detach()",
+          name: "attachFramework",
+          signature: "void attachFramework(@NonNull XposedInterface base, @NonNull Runnable detachImpl)",
           returnType: "void",
-          sinceApi: 102,
-          doc: "Stops all subsequent lifecycle callbacks (onPackageLoaded, onHotReloading, etc.) for the current module entry in current process. Only lifecycle callbacks are stopped; all XposedInterface APIs remain functional."
+          params: [
+            "@NonNull XposedInterface base",
+            "@NonNull Runnable detachImpl"
+          ],
+          sinceApi: 101,
+          doc: "Attaches the framework interface to the module. Modules <b>must not</b> call this method. It is reserved for framework implementations and may change without compatibility guarantees. @param base       The framework interface @param detachImpl The implementation of {@link #detach()}",
+          line: 35
         },
         {
-          name: "attachFramework",
-          signature: "public final void attachFramework(@NonNull XposedInterface base, @NonNull Runnable detachImpl)",
-          returnType: "void",
+          name: "IllegalStateException",
+          signature: 'throw new IllegalStateException("Framework already attached")',
+          returnType: "throw new",
+          params: [
+            '"Framework already attached"'
+          ],
           sinceApi: 101,
-          doc: "Internal framework attachment method annotated with @InternalApi. Modules MUST NOT invoke this method directly."
+          doc: "",
+          line: 37
+        },
+        {
+          name: "ensureAttached",
+          signature: "void ensureAttached()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 43
+        },
+        {
+          name: "IllegalStateException",
+          signature: 'throw new IllegalStateException("Framework not attached")',
+          returnType: "throw new",
+          params: [
+            '"Framework not attached"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 45
+        },
+        {
+          name: "detach",
+          signature: "void detach()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "Stops all subsequent lifecycle callbacks for the <b>current module entry</b> in the current process. After this method is called, the framework removes its reference to the entry instance and will no longer invoke any lifecycle callbacks (such as {@link XposedModuleInterface#onPackageLoaded}, {@link XposedModuleInterface#onHotReloading}, etc.) on the entry instance that called this method. Only lifecycle callbacks are affected; all {@link XposedInterface} APIs remain fully functional. <p>If the module declares multiple entry classes, only the entry that calls this method is affected. Other entries continue to receive their lifecycle callbacks as normal.</p> <p>This method is idempotent. Calling it multiple times has the same effect as calling it once.</p> <p>If the module expects its classloader to become collectible after detaching, it must also remove module-owned references and execution contexts that keep module objects reachable, such as installed hooks, Java threads, and callbacks held by system or app objects. If native code is still running after all Java references to the module classloader are cleared, later runtime unloading of native libraries may crash the process; this is a module lifecycle bug.</p> <p>Typical use cases include:</p> <ul> <li>The module entry has finished all its initialization work and no longer needs to respond to further package loading events.</li> <li>For modules that target multiple apps with a dedicated entry class per app: if the entry detects it is not loaded in its target app, it can call this method immediately to avoid receiving any further callbacks.</li> <li>Calling this method together with unhooking all registered hooks, so that the module classloader can be garbage collected when no longer needed.</li> </ul>",
+          line: 82
+        },
+        {
+          name: "getApiVersion",
+          signature: "int getApiVersion()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 88
+        },
+        {
+          name: "getFrameworkName",
+          signature: "String getFrameworkName()",
+          returnType: "String",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 95
+        },
+        {
+          name: "getFrameworkVersion",
+          signature: "String getFrameworkVersion()",
+          returnType: "String",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 102
+        },
+        {
+          name: "getFrameworkVersionCode",
+          signature: "long getFrameworkVersionCode()",
+          returnType: "long",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 108
+        },
+        {
+          name: "getFrameworkProperties",
+          signature: "long getFrameworkProperties()",
+          returnType: "long",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 114
+        },
+        {
+          name: "hook",
+          signature: "HookBuilder hook(@NonNull Executable origin)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull Executable origin"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 121
+        },
+        {
+          name: "hookClassInitializer",
+          signature: "HookBuilder hookClassInitializer(@NonNull Class<?> origin)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull Class<?> origin"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 128
+        },
+        {
+          name: "deoptimize",
+          signature: "boolean deoptimize(@NonNull Executable executable)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Executable executable"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 134
+        },
+        {
+          name: "getInvoker",
+          signature: "Invoker<?, Method> getInvoker(@NonNull Method method)",
+          returnType: "Invoker<?, Method>",
+          params: [
+            "@NonNull Method method"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 141
+        },
+        {
+          name: "getInvoker",
+          signature: "CtorInvoker<T> getInvoker(@NonNull Constructor<T> constructor)",
+          returnType: "CtorInvoker<T>",
+          params: [
+            "@NonNull Constructor<T> constructor"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 148
+        },
+        {
+          name: "log",
+          signature: "void log(int priority, @Nullable String tag, @NonNull String msg)",
+          returnType: "void",
+          params: [
+            "int priority",
+            "@Nullable String tag",
+            "@NonNull String msg"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 154
+        },
+        {
+          name: "log",
+          signature: "void log(int priority, @Nullable String tag, @NonNull String msg, @Nullable Throwable tr)",
+          returnType: "void",
+          params: [
+            "int priority",
+            "@Nullable String tag",
+            "@NonNull String msg",
+            "@Nullable Throwable tr"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 160
+        },
+        {
+          name: "getRemotePreferences",
+          signature: "SharedPreferences getRemotePreferences(@NonNull String name)",
+          returnType: "SharedPreferences",
+          params: [
+            "@NonNull String name"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 167
+        },
+        {
+          name: "getModuleApplicationInfo",
+          signature: "ApplicationInfo getModuleApplicationInfo()",
+          returnType: "ApplicationInfo",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 174
+        },
+        {
+          name: "listRemoteFiles",
+          signature: "String[] listRemoteFiles()",
+          returnType: "String[]",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 181
+        },
+        {
+          name: "openRemoteFile",
+          signature: "ParcelFileDescriptor openRemoteFile(@NonNull String name)",
+          returnType: "ParcelFileDescriptor",
+          params: [
+            "@NonNull String name"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 188
         }
       ]
+    },
+    {
+      name: "io.github.libxposed.api.XposedModule",
+      simpleName: "XposedModule",
+      type: "class",
+      packageName: "io.github.libxposed.api",
+      filePath: "api/api/src/main/java/io/github/libxposed/api/XposedModule.java",
+      sinceApi: 101,
+      summary: "Super class which all Xposed module entry classes should extend.<br/> Entry classes will be instantiated once for each loaded module generation in a process.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/XposedModule.html",
+      constants: [],
+      methods: []
     },
     {
       name: "io.github.libxposed.api.XposedModuleInterface",
+      simpleName: "XposedModuleInterface",
       type: "interface",
+      packageName: "io.github.libxposed.api",
+      filePath: "api/api/src/main/java/io/github/libxposed/api/XposedModuleInterface.java",
       sinceApi: 101,
-      summary: "Container for lifecycle callback signatures and parameter interfaces (ModuleLoadedParam, PackageLoadedParam, PackageReadyParam, SystemServerStartingParam, HotReloadingParam, HotReloadedParam).",
+      summary: "Interface for module initialization.",
       javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/XposedModuleInterface.html",
+      constants: [],
       methods: [
         {
           name: "onModuleLoaded",
-          signature: "default void onModuleLoaded(@NonNull ModuleLoadedParam param)",
+          signature: "void onModuleLoaded(@NonNull ModuleLoadedParam param)",
           returnType: "void",
+          params: [
+            "@NonNull ModuleLoadedParam param"
+          ],
           sinceApi: 101,
-          doc: "Called when initial module generation is loaded into target process."
+          doc: "Gets notified when a module generation is loaded into the target process. <p> This callback is called for the initial module load. Hot reload does not automatically replay this callback or package lifecycle callbacks; modules that opt into hot reload should override {@link #onHotReloaded(HotReloadedParam)} and explicitly install or replace the hooks they need. @param param Information about the process in which the module is loaded @throws RuntimeException Everything the callback throws is caught and logged.",
+          line: 183
         },
         {
           name: "onPackageLoaded",
-          signature: "default void onPackageLoaded(@NonNull PackageLoadedParam param)",
+          signature: "void onPackageLoaded(@NonNull PackageLoadedParam param)",
           returnType: "void",
+          params: [
+            "@NonNull PackageLoadedParam param"
+          ],
           sinceApi: 101,
-          doc: "Called when an APK package has loaded into process and default classloader is ready."
+          doc: "Gets notified when a {@link android.R.attr#hasCode} package is loaded into the process. This is the time when the default classloader is ready but before the instantiation of {@link AppComponentFactory}. <p> This callback is invoked only once for each package name loaded into the process, note that a process may load multiple packages, such as {@link android.R.attr#sharedUserId} and {@link Context#createPackageContext(String, int)} with {@link Context#CONTEXT_INCLUDE_CODE}. <p> In system server, the first callback is replaced by {@link #onSystemServerStarting(SystemServerStartingParam)}, so {@code param.isFirstPackage()} is never {@code true} here. @param param Information about the package being loaded @throws RuntimeException Everything the callback throws is caught and logged.",
+          line: 203
         },
         {
           name: "onPackageReady",
-          signature: "default void onPackageReady(@NonNull PackageReadyParam param)",
+          signature: "void onPackageReady(@NonNull PackageReadyParam param)",
           returnType: "void",
+          params: [
+            "@NonNull PackageReadyParam param"
+          ],
           sinceApi: 101,
-          doc: "Called when AppComponentFactory has instantiated classloader and is ready to create Application. Recommended place for most hooks."
+          doc: "Gets notified when {@link AppComponentFactory} has instantiated the classloader and is ready to create {@link android.app.Application}. <p> This callback is invoked only once for each package name loaded into the process, note that a process may load multiple packages, such as {@link android.R.attr#sharedUserId} and {@link Context#createPackageContext(String, int)} with {@link Context#CONTEXT_INCLUDE_CODE}. <p> In system server, the first callback is replaced by {@link #onSystemServerStarting(SystemServerStartingParam)}, so {@code param.isFirstPackage()} is never {@code true} here. @param param Information about the package being loaded @throws RuntimeException Everything the callback throws is caught and logged.",
+          line: 221
         },
         {
           name: "onSystemServerStarting",
-          signature: "default void onSystemServerStarting(@NonNull SystemServerStartingParam param)",
+          signature: "void onSystemServerStarting(@NonNull SystemServerStartingParam param)",
           returnType: "void",
+          params: [
+            "@NonNull SystemServerStartingParam param"
+          ],
           sinceApi: 101,
-          doc: "Called when system server is ready to start critical services."
+          doc: "Gets notified when system server is ready to start critical services. In system server, this callback replaces the first callback phase of {@link #onPackageLoaded(PackageLoadedParam)} and {@link #onPackageReady(PackageReadyParam)}. @param param Information about system server @throws RuntimeException Everything the callback throws is caught and logged.",
+          line: 233
         },
         {
           name: "onHotReloading",
-          signature: "default boolean onHotReloading(@NonNull HotReloadingParam param)",
+          signature: "boolean onHotReloading(@NonNull HotReloadingParam param)",
           returnType: "boolean",
-          sinceApi: 102,
-          doc: "Called in old code before module is reloaded. Return true to allow reload, or false to reject. Save state with param.setSavedInstanceState()."
+          params: [
+            "@NonNull HotReloadingParam param"
+          ],
+          sinceApi: 101,
+          doc: "Gets notified when the module is about to be reloaded. This callback is called when hot reloading is triggered through the service, or by app updating if {@code autoHotReload} is set to true in {@code module.prop}. App-update hot reloading still proceeds only if this callback returns {@code true}. <p>This callback runs in <b>old</b> code.</p> <p> Hot reloads are serialized per target. Before the old hook handle list is captured, the framework freezes old code so further hook registrations from old code fail. In-flight hook calls keep using the hook chain snapshot that was active when they started. </p> <p> Returning {@code true} declares that the old generation is ready to be retired. Before returning {@code true}, modules must stop all module-owned Java and native threads, unregister native hooks and external callbacks, release JNI global references to module-classloader objects, and clear references to module objects stored by system or app classes. </p> <p> Returning {@code false} rejects the hot reload request. For service-triggered requests, this is reported as {@code HotReloadResult.Status.FAILED} with a null message. If this callback or the subsequent reload operation throws, the request is reported as failed with a framework-provided diagnostic message. </p> @param param Information about the hot reloading event @return {@code true} to allow hot reloading to proceed, {@code false} to cancel hot reloading",
+          line: 265
         },
         {
           name: "onHotReloaded",
-          signature: "default void onHotReloaded(@NonNull HotReloadedParam param)",
+          signature: "void onHotReloaded(@NonNull HotReloadedParam param)",
           returnType: "void",
-          sinceApi: 102,
-          doc: "Called in new code after reload succeeds. Package callbacks are not automatically replayed. Restore state with param.getSavedInstanceState() and replace/unhook old hooks via param.getOldHookHandles()."
+          params: [
+            "@NonNull HotReloadedParam param"
+          ],
+          sinceApi: 101,
+          doc: "Gets notified when the module has been reloaded. <p>This callback runs in <b>new</b> code.</p> <p> Package lifecycle callbacks are not automatically replayed after hot reload. Override this method to atomically replace old hooks through {@link XposedInterface.HookHandle#replaceHook(XposedInterface.Hooker)}, remove hooks that should not survive, or perform reload-specific initialization. The default implementation only unhooks all old hooks. </p> <p> The framework keeps the previous module generation strongly reachable until this callback finishes. After this callback returns or throws, the framework releases all references it owns to the old generation, except for references required by old hooks that remain installed and any references kept by module code. Classloader collection and unloading of native libraries associated with it are runtime-dependent and are not guaranteed to happen immediately. </p> <p> The framework does not call {@code UnregisterNatives}, {@code JNI_OnUnload}, or {@code dlclose} as part of hot reload. If all old Java references are removed while old native threads, callbacks, hooks, or JNI global references are still active, any resulting crash or undefined behavior is a module bug. </p> @param param Information about the hot reloaded event",
+          line: 296
         }
       ]
     },
     {
-      name: "io.github.libxposed.api.error.HookFailedError",
-      type: "class extends Error",
+      name: "io.github.libxposed.api.XposedModuleInterface.ModuleLoadedParam",
+      simpleName: "ModuleLoadedParam",
+      type: "interface",
+      packageName: "io.github.libxposed.api",
+      filePath: "api/api/src/main/java/io/github/libxposed/api/XposedModuleInterface.java",
       sinceApi: 101,
-      summary: "Unchecked error thrown when a hook operation fails due to framework internal error.",
-      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/error/HookFailedError.html"
+      summary: "Wraps information about the process in which the module is loaded. This information only indicates the state at the time of loading and will not be updated.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/ModuleLoadedParam.html",
+      constants: [],
+      methods: [
+        {
+          name: "isSystemServer",
+          signature: "boolean isSystemServer()",
+          returnType: "boolean",
+          params: [],
+          sinceApi: 101,
+          doc: "Returns whether the current process is system server. @return {@code true} if the current process is system server",
+          line: 32
+        },
+        {
+          name: "getProcessName",
+          signature: "String getProcessName()",
+          returnType: "String",
+          params: [],
+          sinceApi: 101,
+          doc: "Gets the process name. @return The process name",
+          line: 40
+        }
+      ]
     },
     {
-      name: "io.github.libxposed.api.error.XposedFrameworkError",
-      type: "class extends Error",
+      name: "io.github.libxposed.api.XposedModuleInterface.PackageLoadedParam",
+      simpleName: "PackageLoadedParam",
+      type: "interface",
+      packageName: "io.github.libxposed.api",
+      filePath: "api/api/src/main/java/io/github/libxposed/api/XposedModuleInterface.java",
       sinceApi: 101,
-      summary: "Unchecked error thrown when the framework encounters an unrecoverable internal error.",
-      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/error/XposedFrameworkError.html"
+      summary: "Wraps information about the package being loaded. This information only indicates the state at the time of loading and will not be updated.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/PackageLoadedParam.html",
+      constants: [],
+      methods: [
+        {
+          name: "getPackageName",
+          signature: "String getPackageName()",
+          returnType: "String",
+          params: [],
+          sinceApi: 101,
+          doc: "Gets the package name of the current package. @return The package name.",
+          line: 54
+        },
+        {
+          name: "getApplicationInfo",
+          signature: "ApplicationInfo getApplicationInfo()",
+          returnType: "ApplicationInfo",
+          params: [],
+          sinceApi: 101,
+          doc: "Gets the {@link ApplicationInfo} of the current package. @return The ApplicationInfo.",
+          line: 62
+        },
+        {
+          name: "isFirstPackage",
+          signature: "boolean isFirstPackage()",
+          returnType: "boolean",
+          params: [],
+          sinceApi: 101,
+          doc: "Returns whether this is the first and main package loaded in the process. @return {@code true} if this is the first package.",
+          line: 69
+        },
+        {
+          name: "getDefaultClassLoader",
+          signature: "ClassLoader getDefaultClassLoader()",
+          returnType: "ClassLoader",
+          params: [],
+          sinceApi: 101,
+          doc: "Gets the default classloader of the current package. This is the classloader that loads the package's code, resources and custom {@link AppComponentFactory}.",
+          line: 77
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.api.XposedModuleInterface.PackageReadyParam",
+      simpleName: "PackageReadyParam",
+      type: "interface",
+      packageName: "io.github.libxposed.api",
+      filePath: "api/api/src/main/java/io/github/libxposed/api/XposedModuleInterface.java",
+      sinceApi: 101,
+      summary: "Wraps information about the package whose classloader is ready. This information only indicates the state at the time of loading and will not be updated.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/PackageReadyParam.html",
+      constants: [],
+      methods: [
+        {
+          name: "getClassLoader",
+          signature: "ClassLoader getClassLoader()",
+          returnType: "ClassLoader",
+          params: [],
+          sinceApi: 101,
+          doc: "Gets the classloader of the current package. It may be different from {@link #getDefaultClassLoader()} if the package has a custom {@link AppComponentFactory} that creates a different classloader.",
+          line: 91
+        },
+        {
+          name: "getAppComponentFactory",
+          signature: "AppComponentFactory getAppComponentFactory()",
+          returnType: "AppComponentFactory",
+          params: [],
+          sinceApi: 101,
+          doc: "Gets the {@link AppComponentFactory} of the current package.",
+          line: 98
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.api.XposedModuleInterface.SystemServerStartingParam",
+      simpleName: "SystemServerStartingParam",
+      type: "interface",
+      packageName: "io.github.libxposed.api",
+      filePath: "api/api/src/main/java/io/github/libxposed/api/XposedModuleInterface.java",
+      sinceApi: 101,
+      summary: "Wraps information about system server. This information only indicates the state at the time of loading and will not be updated.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/SystemServerStartingParam.html",
+      constants: [],
+      methods: [
+        {
+          name: "getClassLoader",
+          signature: "ClassLoader getClassLoader()",
+          returnType: "ClassLoader",
+          params: [],
+          sinceApi: 101,
+          doc: "Gets the class loader of system server.",
+          line: 110
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.api.XposedModuleInterface.HotReloadingParam",
+      simpleName: "HotReloadingParam",
+      type: "interface",
+      packageName: "io.github.libxposed.api",
+      filePath: "api/api/src/main/java/io/github/libxposed/api/XposedModuleInterface.java",
+      sinceApi: 101,
+      summary: "Wraps information about the hot reloading event.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/HotReloadingParam.html",
+      constants: [],
+      methods: [
+        {
+          name: "getExtras",
+          signature: "Bundle getExtras()",
+          returnType: "Bundle",
+          params: [],
+          sinceApi: 101,
+          doc: "Gets the data passed from the module app when triggering hot reload through the service. This can be null if the app passes {@code null} or the hot reload is triggered by app updating. The bundle should contain only values that can be unmarshalled without the module's class loader, such as primitive values, strings, arrays, and framework {@link Bundle} instances.",
+          line: 125
+        },
+        {
+          name: "setSavedInstanceState",
+          signature: "void setSavedInstanceState(@Nullable Object outState)",
+          returnType: "void",
+          params: [
+            "@Nullable Object outState"
+          ],
+          sinceApi: 101,
+          doc: "Sets the data to be passed to the new code after hot reloading. This can be retrieved in {@link #onHotReloaded(HotReloadedParam)}. The saved state must not contain objects created under the old module classloader because retaining them in the new generation can keep the old generation strongly reachable after hot reload. Use classloader-neutral values to transfer state. <p> Implementations should reject old-module-classloader objects when they are detected. This check is a diagnostic aid, not a complete object graph verifier; passing an undetected old-module object is still a module lifecycle bug. </p> @param outState The data to be passed to the new code after hot reloading @throws IllegalArgumentException if {@code outState} contains an object detected as being created under the old module classloader",
+          line: 143
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.api.XposedModuleInterface.HotReloadedParam",
+      simpleName: "HotReloadedParam",
+      type: "interface",
+      packageName: "io.github.libxposed.api",
+      filePath: "api/api/src/main/java/io/github/libxposed/api/XposedModuleInterface.java",
+      sinceApi: 101,
+      summary: "Wraps information about the hot reloaded event.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/api/HotReloadedParam.html",
+      constants: [],
+      methods: [
+        {
+          name: "getExtras",
+          signature: "Bundle getExtras()",
+          returnType: "Bundle",
+          params: [],
+          sinceApi: 101,
+          doc: "Gets the data passed from the module app when triggering hot reload. This can be null if the app passes {@code null} or the hot reload is triggered by app updating.",
+          line: 156
+        },
+        {
+          name: "getSavedInstanceState",
+          signature: "Object getSavedInstanceState()",
+          returnType: "Object",
+          params: [],
+          sinceApi: 101,
+          doc: "Gets the data set in {@link HotReloadingParam#setSavedInstanceState(Object)}.",
+          line: 162
+        },
+        {
+          name: "getOldHookHandles",
+          signature: "HookHandle> getOldHookHandles()",
+          returnType: "HookHandle>",
+          params: [],
+          sinceApi: 101,
+          doc: "Gets a list of hook handles created by the previous generation of this module. The new code can choose to remove or atomically replace these hooks with new ones through {@link XposedInterface.HookHandle#replaceHook(XposedInterface.Hooker)}.",
+          line: 170
+        }
+      ]
     }
   ]
 };
@@ -37001,95 +37905,23447 @@ var helper_default = {
   components: [
     {
       name: "io.github.libxposed.helper.HookBuilder",
+      simpleName: "HookBuilder",
       type: "interface",
-      summary: "Fluent and declarative builder for discovering classes, methods, constructors, and fields to hook with lazy sequences and dex analysis.",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface HookBuilder",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/HookBuilder.html",
+      constants: [],
       methods: [
         {
           name: "buildHooks",
-          signature: "static Future<?> buildHooks(@NonNull XposedInterface ctx, @NonNull BaseDexClassLoader classLoader, @NonNull String sourcePath, Consumer<HookBuilder> consumer)",
-          doc: "Main entry point to define declarative hooks on a classloader with optional dex analysis caching."
+          signature: "Future<?> buildHooks(@NonNull XposedInterface ctx, @NonNull BaseDexClassLoader classLoader, @NonNull String sourcePath, Consumer<HookBuilder> consumer)",
+          returnType: "Future<?>",
+          params: [
+            "@NonNull XposedInterface ctx",
+            "@NonNull BaseDexClassLoader classLoader",
+            "@NonNull String sourcePath",
+            "Consumer<HookBuilder> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 32
+        },
+        {
+          name: "HookBuilderImpl",
+          signature: "new HookBuilderImpl(ctx, classLoader, sourcePath)",
+          returnType: "new",
+          params: [
+            "ctx",
+            "classLoader",
+            "sourcePath"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 33
         },
         {
           name: "setForceDexAnalysis",
           signature: "HookBuilder setForceDexAnalysis(boolean forceDexAnalysis)",
-          doc: "Enables/disables full dex analysis if bytecode introspection is required."
+          returnType: "HookBuilder",
+          params: [
+            "boolean forceDexAnalysis"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 40
+        },
+        {
+          name: "setExecutorService",
+          signature: "HookBuilder setExecutorService(@NonNull ExecutorService executorService)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull ExecutorService executorService"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 43
+        },
+        {
+          name: "setCallbackHandler",
+          signature: "HookBuilder setCallbackHandler(@NonNull Handler callbackHandler)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull Handler callbackHandler"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 46
+        },
+        {
+          name: "setCacheChecker",
+          signature: "HookBuilder setCacheChecker(@NonNull Predicate<Map<String, Object>> cacheChecker)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull Predicate<Map<String",
+            "Object>> cacheChecker"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 49
+        },
+        {
+          name: "setCacheInputStream",
+          signature: "HookBuilder setCacheInputStream(@NonNull InputStream cacheInputStream)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull InputStream cacheInputStream"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 52
+        },
+        {
+          name: "setCacheOutputStream",
+          signature: "HookBuilder setCacheOutputStream(@NonNull OutputStream cacheOutputStream)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull OutputStream cacheOutputStream"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 55
+        },
+        {
+          name: "setExceptionHandler",
+          signature: "HookBuilder setExceptionHandler(@NonNull Predicate<Throwable> handler)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull Predicate<Throwable> handler"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 58
         },
         {
           name: "methods",
           signature: "MethodLazySequence methods(@NonNull Consumer<MethodMatcher> matcher)",
-          doc: "Finds all methods matching the specified criteria."
+          returnType: "MethodLazySequence",
+          params: [
+            "@NonNull Consumer<MethodMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 61
         },
         {
           name: "firstMethod",
           signature: "MethodMatch firstMethod(@NonNull Consumer<MethodMatcher> matcher)",
-          doc: "Finds the first method matching the specified criteria."
+          returnType: "MethodMatch",
+          params: [
+            "@NonNull Consumer<MethodMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 64
         },
         {
           name: "constructors",
           signature: "ConstructorLazySequence constructors(@NonNull Consumer<ConstructorMatcher> matcher)",
-          doc: "Finds all constructors matching the specified criteria."
+          returnType: "ConstructorLazySequence",
+          params: [
+            "@NonNull Consumer<ConstructorMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 67
         },
         {
           name: "firstConstructor",
           signature: "ConstructorMatch firstConstructor(@NonNull Consumer<ConstructorMatcher> matcher)",
-          doc: "Finds the first constructor matching the specified criteria."
+          returnType: "ConstructorMatch",
+          params: [
+            "@NonNull Consumer<ConstructorMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 70
         },
         {
           name: "fields",
           signature: "FieldLazySequence fields(@NonNull Consumer<FieldMatcher> matcher)",
-          doc: "Finds all fields matching the specified criteria."
+          returnType: "FieldLazySequence",
+          params: [
+            "@NonNull Consumer<FieldMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 73
         },
         {
           name: "firstField",
           signature: "FieldMatch firstField(@NonNull Consumer<FieldMatcher> matcher)",
-          doc: "Finds the first field matching the specified criteria."
+          returnType: "FieldMatch",
+          params: [
+            "@NonNull Consumer<FieldMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 76
         },
         {
           name: "classes",
           signature: "ClassLazySequence classes(@NonNull Consumer<ClassMatcher> matcher)",
-          doc: "Finds all classes matching the specified criteria."
+          returnType: "ClassLazySequence",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 79
         },
         {
           name: "firstClass",
           signature: "ClassMatch firstClass(@NonNull Consumer<ClassMatcher> matcher)",
-          doc: "Finds the first class matching the specified criteria."
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 82
+        },
+        {
+          name: "exact",
+          signature: "StringMatch exact(@NonNull String string)",
+          returnType: "StringMatch",
+          params: [
+            "@NonNull String string"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 85
+        },
+        {
+          name: "prefix",
+          signature: "StringMatch prefix(@NonNull String prefix)",
+          returnType: "StringMatch",
+          params: [
+            "@NonNull String prefix"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 88
+        },
+        {
+          name: "firstPrefix",
+          signature: "StringMatch firstPrefix(@NonNull String prefix)",
+          returnType: "StringMatch",
+          params: [
+            "@NonNull String prefix"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 91
         },
         {
           name: "exactClass",
           signature: "ClassMatch exactClass(@NonNull String name)",
-          doc: "Finds a class by its exact canonical name."
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull String name"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 94
+        },
+        {
+          name: "exact",
+          signature: "ClassMatch exact(@NonNull Class<?> clazz)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull Class<?> clazz"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 97
         },
         {
           name: "exactMethod",
           signature: "MethodMatch exactMethod(@NonNull String signature)",
-          doc: "Finds a method by its exact signature or name."
+          returnType: "MethodMatch",
+          params: [
+            "@NonNull String signature"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 100
+        },
+        {
+          name: "exact",
+          signature: "MethodMatch exact(@NonNull Method method)",
+          returnType: "MethodMatch",
+          params: [
+            "@NonNull Method method"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 103
         },
         {
           name: "exactConstructor",
           signature: "ConstructorMatch exactConstructor(@NonNull String signature)",
-          doc: "Finds a constructor by its exact signature."
+          returnType: "ConstructorMatch",
+          params: [
+            "@NonNull String signature"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 106
+        },
+        {
+          name: "exact",
+          signature: "ConstructorMatch exact(@NonNull Constructor<?> constructor)",
+          returnType: "ConstructorMatch",
+          params: [
+            "@NonNull Constructor<?> constructor"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 109
+        },
+        {
+          name: "exactField",
+          signature: "FieldMatch exactField(@NonNull String signature)",
+          returnType: "FieldMatch",
+          params: [
+            "@NonNull String signature"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 112
+        },
+        {
+          name: "exact",
+          signature: "FieldMatch exact(@NonNull Field field)",
+          returnType: "FieldMatch",
+          params: [
+            "@NonNull Field field"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 115
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.Parameter",
+      simpleName: "Parameter",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "replacement for java.lang.reflect.Parameter that is not available before Android O",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/Parameter.html",
+      constants: [],
+      methods: [
+        {
+          name: "getType",
+          signature: "Class<?> getType()",
+          returnType: "Class<?>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 120
+        },
+        {
+          name: "getIndex",
+          signature: "int getIndex()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 122
+        },
+        {
+          name: "getDeclaringExecutable",
+          signature: "Member getDeclaringExecutable()",
+          returnType: "Member",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 125
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.Supplier",
+      simpleName: "Supplier",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface Supplier",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/Supplier.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "T get()",
+          returnType: "T",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 131
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.Consumer",
+      simpleName: "Consumer",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface Consumer",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/Consumer.html",
+      constants: [],
+      methods: [
+        {
+          name: "accept",
+          signature: "void accept(@NonNull T t)",
+          returnType: "void",
+          params: [
+            "@NonNull T t"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 136
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.BiConsumer",
+      simpleName: "BiConsumer",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface BiConsumer",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/BiConsumer.html",
+      constants: [],
+      methods: [
+        {
+          name: "accept",
+          signature: "void accept(@NonNull T t, @NonNull U u)",
+          returnType: "void",
+          params: [
+            "@NonNull T t",
+            "@NonNull U u"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 141
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.Predicate",
+      simpleName: "Predicate",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface Predicate",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/Predicate.html",
+      constants: [],
+      methods: [
+        {
+          name: "test",
+          signature: "boolean test(@NonNull T t)",
+          returnType: "boolean",
+          params: [
+            "@NonNull T t"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 146
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.DexAnalysis",
+      simpleName: "DexAnalysis",
+      type: "@interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "@interface DexAnalysis",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/DexAnalysis.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.AnnotationAnalysis",
+      simpleName: "AnnotationAnalysis",
+      type: "@interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "@interface AnnotationAnalysis",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/AnnotationAnalysis.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ReflectMatcher",
+      simpleName: "ReflectMatcher",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ReflectMatcher",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ReflectMatcher.html",
+      constants: [],
+      methods: [
+        {
+          name: "setKey",
+          signature: "Self setKey(@NonNull String key)",
+          returnType: "Self",
+          params: [
+            "@NonNull String key"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 163
+        },
+        {
+          name: "setIsPublic",
+          signature: "Self setIsPublic(boolean isPublic)",
+          returnType: "Self",
+          params: [
+            "boolean isPublic"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 166
+        },
+        {
+          name: "setIsPrivate",
+          signature: "Self setIsPrivate(boolean isPrivate)",
+          returnType: "Self",
+          params: [
+            "boolean isPrivate"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 169
+        },
+        {
+          name: "setIsProtected",
+          signature: "Self setIsProtected(boolean isProtected)",
+          returnType: "Self",
+          params: [
+            "boolean isProtected"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 172
+        },
+        {
+          name: "setIsPackage",
+          signature: "Self setIsPackage(boolean isPackage)",
+          returnType: "Self",
+          params: [
+            "boolean isPackage"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 175
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.Syntax",
+      simpleName: "Syntax",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface Syntax",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/Syntax.html",
+      constants: [],
+      methods: [
+        {
+          name: "and",
+          signature: "Syntax<Match> and(@NonNull Syntax<Match> predicate)",
+          returnType: "Syntax<Match>",
+          params: [
+            "@NonNull Syntax<Match> predicate"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 180
+        },
+        {
+          name: "or",
+          signature: "Syntax<Match> or(@NonNull Syntax<Match> predicate)",
+          returnType: "Syntax<Match>",
+          params: [
+            "@NonNull Syntax<Match> predicate"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 183
+        },
+        {
+          name: "not",
+          signature: "Syntax<Match> not()",
+          returnType: "Syntax<Match>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 186
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ClassMatcher",
+      simpleName: "ClassMatcher",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ClassMatcher",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ClassMatcher.html",
+      constants: [],
+      methods: [
+        {
+          name: "setName",
+          signature: "ClassMatcher setName(@NonNull StringMatch name)",
+          returnType: "ClassMatcher",
+          params: [
+            "@NonNull StringMatch name"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 191
+        },
+        {
+          name: "setSuperClass",
+          signature: "ClassMatcher setSuperClass(@NonNull ClassMatch superClassMatch)",
+          returnType: "ClassMatcher",
+          params: [
+            "@NonNull ClassMatch superClassMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 194
+        },
+        {
+          name: "setContainsInterfaces",
+          signature: "ClassMatcher setContainsInterfaces(@NonNull Syntax<ClassMatch> syntax)",
+          returnType: "ClassMatcher",
+          params: [
+            "@NonNull Syntax<ClassMatch> syntax"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 197
+        },
+        {
+          name: "setIsAbstract",
+          signature: "ClassMatcher setIsAbstract(boolean isAbstract)",
+          returnType: "ClassMatcher",
+          params: [
+            "boolean isAbstract"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 200
+        },
+        {
+          name: "setIsStatic",
+          signature: "ClassMatcher setIsStatic(boolean isStatic)",
+          returnType: "ClassMatcher",
+          params: [
+            "boolean isStatic"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 203
+        },
+        {
+          name: "setIsFinal",
+          signature: "ClassMatcher setIsFinal(boolean isFinal)",
+          returnType: "ClassMatcher",
+          params: [
+            "boolean isFinal"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 206
+        },
+        {
+          name: "setIsInterface",
+          signature: "ClassMatcher setIsInterface(boolean isInterface)",
+          returnType: "ClassMatcher",
+          params: [
+            "boolean isInterface"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 209
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ParameterMatcher",
+      simpleName: "ParameterMatcher",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ParameterMatcher",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ParameterMatcher.html",
+      constants: [],
+      methods: [
+        {
+          name: "setIndex",
+          signature: "ParameterMatcher setIndex(int index)",
+          returnType: "ParameterMatcher",
+          params: [
+            "int index"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 214
+        },
+        {
+          name: "setType",
+          signature: "ParameterMatcher setType(@NonNull ClassMatch type)",
+          returnType: "ParameterMatcher",
+          params: [
+            "@NonNull ClassMatch type"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 217
+        },
+        {
+          name: "setIsFinal",
+          signature: "ParameterMatcher setIsFinal(boolean isFinal)",
+          returnType: "ParameterMatcher",
+          params: [
+            "boolean isFinal"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 221
+        },
+        {
+          name: "setIsSynthetic",
+          signature: "ParameterMatcher setIsSynthetic(boolean isSynthetic)",
+          returnType: "ParameterMatcher",
+          params: [
+            "boolean isSynthetic"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 225
+        },
+        {
+          name: "setIsVarargs",
+          signature: "ParameterMatcher setIsVarargs(boolean isVarargs)",
+          returnType: "ParameterMatcher",
+          params: [
+            "boolean isVarargs"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 229
+        },
+        {
+          name: "setIsImplicit",
+          signature: "ParameterMatcher setIsImplicit(boolean isImplicit)",
+          returnType: "ParameterMatcher",
+          params: [
+            "boolean isImplicit"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 233
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.MemberMatcher",
+      simpleName: "MemberMatcher",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface MemberMatcher",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MemberMatcher.html",
+      constants: [],
+      methods: [
+        {
+          name: "setDeclaringClass",
+          signature: "Self setDeclaringClass(@NonNull ClassMatch declaringClassMatch)",
+          returnType: "Self",
+          params: [
+            "@NonNull ClassMatch declaringClassMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 238
+        },
+        {
+          name: "setIsSynthetic",
+          signature: "Self setIsSynthetic(boolean isSynthetic)",
+          returnType: "Self",
+          params: [
+            "boolean isSynthetic"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 241
+        },
+        {
+          name: "setIncludeSuper",
+          signature: "Self setIncludeSuper(boolean includeSuper)",
+          returnType: "Self",
+          params: [
+            "boolean includeSuper"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 244
+        },
+        {
+          name: "setIncludeInterface",
+          signature: "Self setIncludeInterface(boolean includeInterface)",
+          returnType: "Self",
+          params: [
+            "boolean includeInterface"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 247
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.FieldMatcher",
+      simpleName: "FieldMatcher",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface FieldMatcher",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/FieldMatcher.html",
+      constants: [],
+      methods: [
+        {
+          name: "setName",
+          signature: "FieldMatcher setName(@NonNull StringMatch name)",
+          returnType: "FieldMatcher",
+          params: [
+            "@NonNull StringMatch name"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 252
+        },
+        {
+          name: "setType",
+          signature: "FieldMatcher setType(@NonNull ClassMatch type)",
+          returnType: "FieldMatcher",
+          params: [
+            "@NonNull ClassMatch type"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 255
+        },
+        {
+          name: "setIsStatic",
+          signature: "FieldMatcher setIsStatic(boolean isStatic)",
+          returnType: "FieldMatcher",
+          params: [
+            "boolean isStatic"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 258
+        },
+        {
+          name: "setIsFinal",
+          signature: "FieldMatcher setIsFinal(boolean isFinal)",
+          returnType: "FieldMatcher",
+          params: [
+            "boolean isFinal"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 261
+        },
+        {
+          name: "setIsTransient",
+          signature: "FieldMatcher setIsTransient(boolean isTransient)",
+          returnType: "FieldMatcher",
+          params: [
+            "boolean isTransient"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 264
+        },
+        {
+          name: "setIsVolatile",
+          signature: "FieldMatcher setIsVolatile(boolean isVolatile)",
+          returnType: "FieldMatcher",
+          params: [
+            "boolean isVolatile"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 267
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ExecutableMatcher",
+      simpleName: "ExecutableMatcher",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ExecutableMatcher",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ExecutableMatcher.html",
+      constants: [],
+      methods: [
+        {
+          name: "setParameterCount",
+          signature: "Self setParameterCount(int count)",
+          returnType: "Self",
+          params: [
+            "int count"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 272
+        },
+        {
+          name: "setParameters",
+          signature: "Self setParameters(@NonNull Syntax<ParameterMatch> parameters)",
+          returnType: "Self",
+          params: [
+            "@NonNull Syntax<ParameterMatch> parameters"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 275
+        },
+        {
+          name: "setReferredStrings",
+          signature: "Self setReferredStrings(@NonNull Syntax<StringMatch> referredStrings)",
+          returnType: "Self",
+          params: [
+            "@NonNull Syntax<StringMatch> referredStrings"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 279
+        },
+        {
+          name: "setAssignedFields",
+          signature: "Self setAssignedFields(@NonNull Syntax<FieldMatch> assignedFields)",
+          returnType: "Self",
+          params: [
+            "@NonNull Syntax<FieldMatch> assignedFields"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 283
+        },
+        {
+          name: "setAccessedFields",
+          signature: "Self setAccessedFields(@NonNull Syntax<FieldMatch> accessedFields)",
+          returnType: "Self",
+          params: [
+            "@NonNull Syntax<FieldMatch> accessedFields"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 287
+        },
+        {
+          name: "setInvokedMethods",
+          signature: "Self setInvokedMethods(@NonNull Syntax<MethodMatch> invokedMethods)",
+          returnType: "Self",
+          params: [
+            "@NonNull Syntax<MethodMatch> invokedMethods"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 291
+        },
+        {
+          name: "setInvokedConstructors",
+          signature: "Self setInvokedConstructors(@NonNull Syntax<ConstructorMatch> invokedConstructors)",
+          returnType: "Self",
+          params: [
+            "@NonNull Syntax<ConstructorMatch> invokedConstructors"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 295
+        },
+        {
+          name: "setContainsOpcodes",
+          signature: "Self setContainsOpcodes(@NonNull byte[] opcodes)",
+          returnType: "Self",
+          params: [
+            "@NonNull byte[] opcodes"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 299
+        },
+        {
+          name: "setIsVarargs",
+          signature: "Self setIsVarargs(boolean isVarargs)",
+          returnType: "Self",
+          params: [
+            "boolean isVarargs"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 302
+        },
+        {
+          name: "conjunction",
+          signature: "Syntax<ParameterMatch> conjunction(@NonNull ClassMatch... types)",
+          returnType: "Syntax<ParameterMatch>",
+          params: [
+            "@NonNull ClassMatch... types"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 305
+        },
+        {
+          name: "conjunction",
+          signature: "Syntax<ParameterMatch> conjunction(@NonNull Class<?>... types)",
+          returnType: "Syntax<ParameterMatch>",
+          params: [
+            "@NonNull Class<?>... types"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 308
+        },
+        {
+          name: "observe",
+          signature: "Syntax<ParameterMatch> observe(int index, @NonNull ClassMatch types)",
+          returnType: "Syntax<ParameterMatch>",
+          params: [
+            "int index",
+            "@NonNull ClassMatch types"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 311
+        },
+        {
+          name: "observe",
+          signature: "Syntax<ParameterMatch> observe(int index, @NonNull Class<?> types)",
+          returnType: "Syntax<ParameterMatch>",
+          params: [
+            "int index",
+            "@NonNull Class<?> types"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 314
+        },
+        {
+          name: "firstParameter",
+          signature: "ParameterMatch firstParameter(@NonNull Consumer<ParameterMatcher> consumer)",
+          returnType: "ParameterMatch",
+          params: [
+            "@NonNull Consumer<ParameterMatcher> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 317
+        },
+        {
+          name: "parameters",
+          signature: "ParameterLazySequence parameters(@NonNull Consumer<ParameterMatcher> consumer)",
+          returnType: "ParameterLazySequence",
+          params: [
+            "@NonNull Consumer<ParameterMatcher> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 320
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.MethodMatcher",
+      simpleName: "MethodMatcher",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface MethodMatcher",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MethodMatcher.html",
+      constants: [],
+      methods: [
+        {
+          name: "setName",
+          signature: "MethodMatcher setName(@NonNull StringMatch name)",
+          returnType: "MethodMatcher",
+          params: [
+            "@NonNull StringMatch name"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 325
+        },
+        {
+          name: "setReturnType",
+          signature: "MethodMatcher setReturnType(@NonNull ClassMatch returnType)",
+          returnType: "MethodMatcher",
+          params: [
+            "@NonNull ClassMatch returnType"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 328
+        },
+        {
+          name: "setIsAbstract",
+          signature: "MethodMatcher setIsAbstract(boolean isAbstract)",
+          returnType: "MethodMatcher",
+          params: [
+            "boolean isAbstract"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 331
+        },
+        {
+          name: "setIsStatic",
+          signature: "MethodMatcher setIsStatic(boolean isStatic)",
+          returnType: "MethodMatcher",
+          params: [
+            "boolean isStatic"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 334
+        },
+        {
+          name: "setIsFinal",
+          signature: "MethodMatcher setIsFinal(boolean isFinal)",
+          returnType: "MethodMatcher",
+          params: [
+            "boolean isFinal"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 337
+        },
+        {
+          name: "setIsSynchronized",
+          signature: "MethodMatcher setIsSynchronized(boolean isSynchronized)",
+          returnType: "MethodMatcher",
+          params: [
+            "boolean isSynchronized"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 340
+        },
+        {
+          name: "setIsNative",
+          signature: "MethodMatcher setIsNative(boolean isNative)",
+          returnType: "MethodMatcher",
+          params: [
+            "boolean isNative"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 343
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ConstructorMatcher",
+      simpleName: "ConstructorMatcher",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ConstructorMatcher",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ConstructorMatcher.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.BaseMatch",
+      simpleName: "BaseMatch",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface BaseMatch",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/BaseMatch.html",
+      constants: [],
+      methods: [
+        {
+          name: "observe",
+          signature: "Syntax<Self> observe()",
+          returnType: "Syntax<Self>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 351
+        },
+        {
+          name: "reverse",
+          signature: "Syntax<Self> reverse()",
+          returnType: "Syntax<Self>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 354
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ReflectMatch",
+      simpleName: "ReflectMatch",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ReflectMatch",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ReflectMatch.html",
+      constants: [],
+      methods: [
+        {
+          name: "getKey",
+          signature: "String getKey()",
+          returnType: "String",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 359
+        },
+        {
+          name: "setKey",
+          signature: "Self setKey(@Nullable String key)",
+          returnType: "Self",
+          params: [
+            "@Nullable String key"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 362
+        },
+        {
+          name: "onMatch",
+          signature: "Self onMatch(@NonNull Consumer<Reflect> consumer)",
+          returnType: "Self",
+          params: [
+            "@NonNull Consumer<Reflect> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 365
+        },
+        {
+          name: "onMiss",
+          signature: "Self onMiss(@NonNull Runnable handler)",
+          returnType: "Self",
+          params: [
+            "@NonNull Runnable handler"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 368
+        },
+        {
+          name: "substituteIfMiss",
+          signature: "Self substituteIfMiss(@NonNull Supplier<Self> substitute)",
+          returnType: "Self",
+          params: [
+            "@NonNull Supplier<Self> substitute"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 371
+        },
+        {
+          name: "matchFirstIfMiss",
+          signature: "Self matchFirstIfMiss(@NonNull Consumer<Matcher> consumer)",
+          returnType: "Self",
+          params: [
+            "@NonNull Consumer<Matcher> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 374
+        },
+        {
+          name: "bind",
+          signature: "Self bind(@NonNull Bind bind, @NonNull BiConsumer<Bind, Reflect> consumer)",
+          returnType: "Self",
+          params: [
+            "@NonNull Bind bind",
+            "@NonNull BiConsumer<Bind",
+            "Reflect> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 377
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ClassMatch",
+      simpleName: "ClassMatch",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ClassMatch",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ClassMatch.html",
+      constants: [],
+      methods: [
+        {
+          name: "getSuperClass",
+          signature: "ClassMatch getSuperClass()",
+          returnType: "ClassMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 382
+        },
+        {
+          name: "getInterfaces",
+          signature: "ClassLazySequence getInterfaces()",
+          returnType: "ClassLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 385
+        },
+        {
+          name: "getDeclaredMethods",
+          signature: "MethodLazySequence getDeclaredMethods()",
+          returnType: "MethodLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 388
+        },
+        {
+          name: "getDeclaredConstructors",
+          signature: "ConstructorLazySequence getDeclaredConstructors()",
+          returnType: "ConstructorLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 391
+        },
+        {
+          name: "getDeclaredFields",
+          signature: "FieldLazySequence getDeclaredFields()",
+          returnType: "FieldLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 394
+        },
+        {
+          name: "getArrayType",
+          signature: "ClassMatch getArrayType()",
+          returnType: "ClassMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 397
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ParameterMatch",
+      simpleName: "ParameterMatch",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ParameterMatch",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ParameterMatch.html",
+      constants: [],
+      methods: [
+        {
+          name: "getType",
+          signature: "ClassMatch getType()",
+          returnType: "ClassMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 402
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.MemberMatch",
+      simpleName: "MemberMatch",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface MemberMatch",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MemberMatch.html",
+      constants: [],
+      methods: [
+        {
+          name: "getDeclaringClass",
+          signature: "ClassMatch getDeclaringClass()",
+          returnType: "ClassMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 407
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ExecutableMatch",
+      simpleName: "ExecutableMatch",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ExecutableMatch",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ExecutableMatch.html",
+      constants: [],
+      methods: [
+        {
+          name: "getParameterTypes",
+          signature: "ClassLazySequence getParameterTypes()",
+          returnType: "ClassLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 412
+        },
+        {
+          name: "getParameters",
+          signature: "ParameterLazySequence getParameters()",
+          returnType: "ParameterLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 415
+        },
+        {
+          name: "getAssignedFields",
+          signature: "FieldLazySequence getAssignedFields()",
+          returnType: "FieldLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 419
+        },
+        {
+          name: "getAccessedFields",
+          signature: "FieldLazySequence getAccessedFields()",
+          returnType: "FieldLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 423
+        },
+        {
+          name: "getInvokedMethods",
+          signature: "MethodLazySequence getInvokedMethods()",
+          returnType: "MethodLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 427
+        },
+        {
+          name: "getInvokedConstructors",
+          signature: "ConstructorLazySequence getInvokedConstructors()",
+          returnType: "ConstructorLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 431
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.MethodMatch",
+      simpleName: "MethodMatch",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface MethodMatch",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MethodMatch.html",
+      constants: [],
+      methods: [
+        {
+          name: "getReturnType",
+          signature: "ClassMatch getReturnType()",
+          returnType: "ClassMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 436
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ConstructorMatch",
+      simpleName: "ConstructorMatch",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ConstructorMatch",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ConstructorMatch.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.FieldMatch",
+      simpleName: "FieldMatch",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface FieldMatch",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/FieldMatch.html",
+      constants: [],
+      methods: [
+        {
+          name: "getType",
+          signature: "ClassMatch getType()",
+          returnType: "ClassMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 444
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.StringMatch",
+      simpleName: "StringMatch",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface StringMatch",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/StringMatch.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.LazySequence",
+      simpleName: "LazySequence",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface LazySequence",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/LazySequence.html",
+      constants: [],
+      methods: [
+        {
+          name: "first",
+          signature: "Match first()",
+          returnType: "Match",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 453
+        },
+        {
+          name: "first",
+          signature: "Match first(@NonNull Consumer<Matcher> consumer)",
+          returnType: "Match",
+          params: [
+            "@NonNull Consumer<Matcher> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 456
+        },
+        {
+          name: "all",
+          signature: "Self all(@NonNull Consumer<Matcher> consumer)",
+          returnType: "Self",
+          params: [
+            "@NonNull Consumer<Matcher> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 459
+        },
+        {
+          name: "onMatch",
+          signature: "Self onMatch(@NonNull Consumer<Iterable<Reflect>> consumer)",
+          returnType: "Self",
+          params: [
+            "@NonNull Consumer<Iterable<Reflect>> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 462
+        },
+        {
+          name: "onMiss",
+          signature: "Self onMiss(@NonNull Runnable runnable)",
+          returnType: "Self",
+          params: [
+            "@NonNull Runnable runnable"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 465
+        },
+        {
+          name: "conjunction",
+          signature: "Syntax<Match> conjunction()",
+          returnType: "Syntax<Match>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 468
+        },
+        {
+          name: "disjunction",
+          signature: "Syntax<Match> disjunction()",
+          returnType: "Syntax<Match>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 471
+        },
+        {
+          name: "substituteIfMiss",
+          signature: "Self substituteIfMiss(@NonNull Supplier<Self> substitute)",
+          returnType: "Self",
+          params: [
+            "@NonNull Supplier<Self> substitute"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 474
+        },
+        {
+          name: "matchIfMiss",
+          signature: "Self matchIfMiss(@NonNull Consumer<Matcher> consumer)",
+          returnType: "Self",
+          params: [
+            "@NonNull Consumer<Matcher> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 477
+        },
+        {
+          name: "bind",
+          signature: "Self bind(@NonNull Bind bind, @NonNull BiConsumer<Bind, Iterable<Reflect>> consumer)",
+          returnType: "Self",
+          params: [
+            "@NonNull Bind bind",
+            "@NonNull BiConsumer<Bind",
+            "Iterable<Reflect>> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 480
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ClassLazySequence",
+      simpleName: "ClassLazySequence",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ClassLazySequence",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ClassLazySequence.html",
+      constants: [],
+      methods: [
+        {
+          name: "methods",
+          signature: "MethodLazySequence methods(@NonNull Consumer<MethodMatcher> matcher)",
+          returnType: "MethodLazySequence",
+          params: [
+            "@NonNull Consumer<MethodMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 485
+        },
+        {
+          name: "firstMethod",
+          signature: "MethodMatch firstMethod(@NonNull Consumer<MethodMatcher> matcher)",
+          returnType: "MethodMatch",
+          params: [
+            "@NonNull Consumer<MethodMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 488
+        },
+        {
+          name: "constructors",
+          signature: "ConstructorLazySequence constructors(@NonNull Consumer<ConstructorMatcher> matcher)",
+          returnType: "ConstructorLazySequence",
+          params: [
+            "@NonNull Consumer<ConstructorMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 491
+        },
+        {
+          name: "firstConstructor",
+          signature: "ConstructorMatch firstConstructor(@NonNull Consumer<ConstructorMatcher> matcher)",
+          returnType: "ConstructorMatch",
+          params: [
+            "@NonNull Consumer<ConstructorMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 494
+        },
+        {
+          name: "fields",
+          signature: "FieldLazySequence fields(@NonNull Consumer<FieldMatcher> matcher)",
+          returnType: "FieldLazySequence",
+          params: [
+            "@NonNull Consumer<FieldMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 497
+        },
+        {
+          name: "firstField",
+          signature: "FieldMatch firstField(@NonNull Consumer<FieldMatcher> matcher)",
+          returnType: "FieldMatch",
+          params: [
+            "@NonNull Consumer<FieldMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 500
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ParameterLazySequence",
+      simpleName: "ParameterLazySequence",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ParameterLazySequence",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ParameterLazySequence.html",
+      constants: [],
+      methods: [
+        {
+          name: "types",
+          signature: "ClassLazySequence types(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassLazySequence",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 505
+        },
+        {
+          name: "firstType",
+          signature: "ClassMatch firstType(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 508
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.MemberLazySequence",
+      simpleName: "MemberLazySequence",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface MemberLazySequence",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MemberLazySequence.html",
+      constants: [],
+      methods: [
+        {
+          name: "declaringClasses",
+          signature: "ClassLazySequence declaringClasses(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassLazySequence",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 513
+        },
+        {
+          name: "firstDeclaringClass",
+          signature: "ClassMatch firstDeclaringClass(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 516
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.FieldLazySequence",
+      simpleName: "FieldLazySequence",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface FieldLazySequence",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/FieldLazySequence.html",
+      constants: [],
+      methods: [
+        {
+          name: "types",
+          signature: "ClassLazySequence types(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassLazySequence",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 521
+        },
+        {
+          name: "firstType",
+          signature: "ClassMatch firstType(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 524
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ExecutableLazySequence",
+      simpleName: "ExecutableLazySequence",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ExecutableLazySequence",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ExecutableLazySequence.html",
+      constants: [],
+      methods: [
+        {
+          name: "parameters",
+          signature: "ParameterLazySequence parameters(@NonNull Consumer<ParameterMatcher> matcher)",
+          returnType: "ParameterLazySequence",
+          params: [
+            "@NonNull Consumer<ParameterMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 529
+        },
+        {
+          name: "firstParameter",
+          signature: "ParameterMatch firstParameter(@NonNull Consumer<ParameterMatcher> matcher)",
+          returnType: "ParameterMatch",
+          params: [
+            "@NonNull Consumer<ParameterMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 532
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.MethodLazySequence",
+      simpleName: "MethodLazySequence",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface MethodLazySequence",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MethodLazySequence.html",
+      constants: [],
+      methods: [
+        {
+          name: "returnTypes",
+          signature: "ClassLazySequence returnTypes(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassLazySequence",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 537
+        },
+        {
+          name: "firstReturnType",
+          signature: "ClassMatch firstReturnType(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 540
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ConstructorLazySequence",
+      simpleName: "ConstructorLazySequence",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ConstructorLazySequence",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ConstructorLazySequence.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.LazyBind",
+      simpleName: "LazyBind",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface LazyBind",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/LazyBind.html",
+      constants: [],
+      methods: [
+        {
+          name: "onMatch",
+          signature: "void onMatch()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 547
+        },
+        {
+          name: "onMiss",
+          signature: "void onMiss()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 549
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl",
+      simpleName: "HookBuilderImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "Matcher <-> LazySequence --> List<Observer -> Result -> Observer -> Result ... >",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/HookBuilderImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "PendingExecutor",
+          signature: "new PendingExecutor()",
+          returnType: "new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 118
+        },
+        {
+          name: "PendingExecutor",
+          signature: "new PendingExecutor()",
+          returnType: "new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 122
+        },
+        {
+          name: "Reflector",
+          signature: "new Reflector(classLoader)",
+          returnType: "new",
+          params: [
+            "classLoader"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 132
+        },
+        {
+          name: "setForceDexAnalysis",
+          signature: "HookBuilder setForceDexAnalysis(boolean forceDexAnalysis)",
+          returnType: "HookBuilder",
+          params: [
+            "boolean forceDexAnalysis"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 138
+        },
+        {
+          name: "setExecutorService",
+          signature: "HookBuilder setExecutorService(@NonNull ExecutorService executorService)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull ExecutorService executorService"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 145
+        },
+        {
+          name: "setCallbackHandler",
+          signature: "HookBuilder setCallbackHandler(@NonNull Handler callbackHandler)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull Handler callbackHandler"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 152
+        },
+        {
+          name: "setCacheChecker",
+          signature: "HookBuilder setCacheChecker(@NonNull Predicate<Map<String, Object>> cacheChecker)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull Predicate<Map<String",
+            "Object>> cacheChecker"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 159
+        },
+        {
+          name: "setCacheInputStream",
+          signature: "HookBuilder setCacheInputStream(@NonNull InputStream cacheInputStream)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull InputStream cacheInputStream"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 166
+        },
+        {
+          name: "setCacheOutputStream",
+          signature: "HookBuilder setCacheOutputStream(@NonNull OutputStream cacheOutputStream)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull OutputStream cacheOutputStream"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 173
+        },
+        {
+          name: "setExceptionHandler",
+          signature: "HookBuilder setExceptionHandler(@NonNull Predicate<Throwable> handler)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull Predicate<Throwable> handler"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 180
+        },
+        {
+          name: "methods",
+          signature: "MethodLazySequence methods(@NonNull Consumer<MethodMatcher> matcher)",
+          returnType: "MethodLazySequence",
+          params: [
+            "@NonNull Consumer<MethodMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 187
+        },
+        {
+          name: "MethodMatcherImpl",
+          signature: "new MethodMatcherImpl(null, false)",
+          returnType: "new",
+          params: [
+            "null",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 188
+        },
+        {
+          name: "firstMethod",
+          signature: "MethodMatch firstMethod(@NonNull Consumer<MethodMatcher> matcher)",
+          returnType: "MethodMatch",
+          params: [
+            "@NonNull Consumer<MethodMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 195
+        },
+        {
+          name: "MethodMatcherImpl",
+          signature: "new MethodMatcherImpl(null, true)",
+          returnType: "new",
+          params: [
+            "null",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 196
+        },
+        {
+          name: "constructors",
+          signature: "ConstructorLazySequence constructors(@NonNull Consumer<ConstructorMatcher> matcher)",
+          returnType: "ConstructorLazySequence",
+          params: [
+            "@NonNull Consumer<ConstructorMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 203
+        },
+        {
+          name: "ConstructorMatcherImpl",
+          signature: "new ConstructorMatcherImpl(null, false)",
+          returnType: "new",
+          params: [
+            "null",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 204
+        },
+        {
+          name: "firstConstructor",
+          signature: "ConstructorMatch firstConstructor(@NonNull Consumer<ConstructorMatcher> matcher)",
+          returnType: "ConstructorMatch",
+          params: [
+            "@NonNull Consumer<ConstructorMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 211
+        },
+        {
+          name: "ConstructorMatcherImpl",
+          signature: "new ConstructorMatcherImpl(null, true)",
+          returnType: "new",
+          params: [
+            "null",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 212
+        },
+        {
+          name: "fields",
+          signature: "FieldLazySequence fields(@NonNull Consumer<FieldMatcher> matcher)",
+          returnType: "FieldLazySequence",
+          params: [
+            "@NonNull Consumer<FieldMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 219
+        },
+        {
+          name: "FieldMatcherImpl",
+          signature: "new FieldMatcherImpl(null, false)",
+          returnType: "new",
+          params: [
+            "null",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 220
+        },
+        {
+          name: "firstField",
+          signature: "FieldMatch firstField(@NonNull Consumer<FieldMatcher> matcher)",
+          returnType: "FieldMatch",
+          params: [
+            "@NonNull Consumer<FieldMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 227
+        },
+        {
+          name: "FieldMatcherImpl",
+          signature: "new FieldMatcherImpl(null, true)",
+          returnType: "new",
+          params: [
+            "null",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 228
+        },
+        {
+          name: "classes",
+          signature: "ClassLazySequence classes(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassLazySequence",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 235
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "new ClassMatcherImpl(null, false)",
+          returnType: "new",
+          params: [
+            "null",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 236
+        },
+        {
+          name: "firstClass",
+          signature: "ClassMatch firstClass(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 243
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "new ClassMatcherImpl(null, true)",
+          returnType: "new",
+          params: [
+            "null",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 244
+        },
+        {
+          name: "exact",
+          signature: "StringMatch exact(@NonNull String string)",
+          returnType: "StringMatch",
+          params: [
+            "@NonNull String string"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 251
+        },
+        {
+          name: "StringMatcherImpl",
+          signature: "new StringMatcherImpl(string, true, false)",
+          returnType: "new",
+          params: [
+            "string",
+            "true",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 252
+        },
+        {
+          name: "prefix",
+          signature: "StringMatch prefix(@NonNull String prefix)",
+          returnType: "StringMatch",
+          params: [
+            "@NonNull String prefix"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 258
+        },
+        {
+          name: "StringMatcherImpl",
+          signature: "new StringMatcherImpl(prefix, false, true)",
+          returnType: "new",
+          params: [
+            "prefix",
+            "false",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 259
+        },
+        {
+          name: "firstPrefix",
+          signature: "StringMatch firstPrefix(@NonNull String prefix)",
+          returnType: "StringMatch",
+          params: [
+            "@NonNull String prefix"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 265
+        },
+        {
+          name: "StringMatcherImpl",
+          signature: "new StringMatcherImpl(prefix, true, true)",
+          returnType: "new",
+          params: [
+            "prefix",
+            "true",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 266
+        },
+        {
+          name: "exactClass",
+          signature: "ClassMatch exactClass(@NonNull String name)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull String name"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 272
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "new ClassMatcherImpl(null, true)",
+          returnType: "new",
+          params: [
+            "null",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 273
+        },
+        {
+          name: "exact",
+          signature: "ClassMatch exact(@NonNull Class<?> clazz)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull Class<?> clazz"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 285
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "new ClassMatcherImpl(null, true)",
+          returnType: "new",
+          params: [
+            "null",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 286
+        },
+        {
+          name: "exactMethod",
+          signature: "MethodMatch exactMethod(@NonNull String signature)",
+          returnType: "MethodMatch",
+          params: [
+            "@NonNull String signature"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 292
+        },
+        {
+          name: "MethodMatcherImpl",
+          signature: "new MethodMatcherImpl(null, true)",
+          returnType: "new",
+          params: [
+            "null",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 293
+        },
+        {
+          name: "exact",
+          signature: "MethodMatch exact(@NonNull Method method)",
+          returnType: "MethodMatch",
+          params: [
+            "@NonNull Method method"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 305
+        },
+        {
+          name: "MethodMatcherImpl",
+          signature: "new MethodMatcherImpl(null, true)",
+          returnType: "new",
+          params: [
+            "null",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 306
+        },
+        {
+          name: "exactConstructor",
+          signature: "ConstructorMatch exactConstructor(@NonNull String signature)",
+          returnType: "ConstructorMatch",
+          params: [
+            "@NonNull String signature"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 312
+        },
+        {
+          name: "ConstructorMatcherImpl",
+          signature: "new ConstructorMatcherImpl(null, true)",
+          returnType: "new",
+          params: [
+            "null",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 313
+        },
+        {
+          name: "exact",
+          signature: "ConstructorMatch exact(@NonNull Constructor<?> constructor)",
+          returnType: "ConstructorMatch",
+          params: [
+            "@NonNull Constructor<?> constructor"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 325
+        },
+        {
+          name: "ConstructorMatcherImpl",
+          signature: "new ConstructorMatcherImpl(null, true)",
+          returnType: "new",
+          params: [
+            "null",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 326
+        },
+        {
+          name: "exactField",
+          signature: "FieldMatch exactField(@NonNull String signature)",
+          returnType: "FieldMatch",
+          params: [
+            "@NonNull String signature"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 332
+        },
+        {
+          name: "FieldMatcherImpl",
+          signature: "new FieldMatcherImpl(null, true)",
+          returnType: "new",
+          params: [
+            "null",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 333
+        },
+        {
+          name: "exact",
+          signature: "FieldMatch exact(@NonNull Field field)",
+          returnType: "FieldMatch",
+          params: [
+            "@NonNull Field field"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 345
+        },
+        {
+          name: "FieldMatcherImpl",
+          signature: "new FieldMatcherImpl(null, true)",
+          returnType: "new",
+          params: [
+            "null",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 346
+        },
+        {
+          name: "build",
+          signature: "Future<?> build()",
+          returnType: "Future<?>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 350
+        },
+        {
+          name: "cancel",
+          signature: "boolean cancel(boolean mayInterruptIfRunning)",
+          returnType: "boolean",
+          params: [
+            "boolean mayInterruptIfRunning"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 390
+        },
+        {
+          name: "isCancelled",
+          signature: "boolean isCancelled()",
+          returnType: "boolean",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 395
+        },
+        {
+          name: "isDone",
+          signature: "boolean isDone()",
+          returnType: "boolean",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 400
+        },
+        {
+          name: "runTasks",
+          signature: "void runTasks(@NonNull FutureTask<?> task)",
+          returnType: "void",
+          params: [
+            "@NonNull FutureTask<?> task"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 404
+        },
+        {
+          name: "get",
+          signature: "Object get()",
+          returnType: "Object",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 415
+        },
+        {
+          name: "InterruptedException",
+          signature: 'throw new InterruptedException("dead lock")',
+          returnType: "throw new",
+          params: [
+            '"dead lock"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 417
+        },
+        {
+          name: "get",
+          signature: "Object get(long timeout, TimeUnit unit)",
+          returnType: "Object",
+          params: [
+            "long timeout",
+            "TimeUnit unit"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 432
+        },
+        {
+          name: "InterruptedException",
+          signature: 'throw new InterruptedException("dead lock")',
+          returnType: "throw new",
+          params: [
+            '"dead lock"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 435
+        },
+        {
+          name: "TimeoutException",
+          signature: "throw new TimeoutException()",
+          returnType: "throw new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 444
+        },
+        {
+          name: "analysisDex",
+          signature: "void analysisDex()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 456
+        },
+        {
+          name: "ZipFile",
+          signature: "new ZipFile(sourcePath)",
+          returnType: "new",
+          params: [
+            "sourcePath"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 458
+        },
+        {
+          name: "IOException",
+          signature: 'throw new IOException("read dex failed")',
+          returnType: "throw new",
+          params: [
+            '"read dex failed"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 467
+        },
+        {
+          name: "visit",
+          signature: "MemberVisitor visit(int clazz, int accessFlags, int superClass, @NonNull int[] interfaces, int sourceFile, @NonNull int[] staticFields, @NonNull int[] staticFieldsAccessFlags, @NonNull int[] instanceFields, @NonNull int[] instanceFieldsAccessFlags, @NonNull int[] directMethods, @NonNull int[] directMethodsAccessFlags, @NonNull int[] virtualMethods, @NonNull int[] virtualMethodsAccessFlags, @NonNull int[] annotations)",
+          returnType: "MemberVisitor",
+          params: [
+            "int clazz",
+            "int accessFlags",
+            "int superClass",
+            "@NonNull int[] interfaces",
+            "int sourceFile",
+            "@NonNull int[] staticFields",
+            "@NonNull int[] staticFieldsAccessFlags",
+            "@NonNull int[] instanceFields",
+            "@NonNull int[] instanceFieldsAccessFlags",
+            "@NonNull int[] directMethods",
+            "@NonNull int[] directMethodsAccessFlags",
+            "@NonNull int[] virtualMethods",
+            "@NonNull int[] virtualMethodsAccessFlags",
+            "@NonNull int[] annotations"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 530
+        },
+        {
+          name: "FieldAndMethodVisitor",
+          signature: "return new FieldAndMethodVisitor()",
+          returnType: "return new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 531
+        },
+        {
+          name: "visit",
+          signature: "void visit(int field, int accessFlags, @NonNull int[] annotations)",
+          returnType: "void",
+          params: [
+            "int field",
+            "int accessFlags",
+            "@NonNull int[] annotations"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 533
+        },
+        {
+          name: "visit",
+          signature: "MethodBodyVisitor visit(int method, int accessFlags, boolean hasBody, @NonNull int[] annotations, @NonNull int[] parameterAnnotations)",
+          returnType: "MethodBodyVisitor",
+          params: [
+            "int method",
+            "int accessFlags",
+            "boolean hasBody",
+            "@NonNull int[] annotations",
+            "@NonNull int[] parameterAnnotations"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 538
+        },
+        {
+          name: "stop",
+          signature: "boolean stop()",
+          returnType: "boolean",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 544
+        },
+        {
+          name: "stop",
+          signature: "boolean stop()",
+          returnType: "boolean",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 551
+        },
+        {
+          name: "getAllClassNamesFromClassLoader",
+          signature: "TreeSetView<String> getAllClassNamesFromClassLoader()",
+          returnType: "TreeSetView<String>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 572
+        },
+        {
+          name: "IllegalStateException",
+          signature: 'throw new IllegalStateException("pathList is null")',
+          returnType: "throw new",
+          params: [
+            '"pathList is null"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 578
+        },
+        {
+          name: "IllegalStateException",
+          signature: 'throw new IllegalStateException("dexElements is null")',
+          returnType: "throw new",
+          params: [
+            '"dexElements is null"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 584
+        },
+        {
+          name: "loadMatchCache",
+          signature: "void loadMatchCache()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 607
+        },
+        {
+          name: "MatchCache",
+          signature: "new MatchCache()",
+          returnType: "new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 611
+        },
+        {
+          name: "ObjectInputStream",
+          signature: "new ObjectInputStream(cacheInputStream)",
+          returnType: "new",
+          params: [
+            "cacheInputStream"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 614
+        },
+        {
+          name: "MatchCache",
+          signature: "new MatchCache()",
+          returnType: "new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 632
+        },
+        {
+          name: "File",
+          signature: "new File(sourcePath)",
+          returnType: "new",
+          params: [
+            "sourcePath"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 638
+        },
+        {
+          name: "MatchCache",
+          signature: "new MatchCache()",
+          returnType: "new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 640
+        },
+        {
+          name: "MatchCache",
+          signature: "new MatchCache()",
+          returnType: "new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 648
+        },
+        {
+          name: "ParameterImpl",
+          signature: "new ParameterImpl(idx, p.getType()",
+          returnType: "new",
+          params: [
+            "idx",
+            "p.getType("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 707
+        },
+        {
+          name: "ParameterImpl",
+          signature: "new ParameterImpl(idx, p, m, 0)",
+          returnType: "new",
+          params: [
+            "idx",
+            "p",
+            "m",
+            "0"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 710
+        },
+        {
+          name: "ParameterImpl",
+          signature: "new ParameterImpl(idx, p.getType()",
+          returnType: "new",
+          params: [
+            "idx",
+            "p.getType("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 779
+        },
+        {
+          name: "ParameterImpl",
+          signature: "new ParameterImpl(idx, p, m, 0)",
+          returnType: "new",
+          params: [
+            "idx",
+            "p",
+            "m",
+            "0"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 782
+        },
+        {
+          name: "memberClassLists",
+          signature: "void memberClassLists(MemberMatcherImpl<?, ?, Reflect, ?, ?> matcher, Transformer<Class<?>, Reflect[]> transformer)",
+          returnType: "void",
+          params: [
+            "MemberMatcherImpl<?",
+            "?",
+            "Reflect",
+            "?",
+            "?> matcher",
+            "Transformer<Class<?>",
+            "Reflect[]> transformer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 794
+        },
+        {
+          name: "analysisClassLoader",
+          signature: "void analysisClassLoader()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 811
+        },
+        {
+          name: "memberClassLists",
+          signature: "> memberClassLists(fieldMatcher, Class::getDeclaredFields)",
+          returnType: ">",
+          params: [
+            "fieldMatcher",
+            "Class::getDeclaredFields"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 863
+        },
+        {
+          name: "memberClassLists",
+          signature: "> memberClassLists(methodMatcher, Class::getDeclaredMethods)",
+          returnType: ">",
+          params: [
+            "methodMatcher",
+            "Class::getDeclaredMethods"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 871
+        },
+        {
+          name: "memberClassLists",
+          signature: "> memberClassLists(constructorMatcher, Class::getDeclaredConstructors)",
+          returnType: ">",
+          params: [
+            "constructorMatcher",
+            "Class::getDeclaredConstructors"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 879
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.is",
+      simpleName: "is",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class is",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/is.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.BaseMatcherImpl",
+      simpleName: "BaseMatcherImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class BaseMatcherImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/BaseMatcherImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "BaseMatcherImpl",
+          signature: "protected BaseMatcherImpl(boolean matchFirst)",
+          returnType: "protected",
+          params: [
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 894
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.BaseMatchImpl",
+      simpleName: "BaseMatchImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class BaseMatchImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/BaseMatchImpl.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ReflectMatcherImpl",
+      simpleName: "ReflectMatcherImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ReflectMatcherImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ReflectMatcherImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "AtomicInteger",
+          signature: "new AtomicInteger(1)",
+          returnType: "new",
+          params: [
+            "1"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 909
+        },
+        {
+          name: "ReflectMatcherImpl",
+          signature: "protected ReflectMatcherImpl(@Nullable ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher, boolean matchFirst)",
+          returnType: "protected",
+          params: [
+            "@Nullable ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher",
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 925
+        },
+        {
+          name: "ensureNotFinalized",
+          signature: "void ensureNotFinalized()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 930
+        },
+        {
+          name: "IllegalStateException",
+          signature: 'throw new IllegalStateException("Cannot modify after finalized")',
+          returnType: "throw new",
+          params: [
+            '"Cannot modify after finalized"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 932
+        },
+        {
+          name: "build",
+          signature: "SeqImpl build()",
+          returnType: "SeqImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 936
+        },
+        {
+          name: "build",
+          signature: "SeqImpl build(@Nullable Reflect exact)",
+          returnType: "SeqImpl",
+          params: [
+            "@Nullable Reflect exact"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 948
+        },
+        {
+          name: "setKey",
+          signature: "Base setKey(@NonNull String key)",
+          returnType: "Base",
+          params: [
+            "@NonNull String key"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 960
+        },
+        {
+          name: "setModifier",
+          signature: "void setModifier(boolean set, int flags)",
+          returnType: "void",
+          params: [
+            "boolean set",
+            "int flags"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 967
+        },
+        {
+          name: "setIsPublic",
+          signature: "Base setIsPublic(boolean isPublic)",
+          returnType: "Base",
+          params: [
+            "boolean isPublic"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 980
+        },
+        {
+          name: "setIsPrivate",
+          signature: "Base setIsPrivate(boolean isPrivate)",
+          returnType: "Base",
+          params: [
+            "boolean isPrivate"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 987
+        },
+        {
+          name: "setIsProtected",
+          signature: "Base setIsProtected(boolean isProtected)",
+          returnType: "Base",
+          params: [
+            "boolean isProtected"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 994
+        },
+        {
+          name: "setIsPackage",
+          signature: "Base setIsPackage(boolean isPackage)",
+          returnType: "Base",
+          params: [
+            "boolean isPackage"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1001
+        },
+        {
+          name: "onBuild",
+          signature: "SeqImpl onBuild()",
+          returnType: "SeqImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1007
+        },
+        {
+          name: "setNonPending",
+          signature: "void setNonPending()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1009
+        },
+        {
+          name: "addDependency",
+          signature: "Id<D>> T addDependency(@Nullable T field, @NonNull U input)",
+          returnType: "Id<D>> T",
+          params: [
+            "@Nullable T field",
+            "@NonNull U input"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1012
+        },
+        {
+          name: "addDependencies",
+          signature: "<T extends ReflectSyntaxImpl<M, ?, RR>, U extends Syntax<M>, M extends ReflectMatch<M, RR, ?>, RR> T addDependencies(@Nullable T field, @NonNull U input)",
+          returnType: "<T extends ReflectSyntaxImpl<M, ?, RR>, U extends Syntax<M>, M extends ReflectMatch<M, RR, ?>, RR> T",
+          params: [
+            "@Nullable T field",
+            "@NonNull U input"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1024
+        },
+        {
+          name: "match",
+          signature: "void match(@NonNull Collection<Reflect> matches)",
+          returnType: "void",
+          params: [
+            "@NonNull Collection<Reflect> matches"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1033
+        },
+        {
+          name: "IllegalStateException",
+          signature: 'throw new IllegalStateException("Illegal state when doMatch")',
+          returnType: "throw new",
+          params: [
+            '"Illegal state when doMatch"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1036
+        },
+        {
+          name: "doMatch",
+          signature: "void doMatch()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1042
+        },
+        {
+          name: "doMatch",
+          signature: "void doMatch(@NonNull Collection<Reflect> candidates)",
+          returnType: "void",
+          params: [
+            "@NonNull Collection<Reflect> candidates"
+          ],
+          sinceApi: 101,
+          doc: "do match on reflect",
+          line: 1059
+        },
+        {
+          name: "doMatch",
+          signature: "boolean doMatch(@NonNull Reflect reflect)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Reflect reflect"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1068
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ClassMatcherImpl",
+      simpleName: "ClassMatcherImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ClassMatcherImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ClassMatcherImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ClassMatcherImpl",
+          signature: "private ClassMatcherImpl(@Nullable ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher, boolean matchFirst)",
+          returnType: "private",
+          params: [
+            "@Nullable ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher",
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1090
+        },
+        {
+          name: "onBuild",
+          signature: "ClassLazySequenceImpl onBuild()",
+          returnType: "ClassLazySequenceImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1096
+        },
+        {
+          name: "ClassLazySequenceImpl",
+          signature: "return new ClassLazySequenceImpl(rootMatcher)",
+          returnType: "return new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1099
+        },
+        {
+          name: "setNonPending",
+          signature: "void setNonPending()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1104
+        },
+        {
+          name: "doMatch",
+          signature: "boolean doMatch(@NonNull Class<?> theClass)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Class<?> theClass"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1110
+        },
+        {
+          name: "setName",
+          signature: "ClassMatcher setName(@NonNull StringMatch name)",
+          returnType: "ClassMatcher",
+          params: [
+            "@NonNull StringMatch name"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1128
+        },
+        {
+          name: "setSuperClass",
+          signature: "ClassMatcher setSuperClass(@NonNull ClassMatch superClassMatch)",
+          returnType: "ClassMatcher",
+          params: [
+            "@NonNull ClassMatch superClassMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1136
+        },
+        {
+          name: "setContainsInterfaces",
+          signature: "ClassMatcher setContainsInterfaces(@NonNull Syntax<ClassMatch> consumer)",
+          returnType: "ClassMatcher",
+          params: [
+            "@NonNull Syntax<ClassMatch> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1144
+        },
+        {
+          name: "setIsAbstract",
+          signature: "ClassMatcher setIsAbstract(boolean isAbstract)",
+          returnType: "ClassMatcher",
+          params: [
+            "boolean isAbstract"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1152
+        },
+        {
+          name: "setIsStatic",
+          signature: "ClassMatcher setIsStatic(boolean isStatic)",
+          returnType: "ClassMatcher",
+          params: [
+            "boolean isStatic"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1159
+        },
+        {
+          name: "setIsFinal",
+          signature: "ClassMatcher setIsFinal(boolean isFinal)",
+          returnType: "ClassMatcher",
+          params: [
+            "boolean isFinal"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1166
+        },
+        {
+          name: "setIsInterface",
+          signature: "ClassMatcher setIsInterface(boolean isInterface)",
+          returnType: "ClassMatcher",
+          params: [
+            "boolean isInterface"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1173
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ParameterMatcherImpl",
+      simpleName: "ParameterMatcherImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ParameterMatcherImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ParameterMatcherImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ParameterMatcherImpl",
+          signature: "private ParameterMatcherImpl(@Nullable ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher, boolean matchFirst)",
+          returnType: "private",
+          params: [
+            "@Nullable ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher",
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1185
+        },
+        {
+          name: "onBuild",
+          signature: "ParameterLazySequenceImpl onBuild()",
+          returnType: "ParameterLazySequenceImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1191
+        },
+        {
+          name: "ParameterLazySequenceImpl",
+          signature: "return new ParameterLazySequenceImpl(rootMatcher)",
+          returnType: "return new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "if (rootMatcher != this) rootParameterMatchers.add(this);",
+          line: 1194
+        },
+        {
+          name: "setNonPending",
+          signature: "void setNonPending()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1198
+        },
+        {
+          name: "doMatch",
+          signature: "boolean doMatch(@NonNull Parameter parameter)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Parameter parameter"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1203
+        },
+        {
+          name: "setIndex",
+          signature: "ParameterMatcher setIndex(int index)",
+          returnType: "ParameterMatcher",
+          params: [
+            "int index"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1213
+        },
+        {
+          name: "setType",
+          signature: "ParameterMatcher setType(@NonNull ClassMatch type)",
+          returnType: "ParameterMatcher",
+          params: [
+            "@NonNull ClassMatch type"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1221
+        },
+        {
+          name: "setIsFinal",
+          signature: "ParameterMatcher setIsFinal(boolean isFinal)",
+          returnType: "ParameterMatcher",
+          params: [
+            "boolean isFinal"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1230
+        },
+        {
+          name: "setIsSynthetic",
+          signature: "ParameterMatcher setIsSynthetic(boolean isSynthetic)",
+          returnType: "ParameterMatcher",
+          params: [
+            "boolean isSynthetic"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1238
+        },
+        {
+          name: "setIsVarargs",
+          signature: "ParameterMatcher setIsVarargs(boolean isVarargs)",
+          returnType: "ParameterMatcher",
+          params: [
+            "boolean isVarargs"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1246
+        },
+        {
+          name: "setIsImplicit",
+          signature: "ParameterMatcher setIsImplicit(boolean isImplicit)",
+          returnType: "ParameterMatcher",
+          params: [
+            "boolean isImplicit"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1254
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.MemberMatcherImpl",
+      simpleName: "MemberMatcherImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class MemberMatcherImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MemberMatcherImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "MemberMatcherImpl",
+          signature: "protected MemberMatcherImpl(@Nullable ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher, boolean matchFirst)",
+          returnType: "protected",
+          params: [
+            "@Nullable ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher",
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1269
+        },
+        {
+          name: "setNonPending",
+          signature: "void setNonPending()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1275
+        },
+        {
+          name: "doMatch",
+          signature: "boolean doMatch(@NonNull Reflect reflect)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Reflect reflect"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1280
+        },
+        {
+          name: "setDeclaringClass",
+          signature: "Base setDeclaringClass(@NonNull ClassMatch declaringClassMatch)",
+          returnType: "Base",
+          params: [
+            "@NonNull ClassMatch declaringClassMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1289
+        },
+        {
+          name: "setIsSynthetic",
+          signature: "Base setIsSynthetic(boolean isSynthetic)",
+          returnType: "Base",
+          params: [
+            "boolean isSynthetic"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1297
+        },
+        {
+          name: "setIncludeSuper",
+          signature: "Base setIncludeSuper(boolean includeSuper)",
+          returnType: "Base",
+          params: [
+            "boolean includeSuper"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1304
+        },
+        {
+          name: "setIncludeInterface",
+          signature: "Base setIncludeInterface(boolean includeInterface)",
+          returnType: "Base",
+          params: [
+            "boolean includeInterface"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1312
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.FieldMatcherImpl",
+      simpleName: "FieldMatcherImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class FieldMatcherImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/FieldMatcherImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "FieldMatcherImpl",
+          signature: "private FieldMatcherImpl(@Nullable ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher, boolean matchFirst)",
+          returnType: "private",
+          params: [
+            "@Nullable ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher",
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1326
+        },
+        {
+          name: "setNonPending",
+          signature: "void setNonPending()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1331
+        },
+        {
+          name: "onBuild",
+          signature: "FieldLazySequenceImpl onBuild()",
+          returnType: "FieldLazySequenceImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1338
+        },
+        {
+          name: "FieldLazySequenceImpl",
+          signature: "return new FieldLazySequenceImpl(rootMatcher)",
+          returnType: "return new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1341
+        },
+        {
+          name: "doMatch",
+          signature: "boolean doMatch(@NonNull Field field)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Field field"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1345
+        },
+        {
+          name: "setName",
+          signature: "FieldMatcher setName(@NonNull StringMatch name)",
+          returnType: "FieldMatcher",
+          params: [
+            "@NonNull StringMatch name"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1355
+        },
+        {
+          name: "setType",
+          signature: "FieldMatcher setType(@NonNull ClassMatch type)",
+          returnType: "FieldMatcher",
+          params: [
+            "@NonNull ClassMatch type"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1363
+        },
+        {
+          name: "setIsStatic",
+          signature: "FieldMatcher setIsStatic(boolean isStatic)",
+          returnType: "FieldMatcher",
+          params: [
+            "boolean isStatic"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1371
+        },
+        {
+          name: "setIsFinal",
+          signature: "FieldMatcher setIsFinal(boolean isFinal)",
+          returnType: "FieldMatcher",
+          params: [
+            "boolean isFinal"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1378
+        },
+        {
+          name: "setIsTransient",
+          signature: "FieldMatcher setIsTransient(boolean isTransient)",
+          returnType: "FieldMatcher",
+          params: [
+            "boolean isTransient"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1385
+        },
+        {
+          name: "setIsVolatile",
+          signature: "FieldMatcher setIsVolatile(boolean isVolatile)",
+          returnType: "FieldMatcher",
+          params: [
+            "boolean isVolatile"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1392
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ExecutableMatcherImpl",
+      simpleName: "ExecutableMatcherImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ExecutableMatcherImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ExecutableMatcherImpl.html",
+      constants: [
+        {
+          name: "M",
+          type: "int",
+          value: "opcodes.length",
+          doc: "prepare for KMP"
+        }
+      ],
+      methods: [
+        {
+          name: "ExecutableMatcherImpl",
+          signature: "protected ExecutableMatcherImpl(@Nullable ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher, boolean matchFirst)",
+          returnType: "protected",
+          params: [
+            "@Nullable ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher",
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1426
+        },
+        {
+          name: "setNonPending",
+          signature: "void setNonPending()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1431
+        },
+        {
+          name: "doMatch",
+          signature: "boolean doMatch(@NonNull Reflect reflect)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Reflect reflect"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1441
+        },
+        {
+          name: "setParameterCount",
+          signature: "Base setParameterCount(int count)",
+          returnType: "Base",
+          params: [
+            "int count"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1456
+        },
+        {
+          name: "setParameters",
+          signature: "Base setParameters(@NonNull Syntax<ParameterMatch> parameterTypes)",
+          returnType: "Base",
+          params: [
+            "@NonNull Syntax<ParameterMatch> parameterTypes"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1464
+        },
+        {
+          name: "setReferredStrings",
+          signature: "Base setReferredStrings(@NonNull Syntax<StringMatch> referredStrings)",
+          returnType: "Base",
+          params: [
+            "@NonNull Syntax<StringMatch> referredStrings"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1473
+        },
+        {
+          name: "setAssignedFields",
+          signature: "Base setAssignedFields(@NonNull Syntax<FieldMatch> assignedFields)",
+          returnType: "Base",
+          params: [
+            "@NonNull Syntax<FieldMatch> assignedFields"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1483
+        },
+        {
+          name: "setAccessedFields",
+          signature: "Base setAccessedFields(@NonNull Syntax<FieldMatch> accessedFields)",
+          returnType: "Base",
+          params: [
+            "@NonNull Syntax<FieldMatch> accessedFields"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1493
+        },
+        {
+          name: "setInvokedMethods",
+          signature: "Base setInvokedMethods(@NonNull Syntax<MethodMatch> invokedMethods)",
+          returnType: "Base",
+          params: [
+            "@NonNull Syntax<MethodMatch> invokedMethods"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1503
+        },
+        {
+          name: "setInvokedConstructors",
+          signature: "Base setInvokedConstructors(@NonNull Syntax<ConstructorMatch> invokedConstructors)",
+          returnType: "Base",
+          params: [
+            "@NonNull Syntax<ConstructorMatch> invokedConstructors"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1513
+        },
+        {
+          name: "setContainsOpcodes",
+          signature: "Base setContainsOpcodes(@NonNull byte[] opcodes)",
+          returnType: "Base",
+          params: [
+            "@NonNull byte[] opcodes"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1523
+        },
+        {
+          name: "setIsVarargs",
+          signature: "Base setIsVarargs(boolean isVarargs)",
+          returnType: "Base",
+          params: [
+            "boolean isVarargs"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1554
+        },
+        {
+          name: "conjunction",
+          signature: "Syntax<ParameterMatch> conjunction(@NonNull ClassMatch... types)",
+          returnType: "Syntax<ParameterMatch>",
+          params: [
+            "@NonNull ClassMatch... types"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1561
+        },
+        {
+          name: "LazyBind",
+          signature: "new LazyBind()",
+          returnType: "new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1562
+        },
+        {
+          name: "ParameterLazySequenceImpl",
+          signature: "new ParameterLazySequenceImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1563
+        },
+        {
+          name: "onMatch",
+          signature: "void onMatch()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1567
+        },
+        {
+          name: "onMiss",
+          signature: "void onMiss()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1572
+        },
+        {
+          name: "TypeOnlyParameter",
+          signature: "new TypeOnlyParameter(pi, c)",
+          returnType: "new",
+          params: [
+            "pi",
+            "c"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1581
+        },
+        {
+          name: "conjunction",
+          signature: "Syntax<ParameterMatch> conjunction(@NonNull Class<?>... types)",
+          returnType: "Syntax<ParameterMatch>",
+          params: [
+            "@NonNull Class<?>... types"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1589
+        },
+        {
+          name: "ParameterLazySequenceImpl",
+          signature: "new ParameterLazySequenceImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1590
+        },
+        {
+          name: "TypeOnlyParameter",
+          signature: "new TypeOnlyParameter(i, type)",
+          returnType: "new",
+          params: [
+            "i",
+            "type"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1595
+        },
+        {
+          name: "observe",
+          signature: "Syntax<ParameterMatch> observe(int index, @NonNull ClassMatch types)",
+          returnType: "Syntax<ParameterMatch>",
+          params: [
+            "int index",
+            "@NonNull ClassMatch types"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1603
+        },
+        {
+          name: "ParameterMatchImpl",
+          signature: "new ParameterMatchImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1604
+        },
+        {
+          name: "TypeOnlyParameter",
+          signature: "new TypeOnlyParameter(index, c)",
+          returnType: "new",
+          params: [
+            "index",
+            "c"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1606
+        },
+        {
+          name: "observe",
+          signature: "Syntax<ParameterMatch> observe(int index, @NonNull Class<?> types)",
+          returnType: "Syntax<ParameterMatch>",
+          params: [
+            "int index",
+            "@NonNull Class<?> types"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1612
+        },
+        {
+          name: "ParameterMatchImpl",
+          signature: "new ParameterMatchImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1613
+        },
+        {
+          name: "TypeOnlyParameter",
+          signature: "new TypeOnlyParameter(index, types)",
+          returnType: "new",
+          params: [
+            "index",
+            "types"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1615
+        },
+        {
+          name: "firstParameter",
+          signature: "ParameterMatch firstParameter(@NonNull Consumer<ParameterMatcher> consumer)",
+          returnType: "ParameterMatch",
+          params: [
+            "@NonNull Consumer<ParameterMatcher> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1621
+        },
+        {
+          name: "ParameterMatcherImpl",
+          signature: "new ParameterMatcherImpl(rootMatcher, true)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1623
+        },
+        {
+          name: "parameters",
+          signature: "ParameterLazySequence parameters(@NonNull Consumer<ParameterMatcher> consumer)",
+          returnType: "ParameterLazySequence",
+          params: [
+            "@NonNull Consumer<ParameterMatcher> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1630
+        },
+        {
+          name: "ParameterMatcherImpl",
+          signature: "new ParameterMatcherImpl(rootMatcher, false)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1632
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.MethodMatcherImpl",
+      simpleName: "MethodMatcherImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class MethodMatcherImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MethodMatcherImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "MethodMatcherImpl",
+          signature: "private MethodMatcherImpl(@Nullable ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher, boolean matchFirst)",
+          returnType: "private",
+          params: [
+            "@Nullable ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher",
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1643
+        },
+        {
+          name: "setNonPending",
+          signature: "void setNonPending()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1648
+        },
+        {
+          name: "doMatch",
+          signature: "boolean doMatch(@NonNull Method method)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Method method"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1654
+        },
+        {
+          name: "onBuild",
+          signature: "MethodLazySequenceImpl onBuild()",
+          returnType: "MethodLazySequenceImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1664
+        },
+        {
+          name: "MethodLazySequenceImpl",
+          signature: "return new MethodLazySequenceImpl(rootMatcher)",
+          returnType: "return new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1667
+        },
+        {
+          name: "setName",
+          signature: "MethodMatcher setName(@NonNull StringMatch name)",
+          returnType: "MethodMatcher",
+          params: [
+            "@NonNull StringMatch name"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1672
+        },
+        {
+          name: "setReturnType",
+          signature: "MethodMatcher setReturnType(@NonNull ClassMatch returnType)",
+          returnType: "MethodMatcher",
+          params: [
+            "@NonNull ClassMatch returnType"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1680
+        },
+        {
+          name: "setIsAbstract",
+          signature: "MethodMatcher setIsAbstract(boolean isAbstract)",
+          returnType: "MethodMatcher",
+          params: [
+            "boolean isAbstract"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1688
+        },
+        {
+          name: "setIsStatic",
+          signature: "MethodMatcher setIsStatic(boolean isStatic)",
+          returnType: "MethodMatcher",
+          params: [
+            "boolean isStatic"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1695
+        },
+        {
+          name: "setIsFinal",
+          signature: "MethodMatcher setIsFinal(boolean isFinal)",
+          returnType: "MethodMatcher",
+          params: [
+            "boolean isFinal"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1702
+        },
+        {
+          name: "setIsSynchronized",
+          signature: "MethodMatcher setIsSynchronized(boolean isSynchronized)",
+          returnType: "MethodMatcher",
+          params: [
+            "boolean isSynchronized"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1709
+        },
+        {
+          name: "setIsNative",
+          signature: "MethodMatcher setIsNative(boolean isNative)",
+          returnType: "MethodMatcher",
+          params: [
+            "boolean isNative"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1716
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ConstructorMatcherImpl",
+      simpleName: "ConstructorMatcherImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ConstructorMatcherImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ConstructorMatcherImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ConstructorMatcherImpl",
+          signature: "private ConstructorMatcherImpl(@Nullable ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher, boolean matchFirst)",
+          returnType: "private",
+          params: [
+            "@Nullable ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher",
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1723
+        },
+        {
+          name: "onBuild",
+          signature: "ConstructorLazySequenceImpl onBuild()",
+          returnType: "ConstructorLazySequenceImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1729
+        },
+        {
+          name: "ConstructorLazySequenceImpl",
+          signature: "return new ConstructorLazySequenceImpl(rootMatcher)",
+          returnType: "return new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1731
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.StringMatcherImpl",
+      simpleName: "StringMatcherImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class StringMatcherImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/StringMatcherImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "StringMatcherImpl",
+          signature: "private StringMatcherImpl(@NonNull String pattern, boolean matchFirst, boolean matchPrefix)",
+          returnType: "private",
+          params: [
+            "@NonNull String pattern",
+            "boolean matchFirst",
+            "boolean matchPrefix"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1741
+        },
+        {
+          name: "build",
+          signature: "StringMatch build()",
+          returnType: "StringMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1747
+        },
+        {
+          name: "StringMatchImpl",
+          signature: "new StringMatchImpl(this)",
+          returnType: "new",
+          params: [
+            "this"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1748
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.BaseSyntaxImpl",
+      simpleName: "BaseSyntaxImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class BaseSyntaxImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/BaseSyntaxImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "BaseSyntaxImpl",
+          signature: "private BaseSyntaxImpl(@NonNull Syntax<Match> operand, char operator)",
+          returnType: "private",
+          params: [
+            "@NonNull Syntax<Match> operand",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1757
+        },
+        {
+          name: "UnaryOperands",
+          signature: "new UnaryOperands(new Operand(operand)",
+          returnType: "new",
+          params: [
+            "new Operand(operand"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1758
+        },
+        {
+          name: "BaseSyntaxImpl",
+          signature: "Id<D>> BaseSyntaxImpl(@NonNull LazySequenceImpl<?, M, Reflect, ?, MI, ?, D> operand, char operator)",
+          returnType: "Id<D>>",
+          params: [
+            "@NonNull LazySequenceImpl<?",
+            "M",
+            "Reflect",
+            "?",
+            "MI",
+            "?",
+            "D> operand",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1761
+        },
+        {
+          name: "UnaryOperands",
+          signature: "new UnaryOperands(new Operand(operand)",
+          returnType: "new",
+          params: [
+            "new Operand(operand"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1762
+        },
+        {
+          name: "BaseSyntaxImpl",
+          signature: "private BaseSyntaxImpl(@NonNull MatchImpl operand, char operator)",
+          returnType: "private",
+          params: [
+            "@NonNull MatchImpl operand",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1765
+        },
+        {
+          name: "UnaryOperands",
+          signature: "new UnaryOperands(new Operand(operand)",
+          returnType: "new",
+          params: [
+            "new Operand(operand"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1766
+        },
+        {
+          name: "BaseSyntaxImpl",
+          signature: "private BaseSyntaxImpl(@NonNull Syntax<Match> left, @NonNull Syntax<Match> right, char operator)",
+          returnType: "private",
+          params: [
+            "@NonNull Syntax<Match> left",
+            "@NonNull Syntax<Match> right",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1769
+        },
+        {
+          name: "BinaryOperands",
+          signature: "new BinaryOperands(new Operand(left)",
+          returnType: "new",
+          params: [
+            "new Operand(left"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1770
+        },
+        {
+          name: "newSelf",
+          signature: "Syntax<Match> newSelf(@Nullable Syntax<Match> other, char operator)",
+          returnType: "Syntax<Match>",
+          params: [
+            "@Nullable Syntax<Match> other",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1773
+        },
+        {
+          name: "and",
+          signature: "Syntax<Match> and(@NonNull Syntax<Match> other)",
+          returnType: "Syntax<Match>",
+          params: [
+            "@NonNull Syntax<Match> other"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1777
+        },
+        {
+          name: "newSelf",
+          signature: "return newSelf(other, '&')",
+          returnType: "return",
+          params: [
+            "other",
+            "'&'"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1778
+        },
+        {
+          name: "or",
+          signature: "Syntax<Match> or(@NonNull Syntax<Match> other)",
+          returnType: "Syntax<Match>",
+          params: [
+            "@NonNull Syntax<Match> other"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1783
+        },
+        {
+          name: "newSelf",
+          signature: "return newSelf(other, '|')",
+          returnType: "return",
+          params: [
+            "other",
+            "'|'"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1784
+        },
+        {
+          name: "not",
+          signature: "Syntax<Match> not()",
+          returnType: "Syntax<Match>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1789
+        },
+        {
+          name: "newSelf",
+          signature: "return newSelf(null, '!')",
+          returnType: "return",
+          params: [
+            "null",
+            "'!'"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1790
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.BaseSyntaxImpl.Operand",
+      simpleName: "Operand",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class Operand",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/Operand.html",
+      constants: [],
+      methods: [
+        {
+          name: "Operand",
+          signature: "private Operand(@NonNull MatchImpl match)",
+          returnType: "private",
+          params: [
+            "@NonNull MatchImpl match"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1796
+        },
+        {
+          name: "Operand",
+          signature: "private Operand(@NonNull Syntax<Match> syntax)",
+          returnType: "private",
+          params: [
+            "@NonNull Syntax<Match> syntax"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1800
+        },
+        {
+          name: "Operand",
+          signature: "Id<D>> Operand(@NonNull LazySequenceImpl<?, M, Reflect, ?, MI, ?, D> seq)",
+          returnType: "Id<D>>",
+          params: [
+            "@NonNull LazySequenceImpl<?",
+            "M",
+            "Reflect",
+            "?",
+            "MI",
+            "?",
+            "D> seq"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1804
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.BaseSyntaxImpl.Operands",
+      simpleName: "Operands",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class Operands",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/Operands.html",
+      constants: [],
+      methods: [
+        {
+          name: "Operands",
+          signature: "protected Operands(char operator)",
+          returnType: "protected",
+          params: [
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1812
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.BaseSyntaxImpl.UnaryOperands",
+      simpleName: "UnaryOperands",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class UnaryOperands",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/UnaryOperands.html",
+      constants: [],
+      methods: [
+        {
+          name: "UnaryOperands",
+          signature: "private UnaryOperands(@NonNull Operand operand, char operator)",
+          returnType: "private",
+          params: [
+            "@NonNull Operand operand",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1820
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.BaseSyntaxImpl.BinaryOperands",
+      simpleName: "BinaryOperands",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class BinaryOperands",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/BinaryOperands.html",
+      constants: [],
+      methods: [
+        {
+          name: "BinaryOperands",
+          signature: "private BinaryOperands(@NonNull Operand left, @NonNull Operand right, char operator)",
+          returnType: "private",
+          params: [
+            "@NonNull Operand left",
+            "@NonNull Operand right",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1830
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ReflectSyntaxImpl",
+      simpleName: "ReflectSyntaxImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ReflectSyntaxImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ReflectSyntaxImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ReflectSyntaxImpl",
+          signature: "private ReflectSyntaxImpl(@NonNull Syntax<Match> operand, char operator)",
+          returnType: "private",
+          params: [
+            "@NonNull Syntax<Match> operand",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1840
+        },
+        {
+          name: "ReflectSyntaxImpl",
+          signature: "Id<D>> ReflectSyntaxImpl(@NonNull LazySequenceImpl<?, M, Reflect, ?, MI, ?, D> operand, char operator)",
+          returnType: "Id<D>>",
+          params: [
+            "@NonNull LazySequenceImpl<?",
+            "M",
+            "Reflect",
+            "?",
+            "MI",
+            "?",
+            "D> operand",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1844
+        },
+        {
+          name: "ReflectSyntaxImpl",
+          signature: "private ReflectSyntaxImpl(@NonNull MatchImpl operand, char operator)",
+          returnType: "private",
+          params: [
+            "@NonNull MatchImpl operand",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1848
+        },
+        {
+          name: "ReflectSyntaxImpl",
+          signature: "private ReflectSyntaxImpl(@NonNull Syntax<Match> left, @NonNull Syntax<Match> right, char operator)",
+          returnType: "private",
+          params: [
+            "@NonNull Syntax<Match> left",
+            "@NonNull Syntax<Match> right",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1852
+        },
+        {
+          name: "newSelf",
+          signature: "Syntax<Match> newSelf(@Nullable Syntax<Match> other, char operator)",
+          returnType: "Syntax<Match>",
+          params: [
+            "@Nullable Syntax<Match> other",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1857
+        },
+        {
+          name: "operandTest",
+          signature: "boolean operandTest(@NonNull Operand operand, @NonNull HashSet<Reflect> set, char operator)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Operand operand",
+            "@NonNull HashSet<Reflect> set",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1861
+        },
+        {
+          name: "test",
+          signature: "boolean test(@NonNull HashSet<Reflect> set)",
+          returnType: "boolean",
+          params: [
+            "@NonNull HashSet<Reflect> set"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1882
+        },
+        {
+          name: "operandTest",
+          signature: "return operandTest(binaryOperands.left, set, operator)",
+          returnType: "return",
+          params: [
+            "binaryOperands.left",
+            "set",
+            "operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1892
+        },
+        {
+          name: "addObserver",
+          signature: "void addObserver(@NonNull Operand operand, @NonNull BaseObserver<?> observer, @Nullable AtomicInteger count)",
+          returnType: "void",
+          params: [
+            "@NonNull Operand operand",
+            "@NonNull BaseObserver<?> observer",
+            "@Nullable AtomicInteger count"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1906
+        },
+        {
+          name: "addObserver",
+          signature: "void addObserver(@NonNull BaseObserver<?> observer, @Nullable AtomicInteger count)",
+          returnType: "void",
+          params: [
+            "@NonNull BaseObserver<?> observer",
+            "@Nullable AtomicInteger count"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1918
+        },
+        {
+          name: "removeObserver",
+          signature: "void removeObserver(@NonNull Operand operand, @NonNull BaseObserver<?> observer, @Nullable AtomicInteger count)",
+          returnType: "void",
+          params: [
+            "@NonNull Operand operand",
+            "@NonNull BaseObserver<?> observer",
+            "@Nullable AtomicInteger count"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1929
+        },
+        {
+          name: "removeObserver",
+          signature: "void removeObserver(@NonNull BaseObserver<?> observer, @Nullable AtomicInteger count)",
+          returnType: "void",
+          params: [
+            "@NonNull BaseObserver<?> observer",
+            "@Nullable AtomicInteger count"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1941
+        },
+        {
+          name: "setNonPending",
+          signature: "void setNonPending(@NonNull Operand operand)",
+          returnType: "void",
+          params: [
+            "@NonNull Operand operand"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1952
+        },
+        {
+          name: "setNonPending",
+          signature: "void setNonPending()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1962
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.StringSyntaxImpl",
+      simpleName: "StringSyntaxImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class StringSyntaxImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/StringSyntaxImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "StringSyntaxImpl",
+          signature: "private StringSyntaxImpl(@NonNull Syntax<StringMatch> operand, char operator)",
+          returnType: "private",
+          params: [
+            "@NonNull Syntax<StringMatch> operand",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1975
+        },
+        {
+          name: "StringSyntaxImpl",
+          signature: "Id<D>> StringSyntaxImpl(@NonNull LazySequenceImpl<?, M, String, ?, MI, ?, D> operand, char operator)",
+          returnType: "Id<D>>",
+          params: [
+            "@NonNull LazySequenceImpl<?",
+            "M",
+            "String",
+            "?",
+            "MI",
+            "?",
+            "D> operand",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1979
+        },
+        {
+          name: "StringSyntaxImpl",
+          signature: "private StringSyntaxImpl(@NonNull StringMatchImpl operand, char operator)",
+          returnType: "private",
+          params: [
+            "@NonNull StringMatchImpl operand",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1983
+        },
+        {
+          name: "StringSyntaxImpl",
+          signature: "private StringSyntaxImpl(@NonNull Syntax<StringMatch> left, @NonNull Syntax<StringMatch> right, char operator)",
+          returnType: "private",
+          params: [
+            "@NonNull Syntax<StringMatch> left",
+            "@NonNull Syntax<StringMatch> right",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1987
+        },
+        {
+          name: "newSelf",
+          signature: "Syntax<StringMatch> newSelf(@Nullable Syntax<StringMatch> other, char operator)",
+          returnType: "Syntax<StringMatch>",
+          params: [
+            "@Nullable Syntax<StringMatch> other",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1992
+        },
+        {
+          name: "StringSyntaxImpl",
+          signature: "null ? new StringSyntaxImpl(this, operator)",
+          returnType: "null ? new",
+          params: [
+            "this",
+            "operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1993
+        },
+        {
+          name: "operandTest",
+          signature: "boolean operandTest(Operand operand, TreeSetView<String> set)",
+          returnType: "boolean",
+          params: [
+            "Operand operand",
+            "TreeSetView<String> set"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1996
+        },
+        {
+          name: "test",
+          signature: "boolean test(TreeSetView<String> set)",
+          returnType: "boolean",
+          params: [
+            "TreeSetView<String> set"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2010
+        },
+        {
+          name: "operandTest",
+          signature: "return operandTest(binaryOperands.right, set)",
+          returnType: "return",
+          params: [
+            "binaryOperands.right",
+            "set"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2020
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.LazySequenceImpl",
+      simpleName: "LazySequenceImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class LazySequenceImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/LazySequenceImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "LazySequenceImpl",
+          signature: "protected LazySequenceImpl(@NonNull ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "protected",
+          params: [
+            "@NonNull ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2052
+        },
+        {
+          name: "first",
+          signature: "Match first()",
+          returnType: "Match",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2058
+        },
+        {
+          name: "first",
+          signature: "Match first(@NonNull Consumer<Matcher> consumer)",
+          returnType: "Match",
+          params: [
+            "@NonNull Consumer<Matcher> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2074
+        },
+        {
+          name: "all",
+          signature: "Base all(@NonNull Consumer<Matcher> consumer)",
+          returnType: "Base",
+          params: [
+            "@NonNull Consumer<Matcher> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2083
+        },
+        {
+          name: "onMatch",
+          signature: "Base onMatch(@NonNull Consumer<Iterable<Reflect>> consumer)",
+          returnType: "Base",
+          params: [
+            "@NonNull Consumer<Iterable<Reflect>> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2092
+        },
+        {
+          name: "onMiss",
+          signature: "Base onMiss(@NonNull Runnable runnable)",
+          returnType: "Base",
+          params: [
+            "@NonNull Runnable runnable"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2103
+        },
+        {
+          name: "conjunction",
+          signature: "Syntax<Match> conjunction()",
+          returnType: "Syntax<Match>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2112
+        },
+        {
+          name: "disjunction",
+          signature: "Syntax<Match> disjunction()",
+          returnType: "Syntax<Match>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2118
+        },
+        {
+          name: "substituteIfMiss",
+          signature: "Base substituteIfMiss(@NonNull Supplier<Base> substitute)",
+          returnType: "Base",
+          params: [
+            "@NonNull Supplier<Base> substitute"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2124
+        },
+        {
+          name: "matchIfMiss",
+          signature: "Base matchIfMiss(@NonNull Consumer<Matcher> consumer)",
+          returnType: "Base",
+          params: [
+            "@NonNull Consumer<Matcher> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2131
+        },
+        {
+          name: "bind",
+          signature: "Base bind(@NonNull Bind bind, @NonNull BiConsumer<Bind, Iterable<Reflect>> consumer)",
+          returnType: "Base",
+          params: [
+            "@NonNull Bind bind",
+            "@NonNull BiConsumer<Bind",
+            "Iterable<Reflect>> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2140
+        },
+        {
+          name: "AtomicInteger",
+          signature: "bind, new AtomicInteger(1)",
+          returnType: "bind, new",
+          params: [
+            "1"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2142
+        },
+        {
+          name: "match",
+          signature: "void match(@NonNull Collection<Reflect> matches)",
+          returnType: "void",
+          params: [
+            "@NonNull Collection<Reflect> matches"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2161
+        },
+        {
+          name: "newMatch",
+          signature: "MatchImpl newMatch()",
+          returnType: "MatchImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2182
+        },
+        {
+          name: "newMatcher",
+          signature: "MatcherImpl newMatcher(boolean matchFirst)",
+          returnType: "MatcherImpl",
+          params: [
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2185
+        },
+        {
+          name: "addObserver",
+          signature: "void addObserver(@NonNull BaseObserver<Collection<Reflect>> observer)",
+          returnType: "void",
+          params: [
+            "@NonNull BaseObserver<Collection<Reflect>> observer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2187
+        },
+        {
+          name: "removeObserver",
+          signature: "void removeObserver(@NonNull BaseObserver<Collection<Reflect>> observer)",
+          returnType: "void",
+          params: [
+            "@NonNull BaseObserver<Collection<Reflect>> observer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2193
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ClassLazySequenceImpl",
+      simpleName: "ClassLazySequenceImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ClassLazySequenceImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ClassLazySequenceImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ClassLazySequenceImpl",
+          signature: "protected ClassLazySequenceImpl(@NonNull ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "protected",
+          params: [
+            "@NonNull ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2199
+        },
+        {
+          name: "newMatch",
+          signature: "ClassMatchImpl newMatch()",
+          returnType: "ClassMatchImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2205
+        },
+        {
+          name: "ClassMatchImpl",
+          signature: "return new ClassMatchImpl(rootMatcher)",
+          returnType: "return new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2206
+        },
+        {
+          name: "newMatcher",
+          signature: "ClassMatcherImpl newMatcher(boolean matchFirst)",
+          returnType: "ClassMatcherImpl",
+          params: [
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2211
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "return new ClassMatcherImpl(rootMatcher, matchFirst)",
+          returnType: "return new",
+          params: [
+            "rootMatcher",
+            "matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2212
+        },
+        {
+          name: "addMethodsObserver",
+          signature: "void addMethodsObserver(@NonNull MethodMatcherImpl m)",
+          returnType: "void",
+          params: [
+            "@NonNull MethodMatcherImpl m"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2215
+        },
+        {
+          name: "addConstructorsObserver",
+          signature: "void addConstructorsObserver(@NonNull ConstructorMatcherImpl m)",
+          returnType: "void",
+          params: [
+            "@NonNull ConstructorMatcherImpl m"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2227
+        },
+        {
+          name: "addFieldsObserver",
+          signature: "void addFieldsObserver(@NonNull FieldMatcherImpl m)",
+          returnType: "void",
+          params: [
+            "@NonNull FieldMatcherImpl m"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2239
+        },
+        {
+          name: "methods",
+          signature: "MethodLazySequence methods(@NonNull Consumer<MethodMatcher> matcher)",
+          returnType: "MethodLazySequence",
+          params: [
+            "@NonNull Consumer<MethodMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2253
+        },
+        {
+          name: "MethodMatcherImpl",
+          signature: "new MethodMatcherImpl(rootMatcher, false)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2254
+        },
+        {
+          name: "firstMethod",
+          signature: "MethodMatch firstMethod(@NonNull Consumer<MethodMatcher> matcher)",
+          returnType: "MethodMatch",
+          params: [
+            "@NonNull Consumer<MethodMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2262
+        },
+        {
+          name: "MethodMatcherImpl",
+          signature: "new MethodMatcherImpl(rootMatcher, true)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2263
+        },
+        {
+          name: "constructors",
+          signature: "ConstructorLazySequence constructors(@NonNull Consumer<ConstructorMatcher> matcher)",
+          returnType: "ConstructorLazySequence",
+          params: [
+            "@NonNull Consumer<ConstructorMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2271
+        },
+        {
+          name: "ConstructorMatcherImpl",
+          signature: "new ConstructorMatcherImpl(rootMatcher, false)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2272
+        },
+        {
+          name: "firstConstructor",
+          signature: "ConstructorMatch firstConstructor(@NonNull Consumer<ConstructorMatcher> matcher)",
+          returnType: "ConstructorMatch",
+          params: [
+            "@NonNull Consumer<ConstructorMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2280
+        },
+        {
+          name: "ConstructorMatcherImpl",
+          signature: "new ConstructorMatcherImpl(rootMatcher, true)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2281
+        },
+        {
+          name: "fields",
+          signature: "FieldLazySequence fields(@NonNull Consumer<FieldMatcher> matcher)",
+          returnType: "FieldLazySequence",
+          params: [
+            "@NonNull Consumer<FieldMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2289
+        },
+        {
+          name: "FieldMatcherImpl",
+          signature: "new FieldMatcherImpl(rootMatcher, false)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2290
+        },
+        {
+          name: "firstField",
+          signature: "FieldMatch firstField(@NonNull Consumer<FieldMatcher> matcher)",
+          returnType: "FieldMatch",
+          params: [
+            "@NonNull Consumer<FieldMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2298
+        },
+        {
+          name: "FieldMatcherImpl",
+          signature: "new FieldMatcherImpl(rootMatcher, true)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2299
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ParameterLazySequenceImpl",
+      simpleName: "ParameterLazySequenceImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ParameterLazySequenceImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ParameterLazySequenceImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ParameterLazySequenceImpl",
+          signature: "private ParameterLazySequenceImpl(@NonNull ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "private",
+          params: [
+            "@NonNull ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2307
+        },
+        {
+          name: "newMatch",
+          signature: "ParameterMatchImpl newMatch()",
+          returnType: "ParameterMatchImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2313
+        },
+        {
+          name: "ParameterMatchImpl",
+          signature: "return new ParameterMatchImpl(rootMatcher)",
+          returnType: "return new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2314
+        },
+        {
+          name: "newMatcher",
+          signature: "ParameterMatcherImpl newMatcher(boolean matchFirst)",
+          returnType: "ParameterMatcherImpl",
+          params: [
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2319
+        },
+        {
+          name: "ParameterMatcherImpl",
+          signature: "return new ParameterMatcherImpl(rootMatcher, matchFirst)",
+          returnType: "return new",
+          params: [
+            "rootMatcher",
+            "matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2320
+        },
+        {
+          name: "addTypesObserver",
+          signature: "void addTypesObserver(@NonNull ClassMatcherImpl m)",
+          returnType: "void",
+          params: [
+            "@NonNull ClassMatcherImpl m"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2323
+        },
+        {
+          name: "types",
+          signature: "ClassLazySequence types(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassLazySequence",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2337
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "new ClassMatcherImpl(rootMatcher, false)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2338
+        },
+        {
+          name: "firstType",
+          signature: "ClassMatch firstType(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2346
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "new ClassMatcherImpl(rootMatcher, true)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2347
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.MemberLazySequenceImpl",
+      simpleName: "MemberLazySequenceImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class MemberLazySequenceImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MemberLazySequenceImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "MemberLazySequenceImpl",
+          signature: "protected MemberLazySequenceImpl(@NonNull ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "protected",
+          params: [
+            "@NonNull ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2355
+        },
+        {
+          name: "addDeclaringClassesObserver",
+          signature: "void addDeclaringClassesObserver(@NonNull ClassMatcherImpl m)",
+          returnType: "void",
+          params: [
+            "@NonNull ClassMatcherImpl m"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2359
+        },
+        {
+          name: "declaringClasses",
+          signature: "ClassLazySequence declaringClasses(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassLazySequence",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2373
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "new ClassMatcherImpl(rootMatcher, false)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2374
+        },
+        {
+          name: "firstDeclaringClass",
+          signature: "ClassMatch firstDeclaringClass(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2382
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "new ClassMatcherImpl(rootMatcher, true)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2383
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.FieldLazySequenceImpl",
+      simpleName: "FieldLazySequenceImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class FieldLazySequenceImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/FieldLazySequenceImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "FieldLazySequenceImpl",
+          signature: "private FieldLazySequenceImpl(@NonNull ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "private",
+          params: [
+            "@NonNull ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2391
+        },
+        {
+          name: "addTypesObserver",
+          signature: "void addTypesObserver(@NonNull ClassMatcherImpl m)",
+          returnType: "void",
+          params: [
+            "@NonNull ClassMatcherImpl m"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2395
+        },
+        {
+          name: "newMatch",
+          signature: "FieldMatchImpl newMatch()",
+          returnType: "FieldMatchImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2409
+        },
+        {
+          name: "FieldMatchImpl",
+          signature: "return new FieldMatchImpl(rootMatcher)",
+          returnType: "return new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2410
+        },
+        {
+          name: "newMatcher",
+          signature: "FieldMatcherImpl newMatcher(boolean matchFirst)",
+          returnType: "FieldMatcherImpl",
+          params: [
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2415
+        },
+        {
+          name: "FieldMatcherImpl",
+          signature: "return new FieldMatcherImpl(rootMatcher, matchFirst)",
+          returnType: "return new",
+          params: [
+            "rootMatcher",
+            "matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2416
+        },
+        {
+          name: "types",
+          signature: "ClassLazySequence types(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassLazySequence",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2421
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "new ClassMatcherImpl(rootMatcher, false)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2422
+        },
+        {
+          name: "firstType",
+          signature: "ClassMatch firstType(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2430
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "new ClassMatcherImpl(rootMatcher, true)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2431
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ExecutableLazySequenceImpl",
+      simpleName: "ExecutableLazySequenceImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ExecutableLazySequenceImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ExecutableLazySequenceImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ExecutableLazySequenceImpl",
+          signature: "private ExecutableLazySequenceImpl(@NonNull ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "private",
+          params: [
+            "@NonNull ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2439
+        },
+        {
+          name: "addParametersObserver",
+          signature: "void addParametersObserver(ParameterMatcherImpl m)",
+          returnType: "void",
+          params: [
+            "ParameterMatcherImpl m"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2443
+        },
+        {
+          name: "ParameterImpl",
+          signature: "new ParameterImpl(i, p[i].getType()",
+          returnType: "new",
+          params: [
+            "i",
+            "p[i].getType("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2452
+        },
+        {
+          name: "ParameterImpl",
+          signature: "new ParameterImpl(i, parameterTypes.get(i)",
+          returnType: "new",
+          params: [
+            "i",
+            "parameterTypes.get(i"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2462
+        },
+        {
+          name: "addParameterTypesObserver",
+          signature: "void addParameterTypesObserver(ClassMatcherImpl m)",
+          returnType: "void",
+          params: [
+            "ClassMatcherImpl m"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2470
+        },
+        {
+          name: "parameters",
+          signature: "ParameterLazySequence parameters(@NonNull Consumer<ParameterMatcher> matcher)",
+          returnType: "ParameterLazySequence",
+          params: [
+            "@NonNull Consumer<ParameterMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2488
+        },
+        {
+          name: "ParameterMatcherImpl",
+          signature: "new ParameterMatcherImpl(rootMatcher, false)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2489
+        },
+        {
+          name: "firstParameter",
+          signature: "ParameterMatch firstParameter(@NonNull Consumer<ParameterMatcher> matcher)",
+          returnType: "ParameterMatch",
+          params: [
+            "@NonNull Consumer<ParameterMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2497
+        },
+        {
+          name: "ParameterMatcherImpl",
+          signature: "new ParameterMatcherImpl(rootMatcher, true)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2498
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.MethodLazySequenceImpl",
+      simpleName: "MethodLazySequenceImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class MethodLazySequenceImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MethodLazySequenceImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "MethodLazySequenceImpl",
+          signature: "private MethodLazySequenceImpl(@NonNull ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "private",
+          params: [
+            "@NonNull ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2506
+        },
+        {
+          name: "addReturnTypesObserver",
+          signature: "void addReturnTypesObserver(@NonNull ClassMatcherImpl m)",
+          returnType: "void",
+          params: [
+            "@NonNull ClassMatcherImpl m"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2510
+        },
+        {
+          name: "newMatch",
+          signature: "MethodMatchImpl newMatch()",
+          returnType: "MethodMatchImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2524
+        },
+        {
+          name: "MethodMatchImpl",
+          signature: "return new MethodMatchImpl(rootMatcher)",
+          returnType: "return new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2525
+        },
+        {
+          name: "newMatcher",
+          signature: "MethodMatcherImpl newMatcher(boolean matchFirst)",
+          returnType: "MethodMatcherImpl",
+          params: [
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2530
+        },
+        {
+          name: "MethodMatcherImpl",
+          signature: "return new MethodMatcherImpl(rootMatcher, matchFirst)",
+          returnType: "return new",
+          params: [
+            "rootMatcher",
+            "matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2531
+        },
+        {
+          name: "returnTypes",
+          signature: "ClassLazySequence returnTypes(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassLazySequence",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2536
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "new ClassMatcherImpl(rootMatcher, false)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2537
+        },
+        {
+          name: "firstReturnType",
+          signature: "ClassMatch firstReturnType(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2545
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "new ClassMatcherImpl(rootMatcher, true)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2546
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ConstructorLazySequenceImpl",
+      simpleName: "ConstructorLazySequenceImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ConstructorLazySequenceImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ConstructorLazySequenceImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ConstructorLazySequenceImpl",
+          signature: "private ConstructorLazySequenceImpl(@NonNull ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "private",
+          params: [
+            "@NonNull ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2554
+        },
+        {
+          name: "newMatch",
+          signature: "ConstructorMatchImpl newMatch()",
+          returnType: "ConstructorMatchImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2560
+        },
+        {
+          name: "ConstructorMatchImpl",
+          signature: "return new ConstructorMatchImpl(rootMatcher)",
+          returnType: "return new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2561
+        },
+        {
+          name: "newMatcher",
+          signature: "ConstructorMatcherImpl newMatcher(boolean matchFirst)",
+          returnType: "ConstructorMatcherImpl",
+          params: [
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2566
+        },
+        {
+          name: "ConstructorMatcherImpl",
+          signature: "return new ConstructorMatcherImpl(rootMatcher, matchFirst)",
+          returnType: "return new",
+          params: [
+            "rootMatcher",
+            "matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2567
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ReflectMatchImpl",
+      simpleName: "ReflectMatchImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ReflectMatchImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ReflectMatchImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ReflectMatchImpl",
+          signature: "protected ReflectMatchImpl(@NonNull ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "protected",
+          params: [
+            "@NonNull ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2588
+        },
+        {
+          name: "getKey",
+          signature: "String getKey()",
+          returnType: "String",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2594
+        },
+        {
+          name: "setKey",
+          signature: "Base setKey(@Nullable String key)",
+          returnType: "Base",
+          params: [
+            "@Nullable String key"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2600
+        },
+        {
+          name: "onMatch",
+          signature: "Base onMatch(@NonNull Consumer<Reflect> consumer)",
+          returnType: "Base",
+          params: [
+            "@NonNull Consumer<Reflect> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2608
+        },
+        {
+          name: "onMiss",
+          signature: "Base onMiss(@NonNull Runnable handler)",
+          returnType: "Base",
+          params: [
+            "@NonNull Runnable handler"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2618
+        },
+        {
+          name: "substituteIfMiss",
+          signature: "Base substituteIfMiss(@NonNull Supplier<Base> replacement)",
+          returnType: "Base",
+          params: [
+            "@NonNull Supplier<Base> replacement"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2627
+        },
+        {
+          name: "matchFirstIfMiss",
+          signature: "Base matchFirstIfMiss(@NonNull Consumer<Matcher> consumer)",
+          returnType: "Base",
+          params: [
+            "@NonNull Consumer<Matcher> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2635
+        },
+        {
+          name: "bind",
+          signature: "Base bind(@NonNull Bind bind, @NonNull BiConsumer<Bind, Reflect> consumer)",
+          returnType: "Base",
+          params: [
+            "@NonNull Bind bind",
+            "@NonNull BiConsumer<Bind",
+            "Reflect> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2645
+        },
+        {
+          name: "AtomicInteger",
+          signature: "bind, new AtomicInteger(1)",
+          returnType: "bind, new",
+          params: [
+            "1"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2647
+        },
+        {
+          name: "addObserver",
+          signature: "void addObserver(BaseObserver<Reflect> observer)",
+          returnType: "void",
+          params: [
+            "BaseObserver<Reflect> observer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2670
+        },
+        {
+          name: "removeObserver",
+          signature: "void removeObserver(BaseObserver<Reflect> observer)",
+          returnType: "void",
+          params: [
+            "BaseObserver<Reflect> observer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2676
+        },
+        {
+          name: "match",
+          signature: "void match(@Nullable Reflect match)",
+          returnType: "void",
+          params: [
+            "@Nullable Reflect match"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2680
+        },
+        {
+          name: "ReflectWrapper",
+          signature: "null, new ReflectWrapper(match)",
+          returnType: "null, new",
+          params: [
+            "match"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2681
+        },
+        {
+          name: "newFirstMatcher",
+          signature: "MatcherImpl newFirstMatcher()",
+          returnType: "MatcherImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2706
+        },
+        {
+          name: "onKey",
+          signature: "void onKey(@Nullable String newKey, @Nullable String oldKey)",
+          returnType: "void",
+          params: [
+            "@Nullable String newKey",
+            "@Nullable String oldKey"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2708
+        },
+        {
+          name: "observe",
+          signature: "Syntax<Base> observe()",
+          returnType: "Syntax<Base>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2712
+        },
+        {
+          name: "reverse",
+          signature: "Syntax<Base> reverse()",
+          returnType: "Syntax<Base>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2718
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ReflectMatchImpl.ReflectWrapper",
+      simpleName: "ReflectWrapper",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ReflectWrapper",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ReflectWrapper.html",
+      constants: [],
+      methods: [
+        {
+          name: "ReflectWrapper",
+          signature: "private ReflectWrapper(@Nullable Reflect reflect)",
+          returnType: "private",
+          params: [
+            "@Nullable Reflect reflect"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2726
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ClassMatchImpl",
+      simpleName: "ClassMatchImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ClassMatchImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ClassMatchImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ClassMatchImpl",
+          signature: "protected ClassMatchImpl(@NonNull ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "protected",
+          params: [
+            "@NonNull ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2733
+        },
+        {
+          name: "newFirstMatcher",
+          signature: "ClassMatcherImpl newFirstMatcher()",
+          returnType: "ClassMatcherImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2739
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "return new ClassMatcherImpl(rootMatcher, true)",
+          returnType: "return new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2740
+        },
+        {
+          name: "getSuperClass",
+          signature: "ClassMatch getSuperClass()",
+          returnType: "ClassMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2745
+        },
+        {
+          name: "ClassMatchImpl",
+          signature: "new ClassMatchImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2746
+        },
+        {
+          name: "getInterfaces",
+          signature: "ClassLazySequence getInterfaces()",
+          returnType: "ClassLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2753
+        },
+        {
+          name: "ClassLazySequenceImpl",
+          signature: "new ClassLazySequenceImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2754
+        },
+        {
+          name: "getDeclaredMethods",
+          signature: "MethodLazySequence getDeclaredMethods()",
+          returnType: "MethodLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2761
+        },
+        {
+          name: "MethodLazySequenceImpl",
+          signature: "new MethodLazySequenceImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2762
+        },
+        {
+          name: "getDeclaredConstructors",
+          signature: "ConstructorLazySequence getDeclaredConstructors()",
+          returnType: "ConstructorLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2769
+        },
+        {
+          name: "ConstructorLazySequenceImpl",
+          signature: "new ConstructorLazySequenceImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2770
+        },
+        {
+          name: "getDeclaredFields",
+          signature: "FieldLazySequence getDeclaredFields()",
+          returnType: "FieldLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2777
+        },
+        {
+          name: "FieldLazySequenceImpl",
+          signature: "new FieldLazySequenceImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2778
+        },
+        {
+          name: "getArrayType",
+          signature: "ClassMatch getArrayType()",
+          returnType: "ClassMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2785
+        },
+        {
+          name: "ClassMatchImpl",
+          signature: "new ClassMatchImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2786
+        },
+        {
+          name: "onKey",
+          signature: "void onKey(@Nullable String newKey, @Nullable String oldKey)",
+          returnType: "void",
+          params: [
+            "@Nullable String newKey",
+            "@Nullable String oldKey"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2792
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ParameterMatchImpl",
+      simpleName: "ParameterMatchImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ParameterMatchImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ParameterMatchImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ParameterMatchImpl",
+          signature: "private ParameterMatchImpl(@NonNull ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "private",
+          params: [
+            "@NonNull ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2805
+        },
+        {
+          name: "newFirstMatcher",
+          signature: "ParameterMatcherImpl newFirstMatcher()",
+          returnType: "ParameterMatcherImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2811
+        },
+        {
+          name: "ParameterMatcherImpl",
+          signature: "return new ParameterMatcherImpl(rootMatcher, true)",
+          returnType: "return new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2812
+        },
+        {
+          name: "onKey",
+          signature: "void onKey(@Nullable String newKey, @Nullable String oldKey)",
+          returnType: "void",
+          params: [
+            "@Nullable String newKey",
+            "@Nullable String oldKey"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2816
+        },
+        {
+          name: "getType",
+          signature: "ClassMatch getType()",
+          returnType: "ClassMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2823
+        },
+        {
+          name: "ClassMatchImpl",
+          signature: "new ClassMatchImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2824
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.MemberMatchImpl",
+      simpleName: "MemberMatchImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class MemberMatchImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MemberMatchImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "MemberMatchImpl",
+          signature: "protected MemberMatchImpl(ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "protected",
+          params: [
+            "ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2831
+        },
+        {
+          name: "getDeclaringClass",
+          signature: "ClassMatch getDeclaringClass()",
+          returnType: "ClassMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2837
+        },
+        {
+          name: "ClassMatchImpl",
+          signature: "new ClassMatchImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2838
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.FieldMatchImpl",
+      simpleName: "FieldMatchImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class FieldMatchImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/FieldMatchImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "FieldMatchImpl",
+          signature: "private FieldMatchImpl(ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "private",
+          params: [
+            "ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2845
+        },
+        {
+          name: "newFirstMatcher",
+          signature: "FieldMatcherImpl newFirstMatcher()",
+          returnType: "FieldMatcherImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2851
+        },
+        {
+          name: "FieldMatcherImpl",
+          signature: "return new FieldMatcherImpl(rootMatcher, true)",
+          returnType: "return new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2852
+        },
+        {
+          name: "onKey",
+          signature: "void onKey(@Nullable String newKey, @Nullable String oldKey)",
+          returnType: "void",
+          params: [
+            "@Nullable String newKey",
+            "@Nullable String oldKey"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2856
+        },
+        {
+          name: "getType",
+          signature: "ClassMatch getType()",
+          returnType: "ClassMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2867
+        },
+        {
+          name: "ClassMatchImpl",
+          signature: "new ClassMatchImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2868
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ExecutableMatchImpl",
+      simpleName: "ExecutableMatchImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ExecutableMatchImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ExecutableMatchImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ExecutableMatchImpl",
+          signature: "protected ExecutableMatchImpl(ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "protected",
+          params: [
+            "ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2875
+        },
+        {
+          name: "getParameterTypes",
+          signature: "ClassLazySequence getParameterTypes()",
+          returnType: "ClassLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2881
+        },
+        {
+          name: "ClassLazySequenceImpl",
+          signature: "new ClassLazySequenceImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2882
+        },
+        {
+          name: "getParameters",
+          signature: "ParameterLazySequence getParameters()",
+          returnType: "ParameterLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2895
+        },
+        {
+          name: "ParameterLazySequenceImpl",
+          signature: "new ParameterLazySequenceImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2896
+        },
+        {
+          name: "ParameterImpl",
+          signature: "new ParameterImpl(i, p[i].getType()",
+          returnType: "new",
+          params: [
+            "i",
+            "p[i].getType("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2906
+        },
+        {
+          name: "ParameterImpl",
+          signature: "new ParameterImpl(i, parameterTypes.get(i)",
+          returnType: "new",
+          params: [
+            "i",
+            "parameterTypes.get(i"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2916
+        },
+        {
+          name: "getAssignedFields",
+          signature: "FieldLazySequence getAssignedFields()",
+          returnType: "FieldLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2927
+        },
+        {
+          name: "getAccessedFields",
+          signature: "FieldLazySequence getAccessedFields()",
+          returnType: "FieldLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2935
+        },
+        {
+          name: "getInvokedMethods",
+          signature: "MethodLazySequence getInvokedMethods()",
+          returnType: "MethodLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2943
+        },
+        {
+          name: "getInvokedConstructors",
+          signature: "ConstructorLazySequence getInvokedConstructors()",
+          returnType: "ConstructorLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2951
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.MethodMatchImpl",
+      simpleName: "MethodMatchImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class MethodMatchImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MethodMatchImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "MethodMatchImpl",
+          signature: "private MethodMatchImpl(ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "private",
+          params: [
+            "ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2958
+        },
+        {
+          name: "newFirstMatcher",
+          signature: "MethodMatcherImpl newFirstMatcher()",
+          returnType: "MethodMatcherImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2964
+        },
+        {
+          name: "MethodMatcherImpl",
+          signature: "return new MethodMatcherImpl(rootMatcher, true)",
+          returnType: "return new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2965
+        },
+        {
+          name: "onKey",
+          signature: "void onKey(@Nullable String newKey, @Nullable String oldKey)",
+          returnType: "void",
+          params: [
+            "@Nullable String newKey",
+            "@Nullable String oldKey"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2969
+        },
+        {
+          name: "getReturnType",
+          signature: "ClassMatch getReturnType()",
+          returnType: "ClassMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2980
+        },
+        {
+          name: "ClassMatchImpl",
+          signature: "new ClassMatchImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2981
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ConstructorMatchImpl",
+      simpleName: "ConstructorMatchImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ConstructorMatchImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ConstructorMatchImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ConstructorMatchImpl",
+          signature: "private ConstructorMatchImpl(ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "private",
+          params: [
+            "ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2988
+        },
+        {
+          name: "newFirstMatcher",
+          signature: "ConstructorMatcherImpl newFirstMatcher()",
+          returnType: "ConstructorMatcherImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2994
+        },
+        {
+          name: "ConstructorMatcherImpl",
+          signature: "return new ConstructorMatcherImpl(rootMatcher, true)",
+          returnType: "return new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2995
+        },
+        {
+          name: "onKey",
+          signature: "void onKey(@Nullable String newKey, @Nullable String oldKey)",
+          returnType: "void",
+          params: [
+            "@Nullable String newKey",
+            "@Nullable String oldKey"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2999
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.StringMatchImpl",
+      simpleName: "StringMatchImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class StringMatchImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/StringMatchImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "StringMatchImpl",
+          signature: "private StringMatchImpl(@NonNull StringMatcherImpl matcher)",
+          returnType: "private",
+          params: [
+            "@NonNull StringMatcherImpl matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 3016
+        },
+        {
+          name: "test",
+          signature: "boolean test(@NonNull String value)",
+          returnType: "boolean",
+          params: [
+            "@NonNull String value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 3021
+        },
+        {
+          name: "observe",
+          signature: "Syntax<StringMatch> observe()",
+          returnType: "Syntax<StringMatch>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 3028
+        },
+        {
+          name: "StringSyntaxImpl",
+          signature: "return new StringSyntaxImpl(this, '+')",
+          returnType: "return new",
+          params: [
+            "this",
+            "'+'"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 3029
+        },
+        {
+          name: "reverse",
+          signature: "Syntax<StringMatch> reverse()",
+          returnType: "Syntax<StringMatch>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 3034
+        },
+        {
+          name: "StringSyntaxImpl",
+          signature: "return new StringSyntaxImpl(this, '-')",
+          returnType: "return new",
+          params: [
+            "this",
+            "'-'"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 3035
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.BaseObserver",
+      simpleName: "BaseObserver",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "interface BaseObserver",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/BaseObserver.html",
+      constants: [],
+      methods: [
+        {
+          name: "update",
+          signature: "void update(T result)",
+          returnType: "void",
+          params: [
+            "T result"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 35
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ItemObserver",
+      simpleName: "ItemObserver",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "interface ItemObserver",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ItemObserver.html",
+      constants: [],
+      methods: [
+        {
+          name: "update",
+          signature: "void update(@Nullable T result)",
+          returnType: "void",
+          params: [
+            "@Nullable T result"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 39
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ListObserver",
+      simpleName: "ListObserver",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "interface ListObserver",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ListObserver.html",
+      constants: [],
+      methods: [
+        {
+          name: "update",
+          signature: "void update(@NonNull Collection<T> result)",
+          returnType: "void",
+          params: [
+            "@NonNull Collection<T> result"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 43
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.Transformer",
+      simpleName: "Transformer",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "interface Transformer",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/Transformer.html",
+      constants: [],
+      methods: [
+        {
+          name: "transform",
+          signature: "U transform(@NonNull T input)",
+          returnType: "U",
+          params: [
+            "@NonNull T input"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 48
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.FieldAndMethodVisitor",
+      simpleName: "FieldAndMethodVisitor",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "interface FieldAndMethodVisitor",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/FieldAndMethodVisitor.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.TypeOnlyParameter",
+      simpleName: "TypeOnlyParameter",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "class TypeOnlyParameter",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/TypeOnlyParameter.html",
+      constants: [],
+      methods: [
+        {
+          name: "getType",
+          signature: "Class<?> getType()",
+          returnType: "Class<?>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 67
+        },
+        {
+          name: "getIndex",
+          signature: "int getIndex()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 72
+        },
+        {
+          name: "getDeclaringExecutable",
+          signature: "Member getDeclaringExecutable()",
+          returnType: "Member",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 78
+        },
+        {
+          name: "IllegalStateException",
+          signature: 'throw new IllegalStateException("TypeOnlyParameter does not have a declaring executable")',
+          returnType: "throw new",
+          params: [
+            '"TypeOnlyParameter does not have a declaring executable"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 79
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ParameterImpl",
+      simpleName: "ParameterImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "class ParameterImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ParameterImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "getType",
+          signature: "Class<?> getType()",
+          returnType: "Class<?>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 102
+        },
+        {
+          name: "getIndex",
+          signature: "int getIndex()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 107
+        },
+        {
+          name: "getDeclaringExecutable",
+          signature: "Member getDeclaringExecutable()",
+          returnType: "Member",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 113
+        },
+        {
+          name: "getModifiers",
+          signature: "int getModifiers()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 117
+        },
+        {
+          name: "hashCode",
+          signature: "int hashCode()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 122
+        },
+        {
+          name: "equals",
+          signature: "boolean equals(@Nullable Object obj)",
+          returnType: "boolean",
+          params: [
+            "@Nullable Object obj"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 127
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.SimpleExecutor",
+      simpleName: "SimpleExecutor",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "class SimpleExecutor",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/SimpleExecutor.html",
+      constants: [],
+      methods: [
+        {
+          name: "of",
+          signature: "SimpleExecutor of(@NonNull ExecutorService executor)",
+          returnType: "SimpleExecutor",
+          params: [
+            "@NonNull ExecutorService executor"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 142
+        },
+        {
+          name: "SimpleExecutor",
+          signature: "return new SimpleExecutor()",
+          returnType: "return new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 143
+        },
+        {
+          name: "onSubmit",
+          signature: "Future<T> onSubmit(Callable<T> task)",
+          returnType: "Future<T>",
+          params: [
+            "Callable<T> task"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 145
+        },
+        {
+          name: "of",
+          signature: "SimpleExecutor of(@NonNull Handler handler)",
+          returnType: "SimpleExecutor",
+          params: [
+            "@NonNull Handler handler"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 151
+        },
+        {
+          name: "SimpleExecutor",
+          signature: "return new SimpleExecutor()",
+          returnType: "return new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 152
+        },
+        {
+          name: "onSubmit",
+          signature: "Future<T> onSubmit(Callable<T> task)",
+          returnType: "Future<T>",
+          params: [
+            "Callable<T> task"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 154
+        },
+        {
+          name: "onSubmit",
+          signature: "Future<T> onSubmit(Callable<T> task)",
+          returnType: "Future<T>",
+          params: [
+            "Callable<T> task"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 162
+        },
+        {
+          name: "submit",
+          signature: "Future<T> submit(Callable<T> task)",
+          returnType: "Future<T>",
+          params: [
+            "Callable<T> task"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 164
+        },
+        {
+          name: "submit",
+          signature: "Future<?> submit(Runnable task)",
+          returnType: "Future<?>",
+          params: [
+            "Runnable task"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 170
+        },
+        {
+          name: "submit",
+          signature: "return submit(()",
+          returnType: "return",
+          params: [
+            "("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 171
+        },
+        {
+          name: "joinAll",
+          signature: "void joinAll()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 177
+        },
+        {
+          name: "joinAll",
+          signature: "void joinAll(long timeout, TimeUnit unit)",
+          returnType: "void",
+          params: [
+            "long timeout",
+            "TimeUnit unit"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 184
+        },
+        {
+          name: "TimeoutException",
+          signature: "throw new TimeoutException()",
+          returnType: "throw new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 192
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.PendingExecutor",
+      simpleName: "PendingExecutor",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "class PendingExecutor",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/PendingExecutor.html",
+      constants: [],
+      methods: [
+        {
+          name: "onSubmit",
+          signature: "Future<T> onSubmit(Callable<T> task)",
+          returnType: "Future<T>",
+          params: [
+            "Callable<T> task"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 204
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.MatchCache",
+      simpleName: "MatchCache",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "class MatchCache",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MatchCache.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.TreeSetView",
+      simpleName: "TreeSetView",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "class TreeSetView",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/TreeSetView.html",
+      constants: [],
+      methods: [
+        {
+          name: "TreeSetView",
+          signature: "private TreeSetView(T[] array, int start, int end)",
+          returnType: "private",
+          params: [
+            "T[] array",
+            "int start",
+            "int end"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 244
+        },
+        {
+          name: "ofSorted",
+          signature: "<T extends Comparable<T>> TreeSetView<T> ofSorted(T[] array)",
+          returnType: "<T extends Comparable<T>> TreeSetView<T>",
+          params: [
+            "T[] array"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 250
+        },
+        {
+          name: "ofSorted",
+          signature: "<T extends Comparable<T>> TreeSetView<T> ofSorted(T[] array, int start, int end)",
+          returnType: "<T extends Comparable<T>> TreeSetView<T>",
+          params: [
+            "T[] array",
+            "int start",
+            "int end"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 254
+        },
+        {
+          name: "ofSorted",
+          signature: "<T extends Comparable<T>> TreeSetView<T> ofSorted(Collection<T> c)",
+          returnType: "<T extends Comparable<T>> TreeSetView<T>",
+          params: [
+            "Collection<T> c"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 258
+        },
+        {
+          name: "comparator",
+          signature: "Comparator<? super T> comparator()",
+          returnType: "Comparator<? super T>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 264
+        },
+        {
+          name: "subSet",
+          signature: "TreeSetView<T> subSet(T fromElement, T toElement)",
+          returnType: "TreeSetView<T>",
+          params: [
+            "T fromElement",
+            "T toElement"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 269
+        },
+        {
+          name: "subSet",
+          signature: "return subSet(fromElement, true, toElement, false)",
+          returnType: "return",
+          params: [
+            "fromElement",
+            "true",
+            "toElement",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 270
+        },
+        {
+          name: "headSet",
+          signature: "TreeSetView<T> headSet(T toElement)",
+          returnType: "TreeSetView<T>",
+          params: [
+            "T toElement"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 274
+        },
+        {
+          name: "headSet",
+          signature: "return headSet(toElement, false)",
+          returnType: "return",
+          params: [
+            "toElement",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 275
+        },
+        {
+          name: "tailSet",
+          signature: "TreeSetView<T> tailSet(T fromElement)",
+          returnType: "TreeSetView<T>",
+          params: [
+            "T fromElement"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 279
+        },
+        {
+          name: "tailSet",
+          signature: "return tailSet(fromElement, true)",
+          returnType: "return",
+          params: [
+            "fromElement",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 280
+        },
+        {
+          name: "first",
+          signature: "T first()",
+          returnType: "T",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 284
+        },
+        {
+          name: "isEmpty",
+          signature: "return isEmpty()",
+          returnType: "return",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 285
+        },
+        {
+          name: "last",
+          signature: "T last()",
+          returnType: "T",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 289
+        },
+        {
+          name: "isEmpty",
+          signature: "return isEmpty()",
+          returnType: "return",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 290
+        },
+        {
+          name: "size",
+          signature: "int size()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 294
+        },
+        {
+          name: "isEmpty",
+          signature: "boolean isEmpty()",
+          returnType: "boolean",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 299
+        },
+        {
+          name: "size",
+          signature: "return size()",
+          returnType: "return",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 300
+        },
+        {
+          name: "contains",
+          signature: "boolean contains(@Nullable Object o)",
+          returnType: "boolean",
+          params: [
+            "@Nullable Object o"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 304
+        },
+        {
+          name: "lower",
+          signature: "T lower(T t)",
+          returnType: "T",
+          params: [
+            "T t"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 315
+        },
+        {
+          name: "floor",
+          signature: "T floor(T t)",
+          returnType: "T",
+          params: [
+            "T t"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 326
+        },
+        {
+          name: "ceiling",
+          signature: "T ceiling(T t)",
+          returnType: "T",
+          params: [
+            "T t"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 337
+        },
+        {
+          name: "higher",
+          signature: "T higher(T t)",
+          returnType: "T",
+          params: [
+            "T t"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 348
+        },
+        {
+          name: "pollFirst",
+          signature: "T pollFirst()",
+          returnType: "T",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 356
+        },
+        {
+          name: "UnsupportedOperationException",
+          signature: 'throw new UnsupportedOperationException("This is a read-only view.")',
+          returnType: "throw new",
+          params: [
+            '"This is a read-only view."'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 357
+        },
+        {
+          name: "pollLast",
+          signature: "T pollLast()",
+          returnType: "T",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 362
+        },
+        {
+          name: "UnsupportedOperationException",
+          signature: 'throw new UnsupportedOperationException("This is a read-only view.")',
+          returnType: "throw new",
+          params: [
+            '"This is a read-only view."'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 363
+        },
+        {
+          name: "iterator",
+          signature: "Iterator<T> iterator()",
+          returnType: "Iterator<T>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 368
+        },
+        {
+          name: "hasNext",
+          signature: "boolean hasNext()",
+          returnType: "boolean",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 373
+        },
+        {
+          name: "next",
+          signature: "T next()",
+          returnType: "T",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 378
+        },
+        {
+          name: "descendingSet",
+          signature: "NavigableSet<T> descendingSet()",
+          returnType: "NavigableSet<T>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 385
+        },
+        {
+          name: "UnsupportedOperationException",
+          signature: 'throw new UnsupportedOperationException("Not implemented yet.")',
+          returnType: "throw new",
+          params: [
+            '"Not implemented yet."'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 386
+        },
+        {
+          name: "descendingIterator",
+          signature: "Iterator<T> descendingIterator()",
+          returnType: "Iterator<T>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 390
+        },
+        {
+          name: "hasNext",
+          signature: "boolean hasNext()",
+          returnType: "boolean",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 395
+        },
+        {
+          name: "next",
+          signature: "T next()",
+          returnType: "T",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 400
+        },
+        {
+          name: "subSet",
+          signature: "TreeSetView<T> subSet(T fromElement, boolean fromInclusive, T toElement, boolean toInclusive)",
+          returnType: "TreeSetView<T>",
+          params: [
+            "T fromElement",
+            "boolean fromInclusive",
+            "T toElement",
+            "boolean toInclusive"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 407
+        },
+        {
+          name: "headSet",
+          signature: "TreeSetView<T> headSet(T toElement, boolean inclusive)",
+          returnType: "TreeSetView<T>",
+          params: [
+            "T toElement",
+            "boolean inclusive"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 424
+        },
+        {
+          name: "tailSet",
+          signature: "TreeSetView<T> tailSet(T fromElement, boolean inclusive)",
+          returnType: "TreeSetView<T>",
+          params: [
+            "T fromElement",
+            "boolean inclusive"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 435
+        },
+        {
+          name: "toArray",
+          signature: "Object[] toArray()",
+          returnType: "Object[]",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 447
+        },
+        {
+          name: "size",
+          signature: "array, start, arr, 0, size()",
+          returnType: "array, start, arr, 0,",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 449
+        },
+        {
+          name: "toArray",
+          signature: "T1[] toArray(@NonNull T1[] a)",
+          returnType: "T1[]",
+          params: [
+            "@NonNull T1[] a"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 455
+        },
+        {
+          name: "size",
+          signature: "array, start, a, 0, size()",
+          returnType: "array, start, a, 0,",
+          params: [],
+          sinceApi: 101,
+          doc: "noinspection SuspiciousSystemArraycopy",
+          line: 458
+        },
+        {
+          name: "add",
+          signature: "boolean add(T t)",
+          returnType: "boolean",
+          params: [
+            "T t"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 468
+        },
+        {
+          name: "UnsupportedOperationException",
+          signature: 'throw new UnsupportedOperationException("This is a read-only view")',
+          returnType: "throw new",
+          params: [
+            '"This is a read-only view"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 469
+        },
+        {
+          name: "remove",
+          signature: "boolean remove(@Nullable Object o)",
+          returnType: "boolean",
+          params: [
+            "@Nullable Object o"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 474
+        },
+        {
+          name: "UnsupportedOperationException",
+          signature: 'throw new UnsupportedOperationException("This is a read-only view")',
+          returnType: "throw new",
+          params: [
+            '"This is a read-only view"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 475
+        },
+        {
+          name: "containsAll",
+          signature: "boolean containsAll(@NonNull Collection<?> c)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Collection<?> c"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 479
+        },
+        {
+          name: "size",
+          signature: "> size()",
+          returnType: ">",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 480
+        },
+        {
+          name: "containsAny",
+          signature: "boolean containsAny(@NonNull TreeSetView<T> c)",
+          returnType: "boolean",
+          params: [
+            "@NonNull TreeSetView<T> c"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 504
+        },
+        {
+          name: "addAll",
+          signature: "boolean addAll(@NonNull Collection<? extends T> c)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Collection<? extends T> c"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 524
+        },
+        {
+          name: "UnsupportedOperationException",
+          signature: 'throw new UnsupportedOperationException("This is a read-only view")',
+          returnType: "throw new",
+          params: [
+            '"This is a read-only view"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 525
+        },
+        {
+          name: "retainAll",
+          signature: "boolean retainAll(@NonNull Collection<?> c)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Collection<?> c"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 529
+        },
+        {
+          name: "UnsupportedOperationException",
+          signature: 'throw new UnsupportedOperationException("This is a read-only view")',
+          returnType: "throw new",
+          params: [
+            '"This is a read-only view"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 530
+        },
+        {
+          name: "removeAll",
+          signature: "boolean removeAll(@NonNull Collection<?> c)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Collection<?> c"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 535
+        },
+        {
+          name: "UnsupportedOperationException",
+          signature: 'throw new UnsupportedOperationException("This is a read-only view")',
+          returnType: "throw new",
+          params: [
+            '"This is a read-only view"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 536
+        },
+        {
+          name: "clear",
+          signature: "void clear()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 541
+        },
+        {
+          name: "UnsupportedOperationException",
+          signature: 'throw new UnsupportedOperationException("This is a read-only view")',
+          returnType: "throw new",
+          params: [
+            '"This is a read-only view"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 542
+        },
+        {
+          name: "merge",
+          signature: "TreeSetView<T> merge(@NonNull TreeSetView<T> other)",
+          returnType: "TreeSetView<T>",
+          params: [
+            "@NonNull TreeSetView<T> other"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 545
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.IdTreeSetView",
+      simpleName: "IdTreeSetView",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "class IdTreeSetView",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/IdTreeSetView.html",
+      constants: [],
+      methods: [
+        {
+          name: "IdTreeSetView",
+          signature: "private IdTreeSetView(int[] array, int start, int end)",
+          returnType: "private",
+          params: [
+            "int[] array",
+            "int start",
+            "int end"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 588
+        },
+        {
+          name: "ofSorted",
+          signature: "IdTreeSetView ofSorted(int[] array)",
+          returnType: "IdTreeSetView",
+          params: [
+            "int[] array"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 594
+        },
+        {
+          name: "IdTreeSetView",
+          signature: "return new IdTreeSetView(array, 0, array.length)",
+          returnType: "return new",
+          params: [
+            "array",
+            "0",
+            "array.length"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 595
+        },
+        {
+          name: "ofSorted",
+          signature: "IdTreeSetView ofSorted(int[] array, int start, int end)",
+          returnType: "IdTreeSetView",
+          params: [
+            "int[] array",
+            "int start",
+            "int end"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 598
+        },
+        {
+          name: "IdTreeSetView",
+          signature: "return new IdTreeSetView(array, start, end)",
+          returnType: "return new",
+          params: [
+            "array",
+            "start",
+            "end"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 599
+        },
+        {
+          name: "subSet",
+          signature: "IdTreeSetView subSet(int fromElement, int toElement)",
+          returnType: "IdTreeSetView",
+          params: [
+            "int fromElement",
+            "int toElement"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 602
+        },
+        {
+          name: "subSet",
+          signature: "return subSet(fromElement, true, toElement, false)",
+          returnType: "return",
+          params: [
+            "fromElement",
+            "true",
+            "toElement",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 603
+        },
+        {
+          name: "headSet",
+          signature: "IdTreeSetView headSet(int toElement)",
+          returnType: "IdTreeSetView",
+          params: [
+            "int toElement"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 606
+        },
+        {
+          name: "headSet",
+          signature: "return headSet(toElement, false)",
+          returnType: "return",
+          params: [
+            "toElement",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 607
+        },
+        {
+          name: "tailSet",
+          signature: "IdTreeSetView tailSet(int fromElement)",
+          returnType: "IdTreeSetView",
+          params: [
+            "int fromElement"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 610
+        },
+        {
+          name: "tailSet",
+          signature: "return tailSet(fromElement, true)",
+          returnType: "return",
+          params: [
+            "fromElement",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 611
+        },
+        {
+          name: "first",
+          signature: "int first()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 614
+        },
+        {
+          name: "isEmpty",
+          signature: "return isEmpty()",
+          returnType: "return",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 615
+        },
+        {
+          name: "last",
+          signature: "int last()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 618
+        },
+        {
+          name: "isEmpty",
+          signature: "return isEmpty()",
+          returnType: "return",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 619
+        },
+        {
+          name: "size",
+          signature: "int size()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 622
+        },
+        {
+          name: "isEmpty",
+          signature: "boolean isEmpty()",
+          returnType: "boolean",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 626
+        },
+        {
+          name: "size",
+          signature: "return size()",
+          returnType: "return",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 627
+        },
+        {
+          name: "contains",
+          signature: "boolean contains(int o)",
+          returnType: "boolean",
+          params: [
+            "int o"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 630
+        },
+        {
+          name: "lower",
+          signature: "int lower(int t)",
+          returnType: "int",
+          params: [
+            "int t"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 635
+        },
+        {
+          name: "floor",
+          signature: "int floor(int t)",
+          returnType: "int",
+          params: [
+            "int t"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 645
+        },
+        {
+          name: "ceiling",
+          signature: "int ceiling(int t)",
+          returnType: "int",
+          params: [
+            "int t"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 655
+        },
+        {
+          name: "higher",
+          signature: "int higher(int t)",
+          returnType: "int",
+          params: [
+            "int t"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 665
+        },
+        {
+          name: "subSet",
+          signature: "IdTreeSetView subSet(int fromElement, boolean fromInclusive, int toElement, boolean toInclusive)",
+          returnType: "IdTreeSetView",
+          params: [
+            "int fromElement",
+            "boolean fromInclusive",
+            "int toElement",
+            "boolean toInclusive"
+          ],
+          sinceApi: 101,
+          doc: "@Override public Iterator<T> descendingIterator() { return new Iterator<>() { int index = end - 1; @Override public boolean hasNext() { return index >= start; } @Override public T next() { return array[index--]; } }; }",
+          line: 705
+        },
+        {
+          name: "IdTreeSetView",
+          signature: "return new IdTreeSetView(array, left, Math.max(right, left)",
+          returnType: "return new",
+          params: [
+            "array",
+            "left",
+            "Math.max(right",
+            "left"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 718
+        },
+        {
+          name: "headSet",
+          signature: "IdTreeSetView headSet(int toElement, boolean inclusive)",
+          returnType: "IdTreeSetView",
+          params: [
+            "int toElement",
+            "boolean inclusive"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 721
+        },
+        {
+          name: "IdTreeSetView",
+          signature: "return new IdTreeSetView(array, start, right)",
+          returnType: "return new",
+          params: [
+            "array",
+            "start",
+            "right"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 728
+        },
+        {
+          name: "tailSet",
+          signature: "IdTreeSetView tailSet(int fromElement, boolean inclusive)",
+          returnType: "IdTreeSetView",
+          params: [
+            "int fromElement",
+            "boolean inclusive"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 731
+        },
+        {
+          name: "IdTreeSetView",
+          signature: "return new IdTreeSetView(array, left, array.length)",
+          returnType: "return new",
+          params: [
+            "array",
+            "left",
+            "array.length"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 738
+        },
+        {
+          name: "toArray",
+          signature: "int[] toArray()",
+          returnType: "int[]",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 742
+        },
+        {
+          name: "containsAll",
+          signature: "boolean containsAll(@NonNull IdTreeSetView c)",
+          returnType: "boolean",
+          params: [
+            "@NonNull IdTreeSetView c"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 746
+        },
+        {
+          name: "containsAny",
+          signature: "boolean containsAny(@NonNull IdTreeSetView c)",
+          returnType: "boolean",
+          params: [
+            "@NonNull IdTreeSetView c"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 763
+        },
+        {
+          name: "merge",
+          signature: "IdTreeSetView merge(@NonNull IdTreeSetView other)",
+          returnType: "IdTreeSetView",
+          params: [
+            "@NonNull IdTreeSetView other"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 782
+        },
+        {
+          name: "IdTreeSetView",
+          signature: "return new IdTreeSetView(res, 0, p)",
+          returnType: "return new",
+          params: [
+            "res",
+            "0",
+            "p"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 813
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.AtomicHelper",
+      simpleName: "AtomicHelper",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "class AtomicHelper",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/AtomicHelper.html",
+      constants: [],
+      methods: [
+        {
+          name: "updateIfNullAndGet",
+          signature: "T updateIfNullAndGet(AtomicReference<T> atomic, HookBuilder.Supplier<T> updateFunction)",
+          returnType: "T",
+          params: [
+            "AtomicReference<T> atomic",
+            "HookBuilder.Supplier<T> updateFunction"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 818
         }
       ]
     },
     {
       name: "io.github.libxposed.helper.Reflector",
-      type: "class (package-private helper engine)",
-      summary: "Internal reflection acceleration and caching engine with WeakReference caches. Parses smali-style signatures (e.g., 'com.target.Class->method(Ljava/lang/String;)V') and canonical names.",
+      simpleName: "Reflector",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Reflector.java",
+      sinceApi: 101,
+      summary: "class Reflector",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/Reflector.html",
+      constants: [
+        {
+          name: "EMPTY",
+          type: "WeakReference<?>",
+          value: "new WeakReference<>(null)",
+          doc: ""
+        }
+      ],
       methods: [
-        { name: "loadClass", signature: "Class<?> loadClass(@NonNull String className) throws ClassNotFoundException", doc: "Resolves class with abbreviation decoding, inner-class fallback ($), and WeakReference caching." },
-        { name: "loadMethod", signature: "Method loadMethod(@NonNull String methodString) throws ClassNotFoundException, NoSuchMethodException", doc: "Resolves method from signature like 'Class->method(ParamType):ReturnType' with caching." },
-        { name: "loadConstructor", signature: "Constructor<?> loadConstructor(@NonNull String constructorString) throws ClassNotFoundException, NoSuchMethodException", doc: "Resolves constructor from signature like 'Class-><init>(ParamType)' with caching." },
-        { name: "loadField", signature: "Field loadField(@NonNull String fieldString) throws ClassNotFoundException, NoSuchFieldException", doc: "Resolves field from signature like 'Class->field:Type' with caching." }
+        {
+          name: "loadClass",
+          signature: "Class<?> loadClass(@NonNull String className)",
+          returnType: "Class<?>",
+          params: [
+            "@NonNull String className"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 33
+        },
+        {
+          name: "StringBuilder",
+          signature: "new StringBuilder()",
+          returnType: "new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 38
+        },
+        {
+          name: "ClassNotFoundException",
+          signature: "throw new ClassNotFoundException(className)",
+          returnType: "throw new",
+          params: [
+            "className"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 57
+        },
+        {
+          name: "loadClass",
+          signature: "return loadClass(innerClassName)",
+          returnType: "return",
+          params: [
+            "innerClassName"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 80
+        },
+        {
+          name: "loadField",
+          signature: "Field loadField(@NonNull String fieldString)",
+          returnType: "Field",
+          params: [
+            "@NonNull String fieldString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 89
+        },
+        {
+          name: "NoSuchFieldException",
+          signature: "throw new NoSuchFieldException(fieldString)",
+          returnType: "throw new",
+          params: [
+            "fieldString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 121
+        },
+        {
+          name: "NoSuchFieldException",
+          signature: "throw new NoSuchFieldException(fieldString)",
+          returnType: "throw new",
+          params: [
+            "fieldString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 132
+        },
+        {
+          name: "NoSuchFieldException",
+          signature: "throw new NoSuchFieldException(fieldString)",
+          returnType: "throw new",
+          params: [
+            "fieldString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 139
+        },
+        {
+          name: "loadMethod",
+          signature: "Method loadMethod(@NonNull String methodString)",
+          returnType: "Method",
+          params: [
+            "@NonNull String methodString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 157
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(methodString)",
+          returnType: "throw new",
+          params: [
+            "methodString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 170
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(methodString)",
+          returnType: "throw new",
+          params: [
+            "methodString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 188
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(methodString)",
+          returnType: "throw new",
+          params: [
+            "methodString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 198
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(methodString)",
+          returnType: "throw new",
+          params: [
+            "methodString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 205
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(methodString)",
+          returnType: "throw new",
+          params: [
+            "methodString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 220
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(methodString)",
+          returnType: "throw new",
+          params: [
+            "methodString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 235
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(methodString)",
+          returnType: "throw new",
+          params: [
+            "methodString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 263
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(methodString)",
+          returnType: "throw new",
+          params: [
+            "methodString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 270
+        },
+        {
+          name: "loadConstructor",
+          signature: "Constructor<?> loadConstructor(@NonNull String constructorString)",
+          returnType: "Constructor<?>",
+          params: [
+            "@NonNull String constructorString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 288
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(constructorString)",
+          returnType: "throw new",
+          params: [
+            "constructorString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 299
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(constructorString)",
+          returnType: "throw new",
+          params: [
+            "constructorString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 303
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(constructorString)",
+          returnType: "throw new",
+          params: [
+            "constructorString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 307
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(constructorString)",
+          returnType: "throw new",
+          params: [
+            "constructorString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 317
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(constructorString)",
+          returnType: "throw new",
+          params: [
+            "constructorString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 327
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(constructorString)",
+          returnType: "throw new",
+          params: [
+            "constructorString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 334
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(constructorString)",
+          returnType: "throw new",
+          params: [
+            "constructorString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 349
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(constructorString)",
+          returnType: "throw new",
+          params: [
+            "constructorString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 376
+        },
+        {
+          name: "loadClasses",
+          signature: "Collection<Class<?>> loadClasses(Collection<String> classNames)",
+          returnType: "Collection<Class<?>>",
+          params: [
+            "Collection<String> classNames"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 398
+        },
+        {
+          name: "loadFields",
+          signature: "Collection<Field> loadFields(Collection<String> fieldStrings)",
+          returnType: "Collection<Field>",
+          params: [
+            "Collection<String> fieldStrings"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 407
+        },
+        {
+          name: "loadMethods",
+          signature: "Collection<Method> loadMethods(Collection<String> methodStrings)",
+          returnType: "Collection<Method>",
+          params: [
+            "Collection<String> methodStrings"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 416
+        },
+        {
+          name: "loadConstructors",
+          signature: "Collection<Constructor<?>> loadConstructors(Collection<String> constructorStrings)",
+          returnType: "Collection<Constructor<?>>",
+          params: [
+            "Collection<String> constructorStrings"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 425
+        }
       ]
     },
     {
-      name: "io.github.libxposed.helper.ktx",
-      type: "package",
-      summary: "Idiomatic Kotlin DSL extensions for LibXposed hook declarations.",
-      patterns: [
+      name: "io.github.libxposed.helper.Reflector.MemberKey",
+      simpleName: "MemberKey",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Reflector.java",
+      sinceApi: 101,
+      summary: "class MemberKey",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MemberKey.html",
+      constants: [],
+      methods: [
         {
-          title: "Kotlin HookBuilder DSL",
-          code: 'buildHooks(ctx, classLoader, sourcePath) {\n    firstMethod {\n        name = "targetMethod"\n        paramTypes(String::class.java)\n    }.hook {\n        intercept {\n            val arg0 = it.args[0] as String\n            it.proceed()\n        }\n    }\n}'
+          name: "MemberKey",
+          signature: "protected MemberKey(int hash)",
+          returnType: "protected",
+          params: [
+            "int hash"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 436
+        },
+        {
+          name: "getClassNames",
+          signature: "String[] getClassNames(Class<?>[] classes)",
+          returnType: "String[]",
+          params: [
+            "Class<?>[] classes"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 440
+        },
+        {
+          name: "hashCode",
+          signature: "int hashCode()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 449
+        },
+        {
+          name: "equals",
+          signature: "boolean equals(@Nullable Object obj)",
+          returnType: "boolean",
+          params: [
+            "@Nullable Object obj"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 454
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.Reflector.MemberKey.Field",
+      simpleName: "Field",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Reflector.java",
+      sinceApi: 101,
+      summary: "class Field",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/Field.html",
+      constants: [],
+      methods: [
+        {
+          name: "Field",
+          signature: "protected Field(String declaringClass, String name)",
+          returnType: "protected",
+          params: [
+            "String declaringClass",
+            "String name"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 460
+        },
+        {
+          name: "Field",
+          signature: "protected Field(Class<?> declaringClass, String name)",
+          returnType: "protected",
+          params: [
+            "Class<?> declaringClass",
+            "String name"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 466
+        },
+        {
+          name: "equals",
+          signature: "boolean equals(@Nullable Object obj)",
+          returnType: "boolean",
+          params: [
+            "@Nullable Object obj"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 471
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.Reflector.MemberKey.Constructor",
+      simpleName: "Constructor",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Reflector.java",
+      sinceApi: 101,
+      summary: "class Constructor",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/Constructor.html",
+      constants: [],
+      methods: [
+        {
+          name: "Constructor",
+          signature: "protected Constructor(String declaringClass, String[] parameterTypes)",
+          returnType: "protected",
+          params: [
+            "String declaringClass",
+            "String[] parameterTypes"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 487
+        },
+        {
+          name: "Constructor",
+          signature: "protected Constructor(Class<?> declaringClass, Class<?>[] parameterTypes)",
+          returnType: "protected",
+          params: [
+            "Class<?> declaringClass",
+            "Class<?>[] parameterTypes"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 493
+        },
+        {
+          name: "getClassNames",
+          signature: ", getClassNames(parameterTypes)",
+          returnType: ",",
+          params: [
+            "parameterTypes"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 494
+        },
+        {
+          name: "equals",
+          signature: "boolean equals(@Nullable Object obj)",
+          returnType: "boolean",
+          params: [
+            "@Nullable Object obj"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 498
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.Reflector.MemberKey.Method",
+      simpleName: "Method",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Reflector.java",
+      sinceApi: 101,
+      summary: "class Method",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/Method.html",
+      constants: [],
+      methods: [
+        {
+          name: "Method",
+          signature: "protected Method(String declaringClass, String name, String[] parameterTypes)",
+          returnType: "protected",
+          params: [
+            "String declaringClass",
+            "String name",
+            "String[] parameterTypes"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 515
+        },
+        {
+          name: "Method",
+          signature: "protected Method(Class<?> declaringClass, String name, Class<?>[] parameterTypes)",
+          returnType: "protected",
+          params: [
+            "Class<?> declaringClass",
+            "String name",
+            "Class<?>[] parameterTypes"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 522
+        },
+        {
+          name: "getClassNames",
+          signature: ", name, getClassNames(parameterTypes)",
+          returnType: ", name,",
+          params: [
+            "parameterTypes"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 523
+        },
+        {
+          name: "equals",
+          signature: "boolean equals(@Nullable Object obj)",
+          returnType: "boolean",
+          params: [
+            "@Nullable Object obj"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 527
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker",
+      simpleName: "Hooker",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class Hooker",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/Hooker.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher",
+      simpleName: "Matcher",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class Matcher",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/Matcher.html",
+      constants: [],
+      methods: [
+        {
+          name: "UnsupportedOperationException",
+          signature: 'throw UnsupportedOperationException("Write-only property")',
+          returnType: "throw",
+          params: [
+            '"Write-only property"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 29
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis",
+      simpleName: "DexAnalysis",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class DexAnalysis",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/DexAnalysis.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis",
+      simpleName: "AnnotationAnalysis",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class AnnotationAnalysis",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/AnnotationAnalysis.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.LazyBind",
+      simpleName: "LazyBind",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class LazyBind",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/LazyBind.html",
+      constants: [],
+      methods: [
+        {
+          name: "onMatch",
+          signature: "override fun onMatch()",
+          returnType: "override fun",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 51
+        },
+        {
+          name: "onMiss",
+          signature: "override fun onMiss()",
+          returnType: "override fun",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 53
+        },
+        {
+          name: "onMatch",
+          signature: "fun onMatch()",
+          returnType: "fun",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 56
+        },
+        {
+          name: "onMiss",
+          signature: "fun onMiss()",
+          returnType: "fun",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 58
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ParameterKt",
+      simpleName: "ParameterKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ParameterKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ParameterKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 63
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 66
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 69
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.SyntaxKt",
+      simpleName: "SyntaxKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class SyntaxKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/SyntaxKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "and",
+          signature: "infix fun and(element: SyntaxKt<MatchKt, Match>)",
+          returnType: "infix fun",
+          params: [
+            "element: SyntaxKt<MatchKt",
+            "Match>"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 73
+        },
+        {
+          name: "or",
+          signature: "infix fun or(element: SyntaxKt<MatchKt, Match>)",
+          returnType: "infix fun",
+          params: [
+            "element: SyntaxKt<MatchKt",
+            "Match>"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 76
+        },
+        {
+          name: "not",
+          signature: "operator fun not()",
+          returnType: "operator fun",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 79
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ReflectMatcherKt",
+      simpleName: "ReflectMatcherKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ReflectMatcherKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ReflectMatcherKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 87
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 88
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 94
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 95
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 101
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 102
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 108
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 115
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt",
+      simpleName: "ClassMatcherKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ClassMatcherKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ClassMatcherKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 126
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 127
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 133
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 134
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 140
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 141
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 147
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 148
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 154
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 155
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 161
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 162
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 168
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 169
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt",
+      simpleName: "ParameterMatcherKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ParameterMatcherKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ParameterMatcherKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 179
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 180
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 187
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 188
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 195
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 196
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 203
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 204
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 211
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 212
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 219
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 220
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt",
+      simpleName: "MemberMatcherKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class MemberMatcherKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/MemberMatcherKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 230
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 231
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 237
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 238
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 244
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 245
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 251
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 252
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt",
+      simpleName: "FieldMatcherKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class FieldMatcherKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/FieldMatcherKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 262
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 263
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 269
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 270
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 276
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 277
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 283
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 284
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 290
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 291
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 297
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 298
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt",
+      simpleName: "ExecutableMatcherKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ExecutableMatcherKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ExecutableMatcherKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 308
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 309
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 316
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 317
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 325
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 326
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 334
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 335
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 343
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 344
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 352
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 353
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 361
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 362
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 370
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 371
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 378
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 379
+        },
+        {
+          name: "conjunction",
+          signature: "fun conjunction(vararg types: Class<*>?)",
+          returnType: "fun",
+          params: [
+            "vararg types: Class<*>?"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 383
+        },
+        {
+          name: "conjunction",
+          signature: "fun conjunction(vararg types: ClassMatchKt?)",
+          returnType: "fun",
+          params: [
+            "vararg types: ClassMatchKt?"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 386
+        },
+        {
+          name: "firstParameter",
+          signature: "inline fun firstParameter(crossinline init: ParameterMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ParameterMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 390
+        },
+        {
+          name: "parameters",
+          signature: "inline fun parameters(crossinline init: ParameterMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ParameterMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 395
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt",
+      simpleName: "MethodMatcherKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class MethodMatcherKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/MethodMatcherKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 412
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 413
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 419
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 420
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 426
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 427
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 433
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 434
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 440
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 441
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 447
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 448
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 454
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 455
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt",
+      simpleName: "ConstructorMatcherKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ConstructorMatcherKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ConstructorMatcherKt.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt",
+      simpleName: "BaseMatchKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class BaseMatchKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/BaseMatchKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "unaryPlus",
+          signature: "operator fun unaryPlus()",
+          returnType: "operator fun",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 467
+        },
+        {
+          name: "unaryMinus",
+          signature: "operator fun unaryMinus()",
+          returnType: "operator fun",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 469
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt",
+      simpleName: "ReflectMatchKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ReflectMatchKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ReflectMatchKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 476
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 477
+        },
+        {
+          name: "onMiss",
+          signature: "inline fun onMiss(crossinline handler: DummyHooker.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline handler: DummyHooker.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 481
+        },
+        {
+          name: "substituteIfMiss",
+          signature: "inline fun substituteIfMiss(crossinline substitute: ()",
+          returnType: "inline fun",
+          params: [
+            "crossinline substitute: ("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 488
+        },
+        {
+          name: "matchFirstIfMiss",
+          signature: "inline fun matchFirstIfMiss(crossinline handler: MatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline handler: MatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 495
+        },
+        {
+          name: "newSelf",
+          signature: "internal abstract fun newSelf(match: Match)",
+          returnType: "internal abstract fun",
+          params: [
+            "match: Match"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 503
+        },
+        {
+          name: "newMatcher",
+          signature: "internal abstract fun newMatcher(match: Matcher)",
+          returnType: "internal abstract fun",
+          params: [
+            "match: Matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 506
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt",
+      simpleName: "ClassMatchKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ClassMatchKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ClassMatchKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 512
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 514
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 516
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 518
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 520
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 522
+        },
+        {
+          name: "newSelf",
+          signature: "override fun newSelf(match: ClassMatch)",
+          returnType: "override fun",
+          params: [
+            "match: ClassMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 524
+        },
+        {
+          name: "newMatcher",
+          signature: "override fun newMatcher(match: ClassMatcher)",
+          returnType: "override fun",
+          params: [
+            "match: ClassMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 526
+        },
+        {
+          name: "onMatch",
+          signature: "inline fun onMatch(crossinline handler: DummyHooker.(Class<*>)",
+          returnType: "inline fun",
+          params: [
+            "crossinline handler: DummyHooker.(Class<*>"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 528
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt",
+      simpleName: "ParameterMatchKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ParameterMatchKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ParameterMatchKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 550
+        },
+        {
+          name: "newSelf",
+          signature: "override fun newSelf(match: ParameterMatch)",
+          returnType: "override fun",
+          params: [
+            "match: ParameterMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 552
+        },
+        {
+          name: "newMatcher",
+          signature: "override fun newMatcher(match: ParameterMatcher)",
+          returnType: "override fun",
+          params: [
+            "match: ParameterMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 553
+        },
+        {
+          name: "onMatch",
+          signature: "inline fun onMatch(crossinline handler: DummyHooker.(ParameterKt)",
+          returnType: "inline fun",
+          params: [
+            "crossinline handler: DummyHooker.(ParameterKt"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 555
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt",
+      simpleName: "MemberMatchKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class MemberMatchKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/MemberMatchKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 575
+        },
+        {
+          name: "onMatch",
+          signature: "inline fun onMatch(crossinline handler: DummyHooker.(Reflect)",
+          returnType: "inline fun",
+          params: [
+            "crossinline handler: DummyHooker.(Reflect"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 578
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt",
+      simpleName: "ExecutableMatchKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ExecutableMatchKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ExecutableMatchKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 599
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 602
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 606
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 610
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 614
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 618
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt",
+      simpleName: "MethodMatchKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class MethodMatchKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/MethodMatchKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 624
+        },
+        {
+          name: "newSelf",
+          signature: "override fun newSelf(match: MethodMatch)",
+          returnType: "override fun",
+          params: [
+            "match: MethodMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 626
+        },
+        {
+          name: "newMatcher",
+          signature: "override fun newMatcher(match: MethodMatcher)",
+          returnType: "override fun",
+          params: [
+            "match: MethodMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 627
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt.ConstructorMatchKt",
+      simpleName: "ConstructorMatchKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ConstructorMatchKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ConstructorMatchKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "newSelf",
+          signature: "override fun newSelf(match: ConstructorMatch)",
+          returnType: "override fun",
+          params: [
+            "match: ConstructorMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 634
+        },
+        {
+          name: "newMatcher",
+          signature: "override fun newMatcher(match: ConstructorMatcher)",
+          returnType: "override fun",
+          params: [
+            "match: ConstructorMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 635
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt.ConstructorMatchKt.FieldMatchKt",
+      simpleName: "FieldMatchKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class FieldMatchKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/FieldMatchKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 641
+        },
+        {
+          name: "newSelf",
+          signature: "override fun newSelf(match: FieldMatch)",
+          returnType: "override fun",
+          params: [
+            "match: FieldMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 643
+        },
+        {
+          name: "newMatcher",
+          signature: "override fun newMatcher(match: FieldMatcher)",
+          returnType: "override fun",
+          params: [
+            "match: FieldMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 644
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt.ConstructorMatchKt.FieldMatchKt.StringMatchKt",
+      simpleName: "StringMatchKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class StringMatchKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/StringMatchKt.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt.ConstructorMatchKt.FieldMatchKt.StringMatchKt.LazySequenceKt",
+      simpleName: "LazySequenceKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class LazySequenceKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/LazySequenceKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "first",
+          signature: "fun first()",
+          returnType: "fun",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 655
+        },
+        {
+          name: "unaryPlus",
+          signature: "fun unaryPlus()",
+          returnType: "fun",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 656
+        },
+        {
+          name: "unaryMinus",
+          signature: "fun unaryMinus()",
+          returnType: "fun",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 658
+        },
+        {
+          name: "all",
+          signature: "inline fun all(crossinline init: MatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: MatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 660
+        },
+        {
+          name: "first",
+          signature: "inline fun first(crossinline init: MatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: MatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 664
+        },
+        {
+          name: "substituteIfMiss",
+          signature: "inline fun substituteIfMiss(crossinline substitute: ()",
+          returnType: "inline fun",
+          params: [
+            "crossinline substitute: ("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 668
+        },
+        {
+          name: "matchIfMiss",
+          signature: "inline fun matchIfMiss(crossinline handler: MatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline handler: MatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 675
+        },
+        {
+          name: "onMiss",
+          signature: "inline fun onMiss(crossinline handler: DummyHooker.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline handler: DummyHooker.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 682
+        },
+        {
+          name: "newMatch",
+          signature: "internal abstract fun newMatch(impl: Match)",
+          returnType: "internal abstract fun",
+          params: [
+            "impl: Match"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 690
+        },
+        {
+          name: "newMatcher",
+          signature: "internal abstract fun newMatcher(impl: Matcher)",
+          returnType: "internal abstract fun",
+          params: [
+            "impl: Matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 693
+        },
+        {
+          name: "newSelf",
+          signature: "internal abstract fun newSelf(impl: Seq)",
+          returnType: "internal abstract fun",
+          params: [
+            "impl: Seq"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 696
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt.ConstructorMatchKt.FieldMatchKt.StringMatchKt.LazySequenceKt.ClassLazySequenceKt",
+      simpleName: "ClassLazySequenceKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ClassLazySequenceKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ClassLazySequenceKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "methods",
+          signature: "inline fun methods(crossinline init: MethodMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: MethodMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 703
+        },
+        {
+          name: "firstMethod",
+          signature: "inline fun firstMethod(crossinline init: MethodMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: MethodMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 708
+        },
+        {
+          name: "fields",
+          signature: "inline fun fields(crossinline init: FieldMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: FieldMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 713
+        },
+        {
+          name: "firstField",
+          signature: "inline fun firstField(crossinline init: FieldMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: FieldMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 718
+        },
+        {
+          name: "constructors",
+          signature: "inline fun constructors(crossinline init: ConstructorMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ConstructorMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 723
+        },
+        {
+          name: "firstConstructor",
+          signature: "inline fun firstConstructor(crossinline init: ConstructorMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ConstructorMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 728
+        },
+        {
+          name: "newMatch",
+          signature: "override fun newMatch(impl: ClassMatch)",
+          returnType: "override fun",
+          params: [
+            "impl: ClassMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 733
+        },
+        {
+          name: "newMatcher",
+          signature: "override fun newMatcher(impl: ClassMatcher)",
+          returnType: "override fun",
+          params: [
+            "impl: ClassMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 735
+        },
+        {
+          name: "newSelf",
+          signature: "override fun newSelf(impl: ClassLazySequence)",
+          returnType: "override fun",
+          params: [
+            "impl: ClassLazySequence"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 737
+        },
+        {
+          name: "onMatch",
+          signature: "inline fun onMatch(crossinline handler: DummyHooker.(Sequence<Class<*>>)",
+          returnType: "inline fun",
+          params: [
+            "crossinline handler: DummyHooker.(Sequence<Class<*>>"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 748
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt.ConstructorMatchKt.FieldMatchKt.StringMatchKt.LazySequenceKt.ClassLazySequenceKt.MemberLazySequenceKt",
+      simpleName: "MemberLazySequenceKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class MemberLazySequenceKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/MemberLazySequenceKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "declaringClasses",
+          signature: "inline fun declaringClasses(crossinline init: ClassMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ClassMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 758
+        },
+        {
+          name: "firstDeclaringClass",
+          signature: "inline fun firstDeclaringClass(crossinline init: ClassMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ClassMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 763
+        },
+        {
+          name: "onMatch",
+          signature: "inline fun onMatch(crossinline handler: DummyHooker.(Sequence<Reflect>)",
+          returnType: "inline fun",
+          params: [
+            "crossinline handler: DummyHooker.(Sequence<Reflect>"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 779
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt.ConstructorMatchKt.FieldMatchKt.StringMatchKt.LazySequenceKt.ClassLazySequenceKt.MemberLazySequenceKt.ExecutableLazySequenceKt",
+      simpleName: "ExecutableLazySequenceKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ExecutableLazySequenceKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ExecutableLazySequenceKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "parameters",
+          signature: "inline fun parameters(crossinline init: ParameterMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ParameterMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 789
+        },
+        {
+          name: "firstParameter",
+          signature: "inline fun firstParameter(crossinline init: ParameterMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ParameterMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 794
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt.ConstructorMatchKt.FieldMatchKt.StringMatchKt.LazySequenceKt.ClassLazySequenceKt.MemberLazySequenceKt.ExecutableLazySequenceKt.ParameterLazySequenceKt",
+      simpleName: "ParameterLazySequenceKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ParameterLazySequenceKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ParameterLazySequenceKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "types",
+          signature: "inline fun types(crossinline init: ClassMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ClassMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 804
+        },
+        {
+          name: "firstType",
+          signature: "inline fun firstType(crossinline init: ClassMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ClassMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 808
+        },
+        {
+          name: "newMatch",
+          signature: "override fun newMatch(impl: ParameterMatch)",
+          returnType: "override fun",
+          params: [
+            "impl: ParameterMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 812
+        },
+        {
+          name: "newMatcher",
+          signature: "override fun newMatcher(impl: ParameterMatcher)",
+          returnType: "override fun",
+          params: [
+            "impl: ParameterMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 814
+        },
+        {
+          name: "newSelf",
+          signature: "override fun newSelf(impl: ParameterLazySequence)",
+          returnType: "override fun",
+          params: [
+            "impl: ParameterLazySequence"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 816
+        },
+        {
+          name: "onMatch",
+          signature: "inline fun onMatch(crossinline handler: DummyHooker.(Sequence<ParameterKt>)",
+          returnType: "inline fun",
+          params: [
+            "crossinline handler: DummyHooker.(Sequence<ParameterKt>"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 828
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt.ConstructorMatchKt.FieldMatchKt.StringMatchKt.LazySequenceKt.ClassLazySequenceKt.MemberLazySequenceKt.ExecutableLazySequenceKt.ParameterLazySequenceKt.FieldLazySequenceKt",
+      simpleName: "FieldLazySequenceKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class FieldLazySequenceKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/FieldLazySequenceKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "newMatch",
+          signature: "override fun newMatch(impl: FieldMatch)",
+          returnType: "override fun",
+          params: [
+            "impl: FieldMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 840
+        },
+        {
+          name: "newMatcher",
+          signature: "override fun newMatcher(impl: FieldMatcher)",
+          returnType: "override fun",
+          params: [
+            "impl: FieldMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 842
+        },
+        {
+          name: "newSelf",
+          signature: "override fun newSelf(impl: FieldLazySequence)",
+          returnType: "override fun",
+          params: [
+            "impl: FieldLazySequence"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 844
+        },
+        {
+          name: "types",
+          signature: "inline fun types(crossinline init: ClassMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ClassMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 845
+        },
+        {
+          name: "firstType",
+          signature: "inline fun firstType(crossinline init: ClassMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ClassMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 849
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt.ConstructorMatchKt.FieldMatchKt.StringMatchKt.LazySequenceKt.ClassLazySequenceKt.MemberLazySequenceKt.ExecutableLazySequenceKt.ParameterLazySequenceKt.FieldLazySequenceKt.MethodLazySequenceKt",
+      simpleName: "MethodLazySequenceKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class MethodLazySequenceKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/MethodLazySequenceKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "newMatch",
+          signature: "override fun newMatch(impl: MethodMatch)",
+          returnType: "override fun",
+          params: [
+            "impl: MethodMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 858
+        },
+        {
+          name: "newMatcher",
+          signature: "override fun newMatcher(impl: MethodMatcher)",
+          returnType: "override fun",
+          params: [
+            "impl: MethodMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 860
+        },
+        {
+          name: "newSelf",
+          signature: "override fun newSelf(impl: MethodLazySequence)",
+          returnType: "override fun",
+          params: [
+            "impl: MethodLazySequence"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 862
+        },
+        {
+          name: "returnTypes",
+          signature: "inline fun returnTypes(crossinline init: ClassMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ClassMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 863
+        },
+        {
+          name: "firstReturnType",
+          signature: "inline fun firstReturnType(crossinline init: ClassMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ClassMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 868
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt.ConstructorMatchKt.FieldMatchKt.StringMatchKt.LazySequenceKt.ClassLazySequenceKt.MemberLazySequenceKt.ExecutableLazySequenceKt.ParameterLazySequenceKt.FieldLazySequenceKt.MethodLazySequenceKt.ConstructorLazySequenceKt",
+      simpleName: "ConstructorLazySequenceKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ConstructorLazySequenceKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ConstructorLazySequenceKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "newMatch",
+          signature: "override fun newMatch(impl: ConstructorMatch)",
+          returnType: "override fun",
+          params: [
+            "impl: ConstructorMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 878
+        },
+        {
+          name: "newMatcher",
+          signature: "override fun newMatcher(impl: ConstructorMatcher)",
+          returnType: "override fun",
+          params: [
+            "impl: ConstructorMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 880
+        },
+        {
+          name: "newSelf",
+          signature: "override fun newSelf(impl: ConstructorLazySequence)",
+          returnType: "override fun",
+          params: [
+            "impl: ConstructorLazySequence"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 882
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt.ConstructorMatchKt.FieldMatchKt.StringMatchKt.LazySequenceKt.ClassLazySequenceKt.MemberLazySequenceKt.ExecutableLazySequenceKt.ParameterLazySequenceKt.FieldLazySequenceKt.MethodLazySequenceKt.ConstructorLazySequenceKt.HookBuilderKt",
+      simpleName: "HookBuilderKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class HookBuilderKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/HookBuilderKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 890
+        },
+        {
+          name: "set",
+          signature: "inline set(crossinline value)",
+          returnType: "inline",
+          params: [
+            "crossinline value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 891
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 901
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 902
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 909
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 910
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 917
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 918
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 925
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 926
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 933
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 934
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 941
+        },
+        {
+          name: "set",
+          signature: "inline set(crossinline value)",
+          returnType: "inline",
+          params: [
+            "crossinline value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 942
+        },
+        {
+          name: "methods",
+          signature: "inline fun methods(crossinline init: MethodMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: MethodMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 948
+        },
+        {
+          name: "firstMethod",
+          signature: "inline fun firstMethod(crossinline init: MethodMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: MethodMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 953
+        },
+        {
+          name: "classes",
+          signature: "inline fun classes(crossinline init: ClassMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ClassMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 958
+        },
+        {
+          name: "firstClass",
+          signature: "inline fun firstClass(crossinline init: ClassMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ClassMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 963
+        },
+        {
+          name: "fields",
+          signature: "inline fun fields(crossinline init: FieldMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: FieldMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 968
+        },
+        {
+          name: "firstField",
+          signature: "inline fun firstField(crossinline init: FieldMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: FieldMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 973
+        },
+        {
+          name: "constructors",
+          signature: "inline fun constructors(crossinline init: ConstructorMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ConstructorMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 978
+        },
+        {
+          name: "firstConstructor",
+          signature: "inline fun firstConstructor(crossinline init: ConstructorMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ConstructorMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 983
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 989
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 991
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 993
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 995
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 997
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 999
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1001
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1003
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1005
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1007
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1009
+        }
+      ]
+    }
+  ],
+  classes: [
+    {
+      name: "io.github.libxposed.helper.HookBuilder",
+      simpleName: "HookBuilder",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface HookBuilder",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/HookBuilder.html",
+      constants: [],
+      methods: [
+        {
+          name: "buildHooks",
+          signature: "Future<?> buildHooks(@NonNull XposedInterface ctx, @NonNull BaseDexClassLoader classLoader, @NonNull String sourcePath, Consumer<HookBuilder> consumer)",
+          returnType: "Future<?>",
+          params: [
+            "@NonNull XposedInterface ctx",
+            "@NonNull BaseDexClassLoader classLoader",
+            "@NonNull String sourcePath",
+            "Consumer<HookBuilder> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 32
+        },
+        {
+          name: "HookBuilderImpl",
+          signature: "new HookBuilderImpl(ctx, classLoader, sourcePath)",
+          returnType: "new",
+          params: [
+            "ctx",
+            "classLoader",
+            "sourcePath"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 33
+        },
+        {
+          name: "setForceDexAnalysis",
+          signature: "HookBuilder setForceDexAnalysis(boolean forceDexAnalysis)",
+          returnType: "HookBuilder",
+          params: [
+            "boolean forceDexAnalysis"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 40
+        },
+        {
+          name: "setExecutorService",
+          signature: "HookBuilder setExecutorService(@NonNull ExecutorService executorService)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull ExecutorService executorService"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 43
+        },
+        {
+          name: "setCallbackHandler",
+          signature: "HookBuilder setCallbackHandler(@NonNull Handler callbackHandler)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull Handler callbackHandler"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 46
+        },
+        {
+          name: "setCacheChecker",
+          signature: "HookBuilder setCacheChecker(@NonNull Predicate<Map<String, Object>> cacheChecker)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull Predicate<Map<String",
+            "Object>> cacheChecker"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 49
+        },
+        {
+          name: "setCacheInputStream",
+          signature: "HookBuilder setCacheInputStream(@NonNull InputStream cacheInputStream)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull InputStream cacheInputStream"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 52
+        },
+        {
+          name: "setCacheOutputStream",
+          signature: "HookBuilder setCacheOutputStream(@NonNull OutputStream cacheOutputStream)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull OutputStream cacheOutputStream"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 55
+        },
+        {
+          name: "setExceptionHandler",
+          signature: "HookBuilder setExceptionHandler(@NonNull Predicate<Throwable> handler)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull Predicate<Throwable> handler"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 58
+        },
+        {
+          name: "methods",
+          signature: "MethodLazySequence methods(@NonNull Consumer<MethodMatcher> matcher)",
+          returnType: "MethodLazySequence",
+          params: [
+            "@NonNull Consumer<MethodMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 61
+        },
+        {
+          name: "firstMethod",
+          signature: "MethodMatch firstMethod(@NonNull Consumer<MethodMatcher> matcher)",
+          returnType: "MethodMatch",
+          params: [
+            "@NonNull Consumer<MethodMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 64
+        },
+        {
+          name: "constructors",
+          signature: "ConstructorLazySequence constructors(@NonNull Consumer<ConstructorMatcher> matcher)",
+          returnType: "ConstructorLazySequence",
+          params: [
+            "@NonNull Consumer<ConstructorMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 67
+        },
+        {
+          name: "firstConstructor",
+          signature: "ConstructorMatch firstConstructor(@NonNull Consumer<ConstructorMatcher> matcher)",
+          returnType: "ConstructorMatch",
+          params: [
+            "@NonNull Consumer<ConstructorMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 70
+        },
+        {
+          name: "fields",
+          signature: "FieldLazySequence fields(@NonNull Consumer<FieldMatcher> matcher)",
+          returnType: "FieldLazySequence",
+          params: [
+            "@NonNull Consumer<FieldMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 73
+        },
+        {
+          name: "firstField",
+          signature: "FieldMatch firstField(@NonNull Consumer<FieldMatcher> matcher)",
+          returnType: "FieldMatch",
+          params: [
+            "@NonNull Consumer<FieldMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 76
+        },
+        {
+          name: "classes",
+          signature: "ClassLazySequence classes(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassLazySequence",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 79
+        },
+        {
+          name: "firstClass",
+          signature: "ClassMatch firstClass(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 82
+        },
+        {
+          name: "exact",
+          signature: "StringMatch exact(@NonNull String string)",
+          returnType: "StringMatch",
+          params: [
+            "@NonNull String string"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 85
+        },
+        {
+          name: "prefix",
+          signature: "StringMatch prefix(@NonNull String prefix)",
+          returnType: "StringMatch",
+          params: [
+            "@NonNull String prefix"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 88
+        },
+        {
+          name: "firstPrefix",
+          signature: "StringMatch firstPrefix(@NonNull String prefix)",
+          returnType: "StringMatch",
+          params: [
+            "@NonNull String prefix"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 91
+        },
+        {
+          name: "exactClass",
+          signature: "ClassMatch exactClass(@NonNull String name)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull String name"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 94
+        },
+        {
+          name: "exact",
+          signature: "ClassMatch exact(@NonNull Class<?> clazz)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull Class<?> clazz"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 97
+        },
+        {
+          name: "exactMethod",
+          signature: "MethodMatch exactMethod(@NonNull String signature)",
+          returnType: "MethodMatch",
+          params: [
+            "@NonNull String signature"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 100
+        },
+        {
+          name: "exact",
+          signature: "MethodMatch exact(@NonNull Method method)",
+          returnType: "MethodMatch",
+          params: [
+            "@NonNull Method method"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 103
+        },
+        {
+          name: "exactConstructor",
+          signature: "ConstructorMatch exactConstructor(@NonNull String signature)",
+          returnType: "ConstructorMatch",
+          params: [
+            "@NonNull String signature"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 106
+        },
+        {
+          name: "exact",
+          signature: "ConstructorMatch exact(@NonNull Constructor<?> constructor)",
+          returnType: "ConstructorMatch",
+          params: [
+            "@NonNull Constructor<?> constructor"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 109
+        },
+        {
+          name: "exactField",
+          signature: "FieldMatch exactField(@NonNull String signature)",
+          returnType: "FieldMatch",
+          params: [
+            "@NonNull String signature"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 112
+        },
+        {
+          name: "exact",
+          signature: "FieldMatch exact(@NonNull Field field)",
+          returnType: "FieldMatch",
+          params: [
+            "@NonNull Field field"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 115
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.Parameter",
+      simpleName: "Parameter",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "replacement for java.lang.reflect.Parameter that is not available before Android O",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/Parameter.html",
+      constants: [],
+      methods: [
+        {
+          name: "getType",
+          signature: "Class<?> getType()",
+          returnType: "Class<?>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 120
+        },
+        {
+          name: "getIndex",
+          signature: "int getIndex()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 122
+        },
+        {
+          name: "getDeclaringExecutable",
+          signature: "Member getDeclaringExecutable()",
+          returnType: "Member",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 125
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.Supplier",
+      simpleName: "Supplier",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface Supplier",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/Supplier.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "T get()",
+          returnType: "T",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 131
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.Consumer",
+      simpleName: "Consumer",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface Consumer",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/Consumer.html",
+      constants: [],
+      methods: [
+        {
+          name: "accept",
+          signature: "void accept(@NonNull T t)",
+          returnType: "void",
+          params: [
+            "@NonNull T t"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 136
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.BiConsumer",
+      simpleName: "BiConsumer",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface BiConsumer",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/BiConsumer.html",
+      constants: [],
+      methods: [
+        {
+          name: "accept",
+          signature: "void accept(@NonNull T t, @NonNull U u)",
+          returnType: "void",
+          params: [
+            "@NonNull T t",
+            "@NonNull U u"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 141
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.Predicate",
+      simpleName: "Predicate",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface Predicate",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/Predicate.html",
+      constants: [],
+      methods: [
+        {
+          name: "test",
+          signature: "boolean test(@NonNull T t)",
+          returnType: "boolean",
+          params: [
+            "@NonNull T t"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 146
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.DexAnalysis",
+      simpleName: "DexAnalysis",
+      type: "@interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "@interface DexAnalysis",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/DexAnalysis.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.AnnotationAnalysis",
+      simpleName: "AnnotationAnalysis",
+      type: "@interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "@interface AnnotationAnalysis",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/AnnotationAnalysis.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ReflectMatcher",
+      simpleName: "ReflectMatcher",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ReflectMatcher",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ReflectMatcher.html",
+      constants: [],
+      methods: [
+        {
+          name: "setKey",
+          signature: "Self setKey(@NonNull String key)",
+          returnType: "Self",
+          params: [
+            "@NonNull String key"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 163
+        },
+        {
+          name: "setIsPublic",
+          signature: "Self setIsPublic(boolean isPublic)",
+          returnType: "Self",
+          params: [
+            "boolean isPublic"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 166
+        },
+        {
+          name: "setIsPrivate",
+          signature: "Self setIsPrivate(boolean isPrivate)",
+          returnType: "Self",
+          params: [
+            "boolean isPrivate"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 169
+        },
+        {
+          name: "setIsProtected",
+          signature: "Self setIsProtected(boolean isProtected)",
+          returnType: "Self",
+          params: [
+            "boolean isProtected"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 172
+        },
+        {
+          name: "setIsPackage",
+          signature: "Self setIsPackage(boolean isPackage)",
+          returnType: "Self",
+          params: [
+            "boolean isPackage"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 175
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.Syntax",
+      simpleName: "Syntax",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface Syntax",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/Syntax.html",
+      constants: [],
+      methods: [
+        {
+          name: "and",
+          signature: "Syntax<Match> and(@NonNull Syntax<Match> predicate)",
+          returnType: "Syntax<Match>",
+          params: [
+            "@NonNull Syntax<Match> predicate"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 180
+        },
+        {
+          name: "or",
+          signature: "Syntax<Match> or(@NonNull Syntax<Match> predicate)",
+          returnType: "Syntax<Match>",
+          params: [
+            "@NonNull Syntax<Match> predicate"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 183
+        },
+        {
+          name: "not",
+          signature: "Syntax<Match> not()",
+          returnType: "Syntax<Match>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 186
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ClassMatcher",
+      simpleName: "ClassMatcher",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ClassMatcher",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ClassMatcher.html",
+      constants: [],
+      methods: [
+        {
+          name: "setName",
+          signature: "ClassMatcher setName(@NonNull StringMatch name)",
+          returnType: "ClassMatcher",
+          params: [
+            "@NonNull StringMatch name"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 191
+        },
+        {
+          name: "setSuperClass",
+          signature: "ClassMatcher setSuperClass(@NonNull ClassMatch superClassMatch)",
+          returnType: "ClassMatcher",
+          params: [
+            "@NonNull ClassMatch superClassMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 194
+        },
+        {
+          name: "setContainsInterfaces",
+          signature: "ClassMatcher setContainsInterfaces(@NonNull Syntax<ClassMatch> syntax)",
+          returnType: "ClassMatcher",
+          params: [
+            "@NonNull Syntax<ClassMatch> syntax"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 197
+        },
+        {
+          name: "setIsAbstract",
+          signature: "ClassMatcher setIsAbstract(boolean isAbstract)",
+          returnType: "ClassMatcher",
+          params: [
+            "boolean isAbstract"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 200
+        },
+        {
+          name: "setIsStatic",
+          signature: "ClassMatcher setIsStatic(boolean isStatic)",
+          returnType: "ClassMatcher",
+          params: [
+            "boolean isStatic"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 203
+        },
+        {
+          name: "setIsFinal",
+          signature: "ClassMatcher setIsFinal(boolean isFinal)",
+          returnType: "ClassMatcher",
+          params: [
+            "boolean isFinal"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 206
+        },
+        {
+          name: "setIsInterface",
+          signature: "ClassMatcher setIsInterface(boolean isInterface)",
+          returnType: "ClassMatcher",
+          params: [
+            "boolean isInterface"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 209
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ParameterMatcher",
+      simpleName: "ParameterMatcher",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ParameterMatcher",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ParameterMatcher.html",
+      constants: [],
+      methods: [
+        {
+          name: "setIndex",
+          signature: "ParameterMatcher setIndex(int index)",
+          returnType: "ParameterMatcher",
+          params: [
+            "int index"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 214
+        },
+        {
+          name: "setType",
+          signature: "ParameterMatcher setType(@NonNull ClassMatch type)",
+          returnType: "ParameterMatcher",
+          params: [
+            "@NonNull ClassMatch type"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 217
+        },
+        {
+          name: "setIsFinal",
+          signature: "ParameterMatcher setIsFinal(boolean isFinal)",
+          returnType: "ParameterMatcher",
+          params: [
+            "boolean isFinal"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 221
+        },
+        {
+          name: "setIsSynthetic",
+          signature: "ParameterMatcher setIsSynthetic(boolean isSynthetic)",
+          returnType: "ParameterMatcher",
+          params: [
+            "boolean isSynthetic"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 225
+        },
+        {
+          name: "setIsVarargs",
+          signature: "ParameterMatcher setIsVarargs(boolean isVarargs)",
+          returnType: "ParameterMatcher",
+          params: [
+            "boolean isVarargs"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 229
+        },
+        {
+          name: "setIsImplicit",
+          signature: "ParameterMatcher setIsImplicit(boolean isImplicit)",
+          returnType: "ParameterMatcher",
+          params: [
+            "boolean isImplicit"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 233
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.MemberMatcher",
+      simpleName: "MemberMatcher",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface MemberMatcher",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MemberMatcher.html",
+      constants: [],
+      methods: [
+        {
+          name: "setDeclaringClass",
+          signature: "Self setDeclaringClass(@NonNull ClassMatch declaringClassMatch)",
+          returnType: "Self",
+          params: [
+            "@NonNull ClassMatch declaringClassMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 238
+        },
+        {
+          name: "setIsSynthetic",
+          signature: "Self setIsSynthetic(boolean isSynthetic)",
+          returnType: "Self",
+          params: [
+            "boolean isSynthetic"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 241
+        },
+        {
+          name: "setIncludeSuper",
+          signature: "Self setIncludeSuper(boolean includeSuper)",
+          returnType: "Self",
+          params: [
+            "boolean includeSuper"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 244
+        },
+        {
+          name: "setIncludeInterface",
+          signature: "Self setIncludeInterface(boolean includeInterface)",
+          returnType: "Self",
+          params: [
+            "boolean includeInterface"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 247
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.FieldMatcher",
+      simpleName: "FieldMatcher",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface FieldMatcher",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/FieldMatcher.html",
+      constants: [],
+      methods: [
+        {
+          name: "setName",
+          signature: "FieldMatcher setName(@NonNull StringMatch name)",
+          returnType: "FieldMatcher",
+          params: [
+            "@NonNull StringMatch name"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 252
+        },
+        {
+          name: "setType",
+          signature: "FieldMatcher setType(@NonNull ClassMatch type)",
+          returnType: "FieldMatcher",
+          params: [
+            "@NonNull ClassMatch type"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 255
+        },
+        {
+          name: "setIsStatic",
+          signature: "FieldMatcher setIsStatic(boolean isStatic)",
+          returnType: "FieldMatcher",
+          params: [
+            "boolean isStatic"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 258
+        },
+        {
+          name: "setIsFinal",
+          signature: "FieldMatcher setIsFinal(boolean isFinal)",
+          returnType: "FieldMatcher",
+          params: [
+            "boolean isFinal"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 261
+        },
+        {
+          name: "setIsTransient",
+          signature: "FieldMatcher setIsTransient(boolean isTransient)",
+          returnType: "FieldMatcher",
+          params: [
+            "boolean isTransient"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 264
+        },
+        {
+          name: "setIsVolatile",
+          signature: "FieldMatcher setIsVolatile(boolean isVolatile)",
+          returnType: "FieldMatcher",
+          params: [
+            "boolean isVolatile"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 267
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ExecutableMatcher",
+      simpleName: "ExecutableMatcher",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ExecutableMatcher",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ExecutableMatcher.html",
+      constants: [],
+      methods: [
+        {
+          name: "setParameterCount",
+          signature: "Self setParameterCount(int count)",
+          returnType: "Self",
+          params: [
+            "int count"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 272
+        },
+        {
+          name: "setParameters",
+          signature: "Self setParameters(@NonNull Syntax<ParameterMatch> parameters)",
+          returnType: "Self",
+          params: [
+            "@NonNull Syntax<ParameterMatch> parameters"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 275
+        },
+        {
+          name: "setReferredStrings",
+          signature: "Self setReferredStrings(@NonNull Syntax<StringMatch> referredStrings)",
+          returnType: "Self",
+          params: [
+            "@NonNull Syntax<StringMatch> referredStrings"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 279
+        },
+        {
+          name: "setAssignedFields",
+          signature: "Self setAssignedFields(@NonNull Syntax<FieldMatch> assignedFields)",
+          returnType: "Self",
+          params: [
+            "@NonNull Syntax<FieldMatch> assignedFields"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 283
+        },
+        {
+          name: "setAccessedFields",
+          signature: "Self setAccessedFields(@NonNull Syntax<FieldMatch> accessedFields)",
+          returnType: "Self",
+          params: [
+            "@NonNull Syntax<FieldMatch> accessedFields"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 287
+        },
+        {
+          name: "setInvokedMethods",
+          signature: "Self setInvokedMethods(@NonNull Syntax<MethodMatch> invokedMethods)",
+          returnType: "Self",
+          params: [
+            "@NonNull Syntax<MethodMatch> invokedMethods"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 291
+        },
+        {
+          name: "setInvokedConstructors",
+          signature: "Self setInvokedConstructors(@NonNull Syntax<ConstructorMatch> invokedConstructors)",
+          returnType: "Self",
+          params: [
+            "@NonNull Syntax<ConstructorMatch> invokedConstructors"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 295
+        },
+        {
+          name: "setContainsOpcodes",
+          signature: "Self setContainsOpcodes(@NonNull byte[] opcodes)",
+          returnType: "Self",
+          params: [
+            "@NonNull byte[] opcodes"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 299
+        },
+        {
+          name: "setIsVarargs",
+          signature: "Self setIsVarargs(boolean isVarargs)",
+          returnType: "Self",
+          params: [
+            "boolean isVarargs"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 302
+        },
+        {
+          name: "conjunction",
+          signature: "Syntax<ParameterMatch> conjunction(@NonNull ClassMatch... types)",
+          returnType: "Syntax<ParameterMatch>",
+          params: [
+            "@NonNull ClassMatch... types"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 305
+        },
+        {
+          name: "conjunction",
+          signature: "Syntax<ParameterMatch> conjunction(@NonNull Class<?>... types)",
+          returnType: "Syntax<ParameterMatch>",
+          params: [
+            "@NonNull Class<?>... types"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 308
+        },
+        {
+          name: "observe",
+          signature: "Syntax<ParameterMatch> observe(int index, @NonNull ClassMatch types)",
+          returnType: "Syntax<ParameterMatch>",
+          params: [
+            "int index",
+            "@NonNull ClassMatch types"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 311
+        },
+        {
+          name: "observe",
+          signature: "Syntax<ParameterMatch> observe(int index, @NonNull Class<?> types)",
+          returnType: "Syntax<ParameterMatch>",
+          params: [
+            "int index",
+            "@NonNull Class<?> types"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 314
+        },
+        {
+          name: "firstParameter",
+          signature: "ParameterMatch firstParameter(@NonNull Consumer<ParameterMatcher> consumer)",
+          returnType: "ParameterMatch",
+          params: [
+            "@NonNull Consumer<ParameterMatcher> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 317
+        },
+        {
+          name: "parameters",
+          signature: "ParameterLazySequence parameters(@NonNull Consumer<ParameterMatcher> consumer)",
+          returnType: "ParameterLazySequence",
+          params: [
+            "@NonNull Consumer<ParameterMatcher> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 320
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.MethodMatcher",
+      simpleName: "MethodMatcher",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface MethodMatcher",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MethodMatcher.html",
+      constants: [],
+      methods: [
+        {
+          name: "setName",
+          signature: "MethodMatcher setName(@NonNull StringMatch name)",
+          returnType: "MethodMatcher",
+          params: [
+            "@NonNull StringMatch name"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 325
+        },
+        {
+          name: "setReturnType",
+          signature: "MethodMatcher setReturnType(@NonNull ClassMatch returnType)",
+          returnType: "MethodMatcher",
+          params: [
+            "@NonNull ClassMatch returnType"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 328
+        },
+        {
+          name: "setIsAbstract",
+          signature: "MethodMatcher setIsAbstract(boolean isAbstract)",
+          returnType: "MethodMatcher",
+          params: [
+            "boolean isAbstract"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 331
+        },
+        {
+          name: "setIsStatic",
+          signature: "MethodMatcher setIsStatic(boolean isStatic)",
+          returnType: "MethodMatcher",
+          params: [
+            "boolean isStatic"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 334
+        },
+        {
+          name: "setIsFinal",
+          signature: "MethodMatcher setIsFinal(boolean isFinal)",
+          returnType: "MethodMatcher",
+          params: [
+            "boolean isFinal"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 337
+        },
+        {
+          name: "setIsSynchronized",
+          signature: "MethodMatcher setIsSynchronized(boolean isSynchronized)",
+          returnType: "MethodMatcher",
+          params: [
+            "boolean isSynchronized"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 340
+        },
+        {
+          name: "setIsNative",
+          signature: "MethodMatcher setIsNative(boolean isNative)",
+          returnType: "MethodMatcher",
+          params: [
+            "boolean isNative"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 343
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ConstructorMatcher",
+      simpleName: "ConstructorMatcher",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ConstructorMatcher",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ConstructorMatcher.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.BaseMatch",
+      simpleName: "BaseMatch",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface BaseMatch",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/BaseMatch.html",
+      constants: [],
+      methods: [
+        {
+          name: "observe",
+          signature: "Syntax<Self> observe()",
+          returnType: "Syntax<Self>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 351
+        },
+        {
+          name: "reverse",
+          signature: "Syntax<Self> reverse()",
+          returnType: "Syntax<Self>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 354
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ReflectMatch",
+      simpleName: "ReflectMatch",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ReflectMatch",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ReflectMatch.html",
+      constants: [],
+      methods: [
+        {
+          name: "getKey",
+          signature: "String getKey()",
+          returnType: "String",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 359
+        },
+        {
+          name: "setKey",
+          signature: "Self setKey(@Nullable String key)",
+          returnType: "Self",
+          params: [
+            "@Nullable String key"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 362
+        },
+        {
+          name: "onMatch",
+          signature: "Self onMatch(@NonNull Consumer<Reflect> consumer)",
+          returnType: "Self",
+          params: [
+            "@NonNull Consumer<Reflect> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 365
+        },
+        {
+          name: "onMiss",
+          signature: "Self onMiss(@NonNull Runnable handler)",
+          returnType: "Self",
+          params: [
+            "@NonNull Runnable handler"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 368
+        },
+        {
+          name: "substituteIfMiss",
+          signature: "Self substituteIfMiss(@NonNull Supplier<Self> substitute)",
+          returnType: "Self",
+          params: [
+            "@NonNull Supplier<Self> substitute"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 371
+        },
+        {
+          name: "matchFirstIfMiss",
+          signature: "Self matchFirstIfMiss(@NonNull Consumer<Matcher> consumer)",
+          returnType: "Self",
+          params: [
+            "@NonNull Consumer<Matcher> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 374
+        },
+        {
+          name: "bind",
+          signature: "Self bind(@NonNull Bind bind, @NonNull BiConsumer<Bind, Reflect> consumer)",
+          returnType: "Self",
+          params: [
+            "@NonNull Bind bind",
+            "@NonNull BiConsumer<Bind",
+            "Reflect> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 377
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ClassMatch",
+      simpleName: "ClassMatch",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ClassMatch",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ClassMatch.html",
+      constants: [],
+      methods: [
+        {
+          name: "getSuperClass",
+          signature: "ClassMatch getSuperClass()",
+          returnType: "ClassMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 382
+        },
+        {
+          name: "getInterfaces",
+          signature: "ClassLazySequence getInterfaces()",
+          returnType: "ClassLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 385
+        },
+        {
+          name: "getDeclaredMethods",
+          signature: "MethodLazySequence getDeclaredMethods()",
+          returnType: "MethodLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 388
+        },
+        {
+          name: "getDeclaredConstructors",
+          signature: "ConstructorLazySequence getDeclaredConstructors()",
+          returnType: "ConstructorLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 391
+        },
+        {
+          name: "getDeclaredFields",
+          signature: "FieldLazySequence getDeclaredFields()",
+          returnType: "FieldLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 394
+        },
+        {
+          name: "getArrayType",
+          signature: "ClassMatch getArrayType()",
+          returnType: "ClassMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 397
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ParameterMatch",
+      simpleName: "ParameterMatch",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ParameterMatch",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ParameterMatch.html",
+      constants: [],
+      methods: [
+        {
+          name: "getType",
+          signature: "ClassMatch getType()",
+          returnType: "ClassMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 402
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.MemberMatch",
+      simpleName: "MemberMatch",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface MemberMatch",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MemberMatch.html",
+      constants: [],
+      methods: [
+        {
+          name: "getDeclaringClass",
+          signature: "ClassMatch getDeclaringClass()",
+          returnType: "ClassMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 407
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ExecutableMatch",
+      simpleName: "ExecutableMatch",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ExecutableMatch",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ExecutableMatch.html",
+      constants: [],
+      methods: [
+        {
+          name: "getParameterTypes",
+          signature: "ClassLazySequence getParameterTypes()",
+          returnType: "ClassLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 412
+        },
+        {
+          name: "getParameters",
+          signature: "ParameterLazySequence getParameters()",
+          returnType: "ParameterLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 415
+        },
+        {
+          name: "getAssignedFields",
+          signature: "FieldLazySequence getAssignedFields()",
+          returnType: "FieldLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 419
+        },
+        {
+          name: "getAccessedFields",
+          signature: "FieldLazySequence getAccessedFields()",
+          returnType: "FieldLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 423
+        },
+        {
+          name: "getInvokedMethods",
+          signature: "MethodLazySequence getInvokedMethods()",
+          returnType: "MethodLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 427
+        },
+        {
+          name: "getInvokedConstructors",
+          signature: "ConstructorLazySequence getInvokedConstructors()",
+          returnType: "ConstructorLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 431
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.MethodMatch",
+      simpleName: "MethodMatch",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface MethodMatch",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MethodMatch.html",
+      constants: [],
+      methods: [
+        {
+          name: "getReturnType",
+          signature: "ClassMatch getReturnType()",
+          returnType: "ClassMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 436
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ConstructorMatch",
+      simpleName: "ConstructorMatch",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ConstructorMatch",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ConstructorMatch.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.FieldMatch",
+      simpleName: "FieldMatch",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface FieldMatch",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/FieldMatch.html",
+      constants: [],
+      methods: [
+        {
+          name: "getType",
+          signature: "ClassMatch getType()",
+          returnType: "ClassMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 444
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.StringMatch",
+      simpleName: "StringMatch",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface StringMatch",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/StringMatch.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.LazySequence",
+      simpleName: "LazySequence",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface LazySequence",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/LazySequence.html",
+      constants: [],
+      methods: [
+        {
+          name: "first",
+          signature: "Match first()",
+          returnType: "Match",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 453
+        },
+        {
+          name: "first",
+          signature: "Match first(@NonNull Consumer<Matcher> consumer)",
+          returnType: "Match",
+          params: [
+            "@NonNull Consumer<Matcher> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 456
+        },
+        {
+          name: "all",
+          signature: "Self all(@NonNull Consumer<Matcher> consumer)",
+          returnType: "Self",
+          params: [
+            "@NonNull Consumer<Matcher> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 459
+        },
+        {
+          name: "onMatch",
+          signature: "Self onMatch(@NonNull Consumer<Iterable<Reflect>> consumer)",
+          returnType: "Self",
+          params: [
+            "@NonNull Consumer<Iterable<Reflect>> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 462
+        },
+        {
+          name: "onMiss",
+          signature: "Self onMiss(@NonNull Runnable runnable)",
+          returnType: "Self",
+          params: [
+            "@NonNull Runnable runnable"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 465
+        },
+        {
+          name: "conjunction",
+          signature: "Syntax<Match> conjunction()",
+          returnType: "Syntax<Match>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 468
+        },
+        {
+          name: "disjunction",
+          signature: "Syntax<Match> disjunction()",
+          returnType: "Syntax<Match>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 471
+        },
+        {
+          name: "substituteIfMiss",
+          signature: "Self substituteIfMiss(@NonNull Supplier<Self> substitute)",
+          returnType: "Self",
+          params: [
+            "@NonNull Supplier<Self> substitute"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 474
+        },
+        {
+          name: "matchIfMiss",
+          signature: "Self matchIfMiss(@NonNull Consumer<Matcher> consumer)",
+          returnType: "Self",
+          params: [
+            "@NonNull Consumer<Matcher> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 477
+        },
+        {
+          name: "bind",
+          signature: "Self bind(@NonNull Bind bind, @NonNull BiConsumer<Bind, Iterable<Reflect>> consumer)",
+          returnType: "Self",
+          params: [
+            "@NonNull Bind bind",
+            "@NonNull BiConsumer<Bind",
+            "Iterable<Reflect>> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 480
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ClassLazySequence",
+      simpleName: "ClassLazySequence",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ClassLazySequence",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ClassLazySequence.html",
+      constants: [],
+      methods: [
+        {
+          name: "methods",
+          signature: "MethodLazySequence methods(@NonNull Consumer<MethodMatcher> matcher)",
+          returnType: "MethodLazySequence",
+          params: [
+            "@NonNull Consumer<MethodMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 485
+        },
+        {
+          name: "firstMethod",
+          signature: "MethodMatch firstMethod(@NonNull Consumer<MethodMatcher> matcher)",
+          returnType: "MethodMatch",
+          params: [
+            "@NonNull Consumer<MethodMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 488
+        },
+        {
+          name: "constructors",
+          signature: "ConstructorLazySequence constructors(@NonNull Consumer<ConstructorMatcher> matcher)",
+          returnType: "ConstructorLazySequence",
+          params: [
+            "@NonNull Consumer<ConstructorMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 491
+        },
+        {
+          name: "firstConstructor",
+          signature: "ConstructorMatch firstConstructor(@NonNull Consumer<ConstructorMatcher> matcher)",
+          returnType: "ConstructorMatch",
+          params: [
+            "@NonNull Consumer<ConstructorMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 494
+        },
+        {
+          name: "fields",
+          signature: "FieldLazySequence fields(@NonNull Consumer<FieldMatcher> matcher)",
+          returnType: "FieldLazySequence",
+          params: [
+            "@NonNull Consumer<FieldMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 497
+        },
+        {
+          name: "firstField",
+          signature: "FieldMatch firstField(@NonNull Consumer<FieldMatcher> matcher)",
+          returnType: "FieldMatch",
+          params: [
+            "@NonNull Consumer<FieldMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 500
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ParameterLazySequence",
+      simpleName: "ParameterLazySequence",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ParameterLazySequence",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ParameterLazySequence.html",
+      constants: [],
+      methods: [
+        {
+          name: "types",
+          signature: "ClassLazySequence types(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassLazySequence",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 505
+        },
+        {
+          name: "firstType",
+          signature: "ClassMatch firstType(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 508
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.MemberLazySequence",
+      simpleName: "MemberLazySequence",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface MemberLazySequence",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MemberLazySequence.html",
+      constants: [],
+      methods: [
+        {
+          name: "declaringClasses",
+          signature: "ClassLazySequence declaringClasses(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassLazySequence",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 513
+        },
+        {
+          name: "firstDeclaringClass",
+          signature: "ClassMatch firstDeclaringClass(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 516
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.FieldLazySequence",
+      simpleName: "FieldLazySequence",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface FieldLazySequence",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/FieldLazySequence.html",
+      constants: [],
+      methods: [
+        {
+          name: "types",
+          signature: "ClassLazySequence types(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassLazySequence",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 521
+        },
+        {
+          name: "firstType",
+          signature: "ClassMatch firstType(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 524
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ExecutableLazySequence",
+      simpleName: "ExecutableLazySequence",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ExecutableLazySequence",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ExecutableLazySequence.html",
+      constants: [],
+      methods: [
+        {
+          name: "parameters",
+          signature: "ParameterLazySequence parameters(@NonNull Consumer<ParameterMatcher> matcher)",
+          returnType: "ParameterLazySequence",
+          params: [
+            "@NonNull Consumer<ParameterMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 529
+        },
+        {
+          name: "firstParameter",
+          signature: "ParameterMatch firstParameter(@NonNull Consumer<ParameterMatcher> matcher)",
+          returnType: "ParameterMatch",
+          params: [
+            "@NonNull Consumer<ParameterMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 532
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.MethodLazySequence",
+      simpleName: "MethodLazySequence",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface MethodLazySequence",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MethodLazySequence.html",
+      constants: [],
+      methods: [
+        {
+          name: "returnTypes",
+          signature: "ClassLazySequence returnTypes(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassLazySequence",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 537
+        },
+        {
+          name: "firstReturnType",
+          signature: "ClassMatch firstReturnType(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 540
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.ConstructorLazySequence",
+      simpleName: "ConstructorLazySequence",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface ConstructorLazySequence",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ConstructorLazySequence.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilder.LazyBind",
+      simpleName: "LazyBind",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilder.java",
+      sinceApi: 101,
+      summary: "interface LazyBind",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/LazyBind.html",
+      constants: [],
+      methods: [
+        {
+          name: "onMatch",
+          signature: "void onMatch()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 547
+        },
+        {
+          name: "onMiss",
+          signature: "void onMiss()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 549
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl",
+      simpleName: "HookBuilderImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "Matcher <-> LazySequence --> List<Observer -> Result -> Observer -> Result ... >",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/HookBuilderImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "PendingExecutor",
+          signature: "new PendingExecutor()",
+          returnType: "new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 118
+        },
+        {
+          name: "PendingExecutor",
+          signature: "new PendingExecutor()",
+          returnType: "new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 122
+        },
+        {
+          name: "Reflector",
+          signature: "new Reflector(classLoader)",
+          returnType: "new",
+          params: [
+            "classLoader"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 132
+        },
+        {
+          name: "setForceDexAnalysis",
+          signature: "HookBuilder setForceDexAnalysis(boolean forceDexAnalysis)",
+          returnType: "HookBuilder",
+          params: [
+            "boolean forceDexAnalysis"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 138
+        },
+        {
+          name: "setExecutorService",
+          signature: "HookBuilder setExecutorService(@NonNull ExecutorService executorService)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull ExecutorService executorService"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 145
+        },
+        {
+          name: "setCallbackHandler",
+          signature: "HookBuilder setCallbackHandler(@NonNull Handler callbackHandler)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull Handler callbackHandler"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 152
+        },
+        {
+          name: "setCacheChecker",
+          signature: "HookBuilder setCacheChecker(@NonNull Predicate<Map<String, Object>> cacheChecker)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull Predicate<Map<String",
+            "Object>> cacheChecker"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 159
+        },
+        {
+          name: "setCacheInputStream",
+          signature: "HookBuilder setCacheInputStream(@NonNull InputStream cacheInputStream)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull InputStream cacheInputStream"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 166
+        },
+        {
+          name: "setCacheOutputStream",
+          signature: "HookBuilder setCacheOutputStream(@NonNull OutputStream cacheOutputStream)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull OutputStream cacheOutputStream"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 173
+        },
+        {
+          name: "setExceptionHandler",
+          signature: "HookBuilder setExceptionHandler(@NonNull Predicate<Throwable> handler)",
+          returnType: "HookBuilder",
+          params: [
+            "@NonNull Predicate<Throwable> handler"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 180
+        },
+        {
+          name: "methods",
+          signature: "MethodLazySequence methods(@NonNull Consumer<MethodMatcher> matcher)",
+          returnType: "MethodLazySequence",
+          params: [
+            "@NonNull Consumer<MethodMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 187
+        },
+        {
+          name: "MethodMatcherImpl",
+          signature: "new MethodMatcherImpl(null, false)",
+          returnType: "new",
+          params: [
+            "null",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 188
+        },
+        {
+          name: "firstMethod",
+          signature: "MethodMatch firstMethod(@NonNull Consumer<MethodMatcher> matcher)",
+          returnType: "MethodMatch",
+          params: [
+            "@NonNull Consumer<MethodMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 195
+        },
+        {
+          name: "MethodMatcherImpl",
+          signature: "new MethodMatcherImpl(null, true)",
+          returnType: "new",
+          params: [
+            "null",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 196
+        },
+        {
+          name: "constructors",
+          signature: "ConstructorLazySequence constructors(@NonNull Consumer<ConstructorMatcher> matcher)",
+          returnType: "ConstructorLazySequence",
+          params: [
+            "@NonNull Consumer<ConstructorMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 203
+        },
+        {
+          name: "ConstructorMatcherImpl",
+          signature: "new ConstructorMatcherImpl(null, false)",
+          returnType: "new",
+          params: [
+            "null",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 204
+        },
+        {
+          name: "firstConstructor",
+          signature: "ConstructorMatch firstConstructor(@NonNull Consumer<ConstructorMatcher> matcher)",
+          returnType: "ConstructorMatch",
+          params: [
+            "@NonNull Consumer<ConstructorMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 211
+        },
+        {
+          name: "ConstructorMatcherImpl",
+          signature: "new ConstructorMatcherImpl(null, true)",
+          returnType: "new",
+          params: [
+            "null",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 212
+        },
+        {
+          name: "fields",
+          signature: "FieldLazySequence fields(@NonNull Consumer<FieldMatcher> matcher)",
+          returnType: "FieldLazySequence",
+          params: [
+            "@NonNull Consumer<FieldMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 219
+        },
+        {
+          name: "FieldMatcherImpl",
+          signature: "new FieldMatcherImpl(null, false)",
+          returnType: "new",
+          params: [
+            "null",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 220
+        },
+        {
+          name: "firstField",
+          signature: "FieldMatch firstField(@NonNull Consumer<FieldMatcher> matcher)",
+          returnType: "FieldMatch",
+          params: [
+            "@NonNull Consumer<FieldMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 227
+        },
+        {
+          name: "FieldMatcherImpl",
+          signature: "new FieldMatcherImpl(null, true)",
+          returnType: "new",
+          params: [
+            "null",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 228
+        },
+        {
+          name: "classes",
+          signature: "ClassLazySequence classes(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassLazySequence",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 235
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "new ClassMatcherImpl(null, false)",
+          returnType: "new",
+          params: [
+            "null",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 236
+        },
+        {
+          name: "firstClass",
+          signature: "ClassMatch firstClass(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 243
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "new ClassMatcherImpl(null, true)",
+          returnType: "new",
+          params: [
+            "null",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 244
+        },
+        {
+          name: "exact",
+          signature: "StringMatch exact(@NonNull String string)",
+          returnType: "StringMatch",
+          params: [
+            "@NonNull String string"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 251
+        },
+        {
+          name: "StringMatcherImpl",
+          signature: "new StringMatcherImpl(string, true, false)",
+          returnType: "new",
+          params: [
+            "string",
+            "true",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 252
+        },
+        {
+          name: "prefix",
+          signature: "StringMatch prefix(@NonNull String prefix)",
+          returnType: "StringMatch",
+          params: [
+            "@NonNull String prefix"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 258
+        },
+        {
+          name: "StringMatcherImpl",
+          signature: "new StringMatcherImpl(prefix, false, true)",
+          returnType: "new",
+          params: [
+            "prefix",
+            "false",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 259
+        },
+        {
+          name: "firstPrefix",
+          signature: "StringMatch firstPrefix(@NonNull String prefix)",
+          returnType: "StringMatch",
+          params: [
+            "@NonNull String prefix"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 265
+        },
+        {
+          name: "StringMatcherImpl",
+          signature: "new StringMatcherImpl(prefix, true, true)",
+          returnType: "new",
+          params: [
+            "prefix",
+            "true",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 266
+        },
+        {
+          name: "exactClass",
+          signature: "ClassMatch exactClass(@NonNull String name)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull String name"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 272
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "new ClassMatcherImpl(null, true)",
+          returnType: "new",
+          params: [
+            "null",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 273
+        },
+        {
+          name: "exact",
+          signature: "ClassMatch exact(@NonNull Class<?> clazz)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull Class<?> clazz"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 285
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "new ClassMatcherImpl(null, true)",
+          returnType: "new",
+          params: [
+            "null",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 286
+        },
+        {
+          name: "exactMethod",
+          signature: "MethodMatch exactMethod(@NonNull String signature)",
+          returnType: "MethodMatch",
+          params: [
+            "@NonNull String signature"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 292
+        },
+        {
+          name: "MethodMatcherImpl",
+          signature: "new MethodMatcherImpl(null, true)",
+          returnType: "new",
+          params: [
+            "null",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 293
+        },
+        {
+          name: "exact",
+          signature: "MethodMatch exact(@NonNull Method method)",
+          returnType: "MethodMatch",
+          params: [
+            "@NonNull Method method"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 305
+        },
+        {
+          name: "MethodMatcherImpl",
+          signature: "new MethodMatcherImpl(null, true)",
+          returnType: "new",
+          params: [
+            "null",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 306
+        },
+        {
+          name: "exactConstructor",
+          signature: "ConstructorMatch exactConstructor(@NonNull String signature)",
+          returnType: "ConstructorMatch",
+          params: [
+            "@NonNull String signature"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 312
+        },
+        {
+          name: "ConstructorMatcherImpl",
+          signature: "new ConstructorMatcherImpl(null, true)",
+          returnType: "new",
+          params: [
+            "null",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 313
+        },
+        {
+          name: "exact",
+          signature: "ConstructorMatch exact(@NonNull Constructor<?> constructor)",
+          returnType: "ConstructorMatch",
+          params: [
+            "@NonNull Constructor<?> constructor"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 325
+        },
+        {
+          name: "ConstructorMatcherImpl",
+          signature: "new ConstructorMatcherImpl(null, true)",
+          returnType: "new",
+          params: [
+            "null",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 326
+        },
+        {
+          name: "exactField",
+          signature: "FieldMatch exactField(@NonNull String signature)",
+          returnType: "FieldMatch",
+          params: [
+            "@NonNull String signature"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 332
+        },
+        {
+          name: "FieldMatcherImpl",
+          signature: "new FieldMatcherImpl(null, true)",
+          returnType: "new",
+          params: [
+            "null",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 333
+        },
+        {
+          name: "exact",
+          signature: "FieldMatch exact(@NonNull Field field)",
+          returnType: "FieldMatch",
+          params: [
+            "@NonNull Field field"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 345
+        },
+        {
+          name: "FieldMatcherImpl",
+          signature: "new FieldMatcherImpl(null, true)",
+          returnType: "new",
+          params: [
+            "null",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 346
+        },
+        {
+          name: "build",
+          signature: "Future<?> build()",
+          returnType: "Future<?>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 350
+        },
+        {
+          name: "cancel",
+          signature: "boolean cancel(boolean mayInterruptIfRunning)",
+          returnType: "boolean",
+          params: [
+            "boolean mayInterruptIfRunning"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 390
+        },
+        {
+          name: "isCancelled",
+          signature: "boolean isCancelled()",
+          returnType: "boolean",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 395
+        },
+        {
+          name: "isDone",
+          signature: "boolean isDone()",
+          returnType: "boolean",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 400
+        },
+        {
+          name: "runTasks",
+          signature: "void runTasks(@NonNull FutureTask<?> task)",
+          returnType: "void",
+          params: [
+            "@NonNull FutureTask<?> task"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 404
+        },
+        {
+          name: "get",
+          signature: "Object get()",
+          returnType: "Object",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 415
+        },
+        {
+          name: "InterruptedException",
+          signature: 'throw new InterruptedException("dead lock")',
+          returnType: "throw new",
+          params: [
+            '"dead lock"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 417
+        },
+        {
+          name: "get",
+          signature: "Object get(long timeout, TimeUnit unit)",
+          returnType: "Object",
+          params: [
+            "long timeout",
+            "TimeUnit unit"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 432
+        },
+        {
+          name: "InterruptedException",
+          signature: 'throw new InterruptedException("dead lock")',
+          returnType: "throw new",
+          params: [
+            '"dead lock"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 435
+        },
+        {
+          name: "TimeoutException",
+          signature: "throw new TimeoutException()",
+          returnType: "throw new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 444
+        },
+        {
+          name: "analysisDex",
+          signature: "void analysisDex()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 456
+        },
+        {
+          name: "ZipFile",
+          signature: "new ZipFile(sourcePath)",
+          returnType: "new",
+          params: [
+            "sourcePath"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 458
+        },
+        {
+          name: "IOException",
+          signature: 'throw new IOException("read dex failed")',
+          returnType: "throw new",
+          params: [
+            '"read dex failed"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 467
+        },
+        {
+          name: "visit",
+          signature: "MemberVisitor visit(int clazz, int accessFlags, int superClass, @NonNull int[] interfaces, int sourceFile, @NonNull int[] staticFields, @NonNull int[] staticFieldsAccessFlags, @NonNull int[] instanceFields, @NonNull int[] instanceFieldsAccessFlags, @NonNull int[] directMethods, @NonNull int[] directMethodsAccessFlags, @NonNull int[] virtualMethods, @NonNull int[] virtualMethodsAccessFlags, @NonNull int[] annotations)",
+          returnType: "MemberVisitor",
+          params: [
+            "int clazz",
+            "int accessFlags",
+            "int superClass",
+            "@NonNull int[] interfaces",
+            "int sourceFile",
+            "@NonNull int[] staticFields",
+            "@NonNull int[] staticFieldsAccessFlags",
+            "@NonNull int[] instanceFields",
+            "@NonNull int[] instanceFieldsAccessFlags",
+            "@NonNull int[] directMethods",
+            "@NonNull int[] directMethodsAccessFlags",
+            "@NonNull int[] virtualMethods",
+            "@NonNull int[] virtualMethodsAccessFlags",
+            "@NonNull int[] annotations"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 530
+        },
+        {
+          name: "FieldAndMethodVisitor",
+          signature: "return new FieldAndMethodVisitor()",
+          returnType: "return new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 531
+        },
+        {
+          name: "visit",
+          signature: "void visit(int field, int accessFlags, @NonNull int[] annotations)",
+          returnType: "void",
+          params: [
+            "int field",
+            "int accessFlags",
+            "@NonNull int[] annotations"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 533
+        },
+        {
+          name: "visit",
+          signature: "MethodBodyVisitor visit(int method, int accessFlags, boolean hasBody, @NonNull int[] annotations, @NonNull int[] parameterAnnotations)",
+          returnType: "MethodBodyVisitor",
+          params: [
+            "int method",
+            "int accessFlags",
+            "boolean hasBody",
+            "@NonNull int[] annotations",
+            "@NonNull int[] parameterAnnotations"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 538
+        },
+        {
+          name: "stop",
+          signature: "boolean stop()",
+          returnType: "boolean",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 544
+        },
+        {
+          name: "stop",
+          signature: "boolean stop()",
+          returnType: "boolean",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 551
+        },
+        {
+          name: "getAllClassNamesFromClassLoader",
+          signature: "TreeSetView<String> getAllClassNamesFromClassLoader()",
+          returnType: "TreeSetView<String>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 572
+        },
+        {
+          name: "IllegalStateException",
+          signature: 'throw new IllegalStateException("pathList is null")',
+          returnType: "throw new",
+          params: [
+            '"pathList is null"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 578
+        },
+        {
+          name: "IllegalStateException",
+          signature: 'throw new IllegalStateException("dexElements is null")',
+          returnType: "throw new",
+          params: [
+            '"dexElements is null"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 584
+        },
+        {
+          name: "loadMatchCache",
+          signature: "void loadMatchCache()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 607
+        },
+        {
+          name: "MatchCache",
+          signature: "new MatchCache()",
+          returnType: "new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 611
+        },
+        {
+          name: "ObjectInputStream",
+          signature: "new ObjectInputStream(cacheInputStream)",
+          returnType: "new",
+          params: [
+            "cacheInputStream"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 614
+        },
+        {
+          name: "MatchCache",
+          signature: "new MatchCache()",
+          returnType: "new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 632
+        },
+        {
+          name: "File",
+          signature: "new File(sourcePath)",
+          returnType: "new",
+          params: [
+            "sourcePath"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 638
+        },
+        {
+          name: "MatchCache",
+          signature: "new MatchCache()",
+          returnType: "new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 640
+        },
+        {
+          name: "MatchCache",
+          signature: "new MatchCache()",
+          returnType: "new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 648
+        },
+        {
+          name: "ParameterImpl",
+          signature: "new ParameterImpl(idx, p.getType()",
+          returnType: "new",
+          params: [
+            "idx",
+            "p.getType("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 707
+        },
+        {
+          name: "ParameterImpl",
+          signature: "new ParameterImpl(idx, p, m, 0)",
+          returnType: "new",
+          params: [
+            "idx",
+            "p",
+            "m",
+            "0"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 710
+        },
+        {
+          name: "ParameterImpl",
+          signature: "new ParameterImpl(idx, p.getType()",
+          returnType: "new",
+          params: [
+            "idx",
+            "p.getType("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 779
+        },
+        {
+          name: "ParameterImpl",
+          signature: "new ParameterImpl(idx, p, m, 0)",
+          returnType: "new",
+          params: [
+            "idx",
+            "p",
+            "m",
+            "0"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 782
+        },
+        {
+          name: "memberClassLists",
+          signature: "void memberClassLists(MemberMatcherImpl<?, ?, Reflect, ?, ?> matcher, Transformer<Class<?>, Reflect[]> transformer)",
+          returnType: "void",
+          params: [
+            "MemberMatcherImpl<?",
+            "?",
+            "Reflect",
+            "?",
+            "?> matcher",
+            "Transformer<Class<?>",
+            "Reflect[]> transformer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 794
+        },
+        {
+          name: "analysisClassLoader",
+          signature: "void analysisClassLoader()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 811
+        },
+        {
+          name: "memberClassLists",
+          signature: "> memberClassLists(fieldMatcher, Class::getDeclaredFields)",
+          returnType: ">",
+          params: [
+            "fieldMatcher",
+            "Class::getDeclaredFields"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 863
+        },
+        {
+          name: "memberClassLists",
+          signature: "> memberClassLists(methodMatcher, Class::getDeclaredMethods)",
+          returnType: ">",
+          params: [
+            "methodMatcher",
+            "Class::getDeclaredMethods"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 871
+        },
+        {
+          name: "memberClassLists",
+          signature: "> memberClassLists(constructorMatcher, Class::getDeclaredConstructors)",
+          returnType: ">",
+          params: [
+            "constructorMatcher",
+            "Class::getDeclaredConstructors"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 879
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.is",
+      simpleName: "is",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class is",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/is.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.BaseMatcherImpl",
+      simpleName: "BaseMatcherImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class BaseMatcherImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/BaseMatcherImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "BaseMatcherImpl",
+          signature: "protected BaseMatcherImpl(boolean matchFirst)",
+          returnType: "protected",
+          params: [
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 894
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.BaseMatchImpl",
+      simpleName: "BaseMatchImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class BaseMatchImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/BaseMatchImpl.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ReflectMatcherImpl",
+      simpleName: "ReflectMatcherImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ReflectMatcherImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ReflectMatcherImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "AtomicInteger",
+          signature: "new AtomicInteger(1)",
+          returnType: "new",
+          params: [
+            "1"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 909
+        },
+        {
+          name: "ReflectMatcherImpl",
+          signature: "protected ReflectMatcherImpl(@Nullable ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher, boolean matchFirst)",
+          returnType: "protected",
+          params: [
+            "@Nullable ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher",
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 925
+        },
+        {
+          name: "ensureNotFinalized",
+          signature: "void ensureNotFinalized()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 930
+        },
+        {
+          name: "IllegalStateException",
+          signature: 'throw new IllegalStateException("Cannot modify after finalized")',
+          returnType: "throw new",
+          params: [
+            '"Cannot modify after finalized"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 932
+        },
+        {
+          name: "build",
+          signature: "SeqImpl build()",
+          returnType: "SeqImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 936
+        },
+        {
+          name: "build",
+          signature: "SeqImpl build(@Nullable Reflect exact)",
+          returnType: "SeqImpl",
+          params: [
+            "@Nullable Reflect exact"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 948
+        },
+        {
+          name: "setKey",
+          signature: "Base setKey(@NonNull String key)",
+          returnType: "Base",
+          params: [
+            "@NonNull String key"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 960
+        },
+        {
+          name: "setModifier",
+          signature: "void setModifier(boolean set, int flags)",
+          returnType: "void",
+          params: [
+            "boolean set",
+            "int flags"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 967
+        },
+        {
+          name: "setIsPublic",
+          signature: "Base setIsPublic(boolean isPublic)",
+          returnType: "Base",
+          params: [
+            "boolean isPublic"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 980
+        },
+        {
+          name: "setIsPrivate",
+          signature: "Base setIsPrivate(boolean isPrivate)",
+          returnType: "Base",
+          params: [
+            "boolean isPrivate"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 987
+        },
+        {
+          name: "setIsProtected",
+          signature: "Base setIsProtected(boolean isProtected)",
+          returnType: "Base",
+          params: [
+            "boolean isProtected"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 994
+        },
+        {
+          name: "setIsPackage",
+          signature: "Base setIsPackage(boolean isPackage)",
+          returnType: "Base",
+          params: [
+            "boolean isPackage"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1001
+        },
+        {
+          name: "onBuild",
+          signature: "SeqImpl onBuild()",
+          returnType: "SeqImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1007
+        },
+        {
+          name: "setNonPending",
+          signature: "void setNonPending()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1009
+        },
+        {
+          name: "addDependency",
+          signature: "Id<D>> T addDependency(@Nullable T field, @NonNull U input)",
+          returnType: "Id<D>> T",
+          params: [
+            "@Nullable T field",
+            "@NonNull U input"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1012
+        },
+        {
+          name: "addDependencies",
+          signature: "<T extends ReflectSyntaxImpl<M, ?, RR>, U extends Syntax<M>, M extends ReflectMatch<M, RR, ?>, RR> T addDependencies(@Nullable T field, @NonNull U input)",
+          returnType: "<T extends ReflectSyntaxImpl<M, ?, RR>, U extends Syntax<M>, M extends ReflectMatch<M, RR, ?>, RR> T",
+          params: [
+            "@Nullable T field",
+            "@NonNull U input"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1024
+        },
+        {
+          name: "match",
+          signature: "void match(@NonNull Collection<Reflect> matches)",
+          returnType: "void",
+          params: [
+            "@NonNull Collection<Reflect> matches"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1033
+        },
+        {
+          name: "IllegalStateException",
+          signature: 'throw new IllegalStateException("Illegal state when doMatch")',
+          returnType: "throw new",
+          params: [
+            '"Illegal state when doMatch"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1036
+        },
+        {
+          name: "doMatch",
+          signature: "void doMatch()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1042
+        },
+        {
+          name: "doMatch",
+          signature: "void doMatch(@NonNull Collection<Reflect> candidates)",
+          returnType: "void",
+          params: [
+            "@NonNull Collection<Reflect> candidates"
+          ],
+          sinceApi: 101,
+          doc: "do match on reflect",
+          line: 1059
+        },
+        {
+          name: "doMatch",
+          signature: "boolean doMatch(@NonNull Reflect reflect)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Reflect reflect"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1068
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ClassMatcherImpl",
+      simpleName: "ClassMatcherImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ClassMatcherImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ClassMatcherImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ClassMatcherImpl",
+          signature: "private ClassMatcherImpl(@Nullable ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher, boolean matchFirst)",
+          returnType: "private",
+          params: [
+            "@Nullable ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher",
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1090
+        },
+        {
+          name: "onBuild",
+          signature: "ClassLazySequenceImpl onBuild()",
+          returnType: "ClassLazySequenceImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1096
+        },
+        {
+          name: "ClassLazySequenceImpl",
+          signature: "return new ClassLazySequenceImpl(rootMatcher)",
+          returnType: "return new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1099
+        },
+        {
+          name: "setNonPending",
+          signature: "void setNonPending()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1104
+        },
+        {
+          name: "doMatch",
+          signature: "boolean doMatch(@NonNull Class<?> theClass)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Class<?> theClass"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1110
+        },
+        {
+          name: "setName",
+          signature: "ClassMatcher setName(@NonNull StringMatch name)",
+          returnType: "ClassMatcher",
+          params: [
+            "@NonNull StringMatch name"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1128
+        },
+        {
+          name: "setSuperClass",
+          signature: "ClassMatcher setSuperClass(@NonNull ClassMatch superClassMatch)",
+          returnType: "ClassMatcher",
+          params: [
+            "@NonNull ClassMatch superClassMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1136
+        },
+        {
+          name: "setContainsInterfaces",
+          signature: "ClassMatcher setContainsInterfaces(@NonNull Syntax<ClassMatch> consumer)",
+          returnType: "ClassMatcher",
+          params: [
+            "@NonNull Syntax<ClassMatch> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1144
+        },
+        {
+          name: "setIsAbstract",
+          signature: "ClassMatcher setIsAbstract(boolean isAbstract)",
+          returnType: "ClassMatcher",
+          params: [
+            "boolean isAbstract"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1152
+        },
+        {
+          name: "setIsStatic",
+          signature: "ClassMatcher setIsStatic(boolean isStatic)",
+          returnType: "ClassMatcher",
+          params: [
+            "boolean isStatic"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1159
+        },
+        {
+          name: "setIsFinal",
+          signature: "ClassMatcher setIsFinal(boolean isFinal)",
+          returnType: "ClassMatcher",
+          params: [
+            "boolean isFinal"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1166
+        },
+        {
+          name: "setIsInterface",
+          signature: "ClassMatcher setIsInterface(boolean isInterface)",
+          returnType: "ClassMatcher",
+          params: [
+            "boolean isInterface"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1173
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ParameterMatcherImpl",
+      simpleName: "ParameterMatcherImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ParameterMatcherImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ParameterMatcherImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ParameterMatcherImpl",
+          signature: "private ParameterMatcherImpl(@Nullable ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher, boolean matchFirst)",
+          returnType: "private",
+          params: [
+            "@Nullable ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher",
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1185
+        },
+        {
+          name: "onBuild",
+          signature: "ParameterLazySequenceImpl onBuild()",
+          returnType: "ParameterLazySequenceImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1191
+        },
+        {
+          name: "ParameterLazySequenceImpl",
+          signature: "return new ParameterLazySequenceImpl(rootMatcher)",
+          returnType: "return new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "if (rootMatcher != this) rootParameterMatchers.add(this);",
+          line: 1194
+        },
+        {
+          name: "setNonPending",
+          signature: "void setNonPending()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1198
+        },
+        {
+          name: "doMatch",
+          signature: "boolean doMatch(@NonNull Parameter parameter)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Parameter parameter"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1203
+        },
+        {
+          name: "setIndex",
+          signature: "ParameterMatcher setIndex(int index)",
+          returnType: "ParameterMatcher",
+          params: [
+            "int index"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1213
+        },
+        {
+          name: "setType",
+          signature: "ParameterMatcher setType(@NonNull ClassMatch type)",
+          returnType: "ParameterMatcher",
+          params: [
+            "@NonNull ClassMatch type"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1221
+        },
+        {
+          name: "setIsFinal",
+          signature: "ParameterMatcher setIsFinal(boolean isFinal)",
+          returnType: "ParameterMatcher",
+          params: [
+            "boolean isFinal"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1230
+        },
+        {
+          name: "setIsSynthetic",
+          signature: "ParameterMatcher setIsSynthetic(boolean isSynthetic)",
+          returnType: "ParameterMatcher",
+          params: [
+            "boolean isSynthetic"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1238
+        },
+        {
+          name: "setIsVarargs",
+          signature: "ParameterMatcher setIsVarargs(boolean isVarargs)",
+          returnType: "ParameterMatcher",
+          params: [
+            "boolean isVarargs"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1246
+        },
+        {
+          name: "setIsImplicit",
+          signature: "ParameterMatcher setIsImplicit(boolean isImplicit)",
+          returnType: "ParameterMatcher",
+          params: [
+            "boolean isImplicit"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1254
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.MemberMatcherImpl",
+      simpleName: "MemberMatcherImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class MemberMatcherImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MemberMatcherImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "MemberMatcherImpl",
+          signature: "protected MemberMatcherImpl(@Nullable ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher, boolean matchFirst)",
+          returnType: "protected",
+          params: [
+            "@Nullable ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher",
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1269
+        },
+        {
+          name: "setNonPending",
+          signature: "void setNonPending()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1275
+        },
+        {
+          name: "doMatch",
+          signature: "boolean doMatch(@NonNull Reflect reflect)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Reflect reflect"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1280
+        },
+        {
+          name: "setDeclaringClass",
+          signature: "Base setDeclaringClass(@NonNull ClassMatch declaringClassMatch)",
+          returnType: "Base",
+          params: [
+            "@NonNull ClassMatch declaringClassMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1289
+        },
+        {
+          name: "setIsSynthetic",
+          signature: "Base setIsSynthetic(boolean isSynthetic)",
+          returnType: "Base",
+          params: [
+            "boolean isSynthetic"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1297
+        },
+        {
+          name: "setIncludeSuper",
+          signature: "Base setIncludeSuper(boolean includeSuper)",
+          returnType: "Base",
+          params: [
+            "boolean includeSuper"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1304
+        },
+        {
+          name: "setIncludeInterface",
+          signature: "Base setIncludeInterface(boolean includeInterface)",
+          returnType: "Base",
+          params: [
+            "boolean includeInterface"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1312
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.FieldMatcherImpl",
+      simpleName: "FieldMatcherImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class FieldMatcherImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/FieldMatcherImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "FieldMatcherImpl",
+          signature: "private FieldMatcherImpl(@Nullable ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher, boolean matchFirst)",
+          returnType: "private",
+          params: [
+            "@Nullable ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher",
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1326
+        },
+        {
+          name: "setNonPending",
+          signature: "void setNonPending()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1331
+        },
+        {
+          name: "onBuild",
+          signature: "FieldLazySequenceImpl onBuild()",
+          returnType: "FieldLazySequenceImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1338
+        },
+        {
+          name: "FieldLazySequenceImpl",
+          signature: "return new FieldLazySequenceImpl(rootMatcher)",
+          returnType: "return new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1341
+        },
+        {
+          name: "doMatch",
+          signature: "boolean doMatch(@NonNull Field field)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Field field"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1345
+        },
+        {
+          name: "setName",
+          signature: "FieldMatcher setName(@NonNull StringMatch name)",
+          returnType: "FieldMatcher",
+          params: [
+            "@NonNull StringMatch name"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1355
+        },
+        {
+          name: "setType",
+          signature: "FieldMatcher setType(@NonNull ClassMatch type)",
+          returnType: "FieldMatcher",
+          params: [
+            "@NonNull ClassMatch type"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1363
+        },
+        {
+          name: "setIsStatic",
+          signature: "FieldMatcher setIsStatic(boolean isStatic)",
+          returnType: "FieldMatcher",
+          params: [
+            "boolean isStatic"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1371
+        },
+        {
+          name: "setIsFinal",
+          signature: "FieldMatcher setIsFinal(boolean isFinal)",
+          returnType: "FieldMatcher",
+          params: [
+            "boolean isFinal"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1378
+        },
+        {
+          name: "setIsTransient",
+          signature: "FieldMatcher setIsTransient(boolean isTransient)",
+          returnType: "FieldMatcher",
+          params: [
+            "boolean isTransient"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1385
+        },
+        {
+          name: "setIsVolatile",
+          signature: "FieldMatcher setIsVolatile(boolean isVolatile)",
+          returnType: "FieldMatcher",
+          params: [
+            "boolean isVolatile"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1392
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ExecutableMatcherImpl",
+      simpleName: "ExecutableMatcherImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ExecutableMatcherImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ExecutableMatcherImpl.html",
+      constants: [
+        {
+          name: "M",
+          type: "int",
+          value: "opcodes.length",
+          doc: "prepare for KMP"
+        }
+      ],
+      methods: [
+        {
+          name: "ExecutableMatcherImpl",
+          signature: "protected ExecutableMatcherImpl(@Nullable ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher, boolean matchFirst)",
+          returnType: "protected",
+          params: [
+            "@Nullable ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher",
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1426
+        },
+        {
+          name: "setNonPending",
+          signature: "void setNonPending()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1431
+        },
+        {
+          name: "doMatch",
+          signature: "boolean doMatch(@NonNull Reflect reflect)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Reflect reflect"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1441
+        },
+        {
+          name: "setParameterCount",
+          signature: "Base setParameterCount(int count)",
+          returnType: "Base",
+          params: [
+            "int count"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1456
+        },
+        {
+          name: "setParameters",
+          signature: "Base setParameters(@NonNull Syntax<ParameterMatch> parameterTypes)",
+          returnType: "Base",
+          params: [
+            "@NonNull Syntax<ParameterMatch> parameterTypes"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1464
+        },
+        {
+          name: "setReferredStrings",
+          signature: "Base setReferredStrings(@NonNull Syntax<StringMatch> referredStrings)",
+          returnType: "Base",
+          params: [
+            "@NonNull Syntax<StringMatch> referredStrings"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1473
+        },
+        {
+          name: "setAssignedFields",
+          signature: "Base setAssignedFields(@NonNull Syntax<FieldMatch> assignedFields)",
+          returnType: "Base",
+          params: [
+            "@NonNull Syntax<FieldMatch> assignedFields"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1483
+        },
+        {
+          name: "setAccessedFields",
+          signature: "Base setAccessedFields(@NonNull Syntax<FieldMatch> accessedFields)",
+          returnType: "Base",
+          params: [
+            "@NonNull Syntax<FieldMatch> accessedFields"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1493
+        },
+        {
+          name: "setInvokedMethods",
+          signature: "Base setInvokedMethods(@NonNull Syntax<MethodMatch> invokedMethods)",
+          returnType: "Base",
+          params: [
+            "@NonNull Syntax<MethodMatch> invokedMethods"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1503
+        },
+        {
+          name: "setInvokedConstructors",
+          signature: "Base setInvokedConstructors(@NonNull Syntax<ConstructorMatch> invokedConstructors)",
+          returnType: "Base",
+          params: [
+            "@NonNull Syntax<ConstructorMatch> invokedConstructors"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1513
+        },
+        {
+          name: "setContainsOpcodes",
+          signature: "Base setContainsOpcodes(@NonNull byte[] opcodes)",
+          returnType: "Base",
+          params: [
+            "@NonNull byte[] opcodes"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1523
+        },
+        {
+          name: "setIsVarargs",
+          signature: "Base setIsVarargs(boolean isVarargs)",
+          returnType: "Base",
+          params: [
+            "boolean isVarargs"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1554
+        },
+        {
+          name: "conjunction",
+          signature: "Syntax<ParameterMatch> conjunction(@NonNull ClassMatch... types)",
+          returnType: "Syntax<ParameterMatch>",
+          params: [
+            "@NonNull ClassMatch... types"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1561
+        },
+        {
+          name: "LazyBind",
+          signature: "new LazyBind()",
+          returnType: "new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1562
+        },
+        {
+          name: "ParameterLazySequenceImpl",
+          signature: "new ParameterLazySequenceImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1563
+        },
+        {
+          name: "onMatch",
+          signature: "void onMatch()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1567
+        },
+        {
+          name: "onMiss",
+          signature: "void onMiss()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1572
+        },
+        {
+          name: "TypeOnlyParameter",
+          signature: "new TypeOnlyParameter(pi, c)",
+          returnType: "new",
+          params: [
+            "pi",
+            "c"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1581
+        },
+        {
+          name: "conjunction",
+          signature: "Syntax<ParameterMatch> conjunction(@NonNull Class<?>... types)",
+          returnType: "Syntax<ParameterMatch>",
+          params: [
+            "@NonNull Class<?>... types"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1589
+        },
+        {
+          name: "ParameterLazySequenceImpl",
+          signature: "new ParameterLazySequenceImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1590
+        },
+        {
+          name: "TypeOnlyParameter",
+          signature: "new TypeOnlyParameter(i, type)",
+          returnType: "new",
+          params: [
+            "i",
+            "type"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1595
+        },
+        {
+          name: "observe",
+          signature: "Syntax<ParameterMatch> observe(int index, @NonNull ClassMatch types)",
+          returnType: "Syntax<ParameterMatch>",
+          params: [
+            "int index",
+            "@NonNull ClassMatch types"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1603
+        },
+        {
+          name: "ParameterMatchImpl",
+          signature: "new ParameterMatchImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1604
+        },
+        {
+          name: "TypeOnlyParameter",
+          signature: "new TypeOnlyParameter(index, c)",
+          returnType: "new",
+          params: [
+            "index",
+            "c"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1606
+        },
+        {
+          name: "observe",
+          signature: "Syntax<ParameterMatch> observe(int index, @NonNull Class<?> types)",
+          returnType: "Syntax<ParameterMatch>",
+          params: [
+            "int index",
+            "@NonNull Class<?> types"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1612
+        },
+        {
+          name: "ParameterMatchImpl",
+          signature: "new ParameterMatchImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1613
+        },
+        {
+          name: "TypeOnlyParameter",
+          signature: "new TypeOnlyParameter(index, types)",
+          returnType: "new",
+          params: [
+            "index",
+            "types"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1615
+        },
+        {
+          name: "firstParameter",
+          signature: "ParameterMatch firstParameter(@NonNull Consumer<ParameterMatcher> consumer)",
+          returnType: "ParameterMatch",
+          params: [
+            "@NonNull Consumer<ParameterMatcher> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1621
+        },
+        {
+          name: "ParameterMatcherImpl",
+          signature: "new ParameterMatcherImpl(rootMatcher, true)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1623
+        },
+        {
+          name: "parameters",
+          signature: "ParameterLazySequence parameters(@NonNull Consumer<ParameterMatcher> consumer)",
+          returnType: "ParameterLazySequence",
+          params: [
+            "@NonNull Consumer<ParameterMatcher> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1630
+        },
+        {
+          name: "ParameterMatcherImpl",
+          signature: "new ParameterMatcherImpl(rootMatcher, false)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1632
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.MethodMatcherImpl",
+      simpleName: "MethodMatcherImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class MethodMatcherImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MethodMatcherImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "MethodMatcherImpl",
+          signature: "private MethodMatcherImpl(@Nullable ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher, boolean matchFirst)",
+          returnType: "private",
+          params: [
+            "@Nullable ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher",
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1643
+        },
+        {
+          name: "setNonPending",
+          signature: "void setNonPending()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1648
+        },
+        {
+          name: "doMatch",
+          signature: "boolean doMatch(@NonNull Method method)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Method method"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1654
+        },
+        {
+          name: "onBuild",
+          signature: "MethodLazySequenceImpl onBuild()",
+          returnType: "MethodLazySequenceImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1664
+        },
+        {
+          name: "MethodLazySequenceImpl",
+          signature: "return new MethodLazySequenceImpl(rootMatcher)",
+          returnType: "return new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1667
+        },
+        {
+          name: "setName",
+          signature: "MethodMatcher setName(@NonNull StringMatch name)",
+          returnType: "MethodMatcher",
+          params: [
+            "@NonNull StringMatch name"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1672
+        },
+        {
+          name: "setReturnType",
+          signature: "MethodMatcher setReturnType(@NonNull ClassMatch returnType)",
+          returnType: "MethodMatcher",
+          params: [
+            "@NonNull ClassMatch returnType"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1680
+        },
+        {
+          name: "setIsAbstract",
+          signature: "MethodMatcher setIsAbstract(boolean isAbstract)",
+          returnType: "MethodMatcher",
+          params: [
+            "boolean isAbstract"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1688
+        },
+        {
+          name: "setIsStatic",
+          signature: "MethodMatcher setIsStatic(boolean isStatic)",
+          returnType: "MethodMatcher",
+          params: [
+            "boolean isStatic"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1695
+        },
+        {
+          name: "setIsFinal",
+          signature: "MethodMatcher setIsFinal(boolean isFinal)",
+          returnType: "MethodMatcher",
+          params: [
+            "boolean isFinal"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1702
+        },
+        {
+          name: "setIsSynchronized",
+          signature: "MethodMatcher setIsSynchronized(boolean isSynchronized)",
+          returnType: "MethodMatcher",
+          params: [
+            "boolean isSynchronized"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1709
+        },
+        {
+          name: "setIsNative",
+          signature: "MethodMatcher setIsNative(boolean isNative)",
+          returnType: "MethodMatcher",
+          params: [
+            "boolean isNative"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1716
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ConstructorMatcherImpl",
+      simpleName: "ConstructorMatcherImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ConstructorMatcherImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ConstructorMatcherImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ConstructorMatcherImpl",
+          signature: "private ConstructorMatcherImpl(@Nullable ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher, boolean matchFirst)",
+          returnType: "private",
+          params: [
+            "@Nullable ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher",
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1723
+        },
+        {
+          name: "onBuild",
+          signature: "ConstructorLazySequenceImpl onBuild()",
+          returnType: "ConstructorLazySequenceImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1729
+        },
+        {
+          name: "ConstructorLazySequenceImpl",
+          signature: "return new ConstructorLazySequenceImpl(rootMatcher)",
+          returnType: "return new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1731
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.StringMatcherImpl",
+      simpleName: "StringMatcherImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class StringMatcherImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/StringMatcherImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "StringMatcherImpl",
+          signature: "private StringMatcherImpl(@NonNull String pattern, boolean matchFirst, boolean matchPrefix)",
+          returnType: "private",
+          params: [
+            "@NonNull String pattern",
+            "boolean matchFirst",
+            "boolean matchPrefix"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1741
+        },
+        {
+          name: "build",
+          signature: "StringMatch build()",
+          returnType: "StringMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1747
+        },
+        {
+          name: "StringMatchImpl",
+          signature: "new StringMatchImpl(this)",
+          returnType: "new",
+          params: [
+            "this"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1748
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.BaseSyntaxImpl",
+      simpleName: "BaseSyntaxImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class BaseSyntaxImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/BaseSyntaxImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "BaseSyntaxImpl",
+          signature: "private BaseSyntaxImpl(@NonNull Syntax<Match> operand, char operator)",
+          returnType: "private",
+          params: [
+            "@NonNull Syntax<Match> operand",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1757
+        },
+        {
+          name: "UnaryOperands",
+          signature: "new UnaryOperands(new Operand(operand)",
+          returnType: "new",
+          params: [
+            "new Operand(operand"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1758
+        },
+        {
+          name: "BaseSyntaxImpl",
+          signature: "Id<D>> BaseSyntaxImpl(@NonNull LazySequenceImpl<?, M, Reflect, ?, MI, ?, D> operand, char operator)",
+          returnType: "Id<D>>",
+          params: [
+            "@NonNull LazySequenceImpl<?",
+            "M",
+            "Reflect",
+            "?",
+            "MI",
+            "?",
+            "D> operand",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1761
+        },
+        {
+          name: "UnaryOperands",
+          signature: "new UnaryOperands(new Operand(operand)",
+          returnType: "new",
+          params: [
+            "new Operand(operand"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1762
+        },
+        {
+          name: "BaseSyntaxImpl",
+          signature: "private BaseSyntaxImpl(@NonNull MatchImpl operand, char operator)",
+          returnType: "private",
+          params: [
+            "@NonNull MatchImpl operand",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1765
+        },
+        {
+          name: "UnaryOperands",
+          signature: "new UnaryOperands(new Operand(operand)",
+          returnType: "new",
+          params: [
+            "new Operand(operand"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1766
+        },
+        {
+          name: "BaseSyntaxImpl",
+          signature: "private BaseSyntaxImpl(@NonNull Syntax<Match> left, @NonNull Syntax<Match> right, char operator)",
+          returnType: "private",
+          params: [
+            "@NonNull Syntax<Match> left",
+            "@NonNull Syntax<Match> right",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1769
+        },
+        {
+          name: "BinaryOperands",
+          signature: "new BinaryOperands(new Operand(left)",
+          returnType: "new",
+          params: [
+            "new Operand(left"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1770
+        },
+        {
+          name: "newSelf",
+          signature: "Syntax<Match> newSelf(@Nullable Syntax<Match> other, char operator)",
+          returnType: "Syntax<Match>",
+          params: [
+            "@Nullable Syntax<Match> other",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1773
+        },
+        {
+          name: "and",
+          signature: "Syntax<Match> and(@NonNull Syntax<Match> other)",
+          returnType: "Syntax<Match>",
+          params: [
+            "@NonNull Syntax<Match> other"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1777
+        },
+        {
+          name: "newSelf",
+          signature: "return newSelf(other, '&')",
+          returnType: "return",
+          params: [
+            "other",
+            "'&'"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1778
+        },
+        {
+          name: "or",
+          signature: "Syntax<Match> or(@NonNull Syntax<Match> other)",
+          returnType: "Syntax<Match>",
+          params: [
+            "@NonNull Syntax<Match> other"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1783
+        },
+        {
+          name: "newSelf",
+          signature: "return newSelf(other, '|')",
+          returnType: "return",
+          params: [
+            "other",
+            "'|'"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1784
+        },
+        {
+          name: "not",
+          signature: "Syntax<Match> not()",
+          returnType: "Syntax<Match>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1789
+        },
+        {
+          name: "newSelf",
+          signature: "return newSelf(null, '!')",
+          returnType: "return",
+          params: [
+            "null",
+            "'!'"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1790
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.BaseSyntaxImpl.Operand",
+      simpleName: "Operand",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class Operand",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/Operand.html",
+      constants: [],
+      methods: [
+        {
+          name: "Operand",
+          signature: "private Operand(@NonNull MatchImpl match)",
+          returnType: "private",
+          params: [
+            "@NonNull MatchImpl match"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1796
+        },
+        {
+          name: "Operand",
+          signature: "private Operand(@NonNull Syntax<Match> syntax)",
+          returnType: "private",
+          params: [
+            "@NonNull Syntax<Match> syntax"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1800
+        },
+        {
+          name: "Operand",
+          signature: "Id<D>> Operand(@NonNull LazySequenceImpl<?, M, Reflect, ?, MI, ?, D> seq)",
+          returnType: "Id<D>>",
+          params: [
+            "@NonNull LazySequenceImpl<?",
+            "M",
+            "Reflect",
+            "?",
+            "MI",
+            "?",
+            "D> seq"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1804
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.BaseSyntaxImpl.Operands",
+      simpleName: "Operands",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class Operands",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/Operands.html",
+      constants: [],
+      methods: [
+        {
+          name: "Operands",
+          signature: "protected Operands(char operator)",
+          returnType: "protected",
+          params: [
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1812
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.BaseSyntaxImpl.UnaryOperands",
+      simpleName: "UnaryOperands",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class UnaryOperands",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/UnaryOperands.html",
+      constants: [],
+      methods: [
+        {
+          name: "UnaryOperands",
+          signature: "private UnaryOperands(@NonNull Operand operand, char operator)",
+          returnType: "private",
+          params: [
+            "@NonNull Operand operand",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1820
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.BaseSyntaxImpl.BinaryOperands",
+      simpleName: "BinaryOperands",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class BinaryOperands",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/BinaryOperands.html",
+      constants: [],
+      methods: [
+        {
+          name: "BinaryOperands",
+          signature: "private BinaryOperands(@NonNull Operand left, @NonNull Operand right, char operator)",
+          returnType: "private",
+          params: [
+            "@NonNull Operand left",
+            "@NonNull Operand right",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1830
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ReflectSyntaxImpl",
+      simpleName: "ReflectSyntaxImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ReflectSyntaxImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ReflectSyntaxImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ReflectSyntaxImpl",
+          signature: "private ReflectSyntaxImpl(@NonNull Syntax<Match> operand, char operator)",
+          returnType: "private",
+          params: [
+            "@NonNull Syntax<Match> operand",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1840
+        },
+        {
+          name: "ReflectSyntaxImpl",
+          signature: "Id<D>> ReflectSyntaxImpl(@NonNull LazySequenceImpl<?, M, Reflect, ?, MI, ?, D> operand, char operator)",
+          returnType: "Id<D>>",
+          params: [
+            "@NonNull LazySequenceImpl<?",
+            "M",
+            "Reflect",
+            "?",
+            "MI",
+            "?",
+            "D> operand",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1844
+        },
+        {
+          name: "ReflectSyntaxImpl",
+          signature: "private ReflectSyntaxImpl(@NonNull MatchImpl operand, char operator)",
+          returnType: "private",
+          params: [
+            "@NonNull MatchImpl operand",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1848
+        },
+        {
+          name: "ReflectSyntaxImpl",
+          signature: "private ReflectSyntaxImpl(@NonNull Syntax<Match> left, @NonNull Syntax<Match> right, char operator)",
+          returnType: "private",
+          params: [
+            "@NonNull Syntax<Match> left",
+            "@NonNull Syntax<Match> right",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1852
+        },
+        {
+          name: "newSelf",
+          signature: "Syntax<Match> newSelf(@Nullable Syntax<Match> other, char operator)",
+          returnType: "Syntax<Match>",
+          params: [
+            "@Nullable Syntax<Match> other",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1857
+        },
+        {
+          name: "operandTest",
+          signature: "boolean operandTest(@NonNull Operand operand, @NonNull HashSet<Reflect> set, char operator)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Operand operand",
+            "@NonNull HashSet<Reflect> set",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1861
+        },
+        {
+          name: "test",
+          signature: "boolean test(@NonNull HashSet<Reflect> set)",
+          returnType: "boolean",
+          params: [
+            "@NonNull HashSet<Reflect> set"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1882
+        },
+        {
+          name: "operandTest",
+          signature: "return operandTest(binaryOperands.left, set, operator)",
+          returnType: "return",
+          params: [
+            "binaryOperands.left",
+            "set",
+            "operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1892
+        },
+        {
+          name: "addObserver",
+          signature: "void addObserver(@NonNull Operand operand, @NonNull BaseObserver<?> observer, @Nullable AtomicInteger count)",
+          returnType: "void",
+          params: [
+            "@NonNull Operand operand",
+            "@NonNull BaseObserver<?> observer",
+            "@Nullable AtomicInteger count"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1906
+        },
+        {
+          name: "addObserver",
+          signature: "void addObserver(@NonNull BaseObserver<?> observer, @Nullable AtomicInteger count)",
+          returnType: "void",
+          params: [
+            "@NonNull BaseObserver<?> observer",
+            "@Nullable AtomicInteger count"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1918
+        },
+        {
+          name: "removeObserver",
+          signature: "void removeObserver(@NonNull Operand operand, @NonNull BaseObserver<?> observer, @Nullable AtomicInteger count)",
+          returnType: "void",
+          params: [
+            "@NonNull Operand operand",
+            "@NonNull BaseObserver<?> observer",
+            "@Nullable AtomicInteger count"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1929
+        },
+        {
+          name: "removeObserver",
+          signature: "void removeObserver(@NonNull BaseObserver<?> observer, @Nullable AtomicInteger count)",
+          returnType: "void",
+          params: [
+            "@NonNull BaseObserver<?> observer",
+            "@Nullable AtomicInteger count"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1941
+        },
+        {
+          name: "setNonPending",
+          signature: "void setNonPending(@NonNull Operand operand)",
+          returnType: "void",
+          params: [
+            "@NonNull Operand operand"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1952
+        },
+        {
+          name: "setNonPending",
+          signature: "void setNonPending()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1962
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.StringSyntaxImpl",
+      simpleName: "StringSyntaxImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class StringSyntaxImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/StringSyntaxImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "StringSyntaxImpl",
+          signature: "private StringSyntaxImpl(@NonNull Syntax<StringMatch> operand, char operator)",
+          returnType: "private",
+          params: [
+            "@NonNull Syntax<StringMatch> operand",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1975
+        },
+        {
+          name: "StringSyntaxImpl",
+          signature: "Id<D>> StringSyntaxImpl(@NonNull LazySequenceImpl<?, M, String, ?, MI, ?, D> operand, char operator)",
+          returnType: "Id<D>>",
+          params: [
+            "@NonNull LazySequenceImpl<?",
+            "M",
+            "String",
+            "?",
+            "MI",
+            "?",
+            "D> operand",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1979
+        },
+        {
+          name: "StringSyntaxImpl",
+          signature: "private StringSyntaxImpl(@NonNull StringMatchImpl operand, char operator)",
+          returnType: "private",
+          params: [
+            "@NonNull StringMatchImpl operand",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1983
+        },
+        {
+          name: "StringSyntaxImpl",
+          signature: "private StringSyntaxImpl(@NonNull Syntax<StringMatch> left, @NonNull Syntax<StringMatch> right, char operator)",
+          returnType: "private",
+          params: [
+            "@NonNull Syntax<StringMatch> left",
+            "@NonNull Syntax<StringMatch> right",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1987
+        },
+        {
+          name: "newSelf",
+          signature: "Syntax<StringMatch> newSelf(@Nullable Syntax<StringMatch> other, char operator)",
+          returnType: "Syntax<StringMatch>",
+          params: [
+            "@Nullable Syntax<StringMatch> other",
+            "char operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1992
+        },
+        {
+          name: "StringSyntaxImpl",
+          signature: "null ? new StringSyntaxImpl(this, operator)",
+          returnType: "null ? new",
+          params: [
+            "this",
+            "operator"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1993
+        },
+        {
+          name: "operandTest",
+          signature: "boolean operandTest(Operand operand, TreeSetView<String> set)",
+          returnType: "boolean",
+          params: [
+            "Operand operand",
+            "TreeSetView<String> set"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 1996
+        },
+        {
+          name: "test",
+          signature: "boolean test(TreeSetView<String> set)",
+          returnType: "boolean",
+          params: [
+            "TreeSetView<String> set"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2010
+        },
+        {
+          name: "operandTest",
+          signature: "return operandTest(binaryOperands.right, set)",
+          returnType: "return",
+          params: [
+            "binaryOperands.right",
+            "set"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2020
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.LazySequenceImpl",
+      simpleName: "LazySequenceImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class LazySequenceImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/LazySequenceImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "LazySequenceImpl",
+          signature: "protected LazySequenceImpl(@NonNull ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "protected",
+          params: [
+            "@NonNull ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2052
+        },
+        {
+          name: "first",
+          signature: "Match first()",
+          returnType: "Match",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2058
+        },
+        {
+          name: "first",
+          signature: "Match first(@NonNull Consumer<Matcher> consumer)",
+          returnType: "Match",
+          params: [
+            "@NonNull Consumer<Matcher> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2074
+        },
+        {
+          name: "all",
+          signature: "Base all(@NonNull Consumer<Matcher> consumer)",
+          returnType: "Base",
+          params: [
+            "@NonNull Consumer<Matcher> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2083
+        },
+        {
+          name: "onMatch",
+          signature: "Base onMatch(@NonNull Consumer<Iterable<Reflect>> consumer)",
+          returnType: "Base",
+          params: [
+            "@NonNull Consumer<Iterable<Reflect>> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2092
+        },
+        {
+          name: "onMiss",
+          signature: "Base onMiss(@NonNull Runnable runnable)",
+          returnType: "Base",
+          params: [
+            "@NonNull Runnable runnable"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2103
+        },
+        {
+          name: "conjunction",
+          signature: "Syntax<Match> conjunction()",
+          returnType: "Syntax<Match>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2112
+        },
+        {
+          name: "disjunction",
+          signature: "Syntax<Match> disjunction()",
+          returnType: "Syntax<Match>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2118
+        },
+        {
+          name: "substituteIfMiss",
+          signature: "Base substituteIfMiss(@NonNull Supplier<Base> substitute)",
+          returnType: "Base",
+          params: [
+            "@NonNull Supplier<Base> substitute"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2124
+        },
+        {
+          name: "matchIfMiss",
+          signature: "Base matchIfMiss(@NonNull Consumer<Matcher> consumer)",
+          returnType: "Base",
+          params: [
+            "@NonNull Consumer<Matcher> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2131
+        },
+        {
+          name: "bind",
+          signature: "Base bind(@NonNull Bind bind, @NonNull BiConsumer<Bind, Iterable<Reflect>> consumer)",
+          returnType: "Base",
+          params: [
+            "@NonNull Bind bind",
+            "@NonNull BiConsumer<Bind",
+            "Iterable<Reflect>> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2140
+        },
+        {
+          name: "AtomicInteger",
+          signature: "bind, new AtomicInteger(1)",
+          returnType: "bind, new",
+          params: [
+            "1"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2142
+        },
+        {
+          name: "match",
+          signature: "void match(@NonNull Collection<Reflect> matches)",
+          returnType: "void",
+          params: [
+            "@NonNull Collection<Reflect> matches"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2161
+        },
+        {
+          name: "newMatch",
+          signature: "MatchImpl newMatch()",
+          returnType: "MatchImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2182
+        },
+        {
+          name: "newMatcher",
+          signature: "MatcherImpl newMatcher(boolean matchFirst)",
+          returnType: "MatcherImpl",
+          params: [
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2185
+        },
+        {
+          name: "addObserver",
+          signature: "void addObserver(@NonNull BaseObserver<Collection<Reflect>> observer)",
+          returnType: "void",
+          params: [
+            "@NonNull BaseObserver<Collection<Reflect>> observer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2187
+        },
+        {
+          name: "removeObserver",
+          signature: "void removeObserver(@NonNull BaseObserver<Collection<Reflect>> observer)",
+          returnType: "void",
+          params: [
+            "@NonNull BaseObserver<Collection<Reflect>> observer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2193
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ClassLazySequenceImpl",
+      simpleName: "ClassLazySequenceImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ClassLazySequenceImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ClassLazySequenceImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ClassLazySequenceImpl",
+          signature: "protected ClassLazySequenceImpl(@NonNull ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "protected",
+          params: [
+            "@NonNull ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2199
+        },
+        {
+          name: "newMatch",
+          signature: "ClassMatchImpl newMatch()",
+          returnType: "ClassMatchImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2205
+        },
+        {
+          name: "ClassMatchImpl",
+          signature: "return new ClassMatchImpl(rootMatcher)",
+          returnType: "return new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2206
+        },
+        {
+          name: "newMatcher",
+          signature: "ClassMatcherImpl newMatcher(boolean matchFirst)",
+          returnType: "ClassMatcherImpl",
+          params: [
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2211
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "return new ClassMatcherImpl(rootMatcher, matchFirst)",
+          returnType: "return new",
+          params: [
+            "rootMatcher",
+            "matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2212
+        },
+        {
+          name: "addMethodsObserver",
+          signature: "void addMethodsObserver(@NonNull MethodMatcherImpl m)",
+          returnType: "void",
+          params: [
+            "@NonNull MethodMatcherImpl m"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2215
+        },
+        {
+          name: "addConstructorsObserver",
+          signature: "void addConstructorsObserver(@NonNull ConstructorMatcherImpl m)",
+          returnType: "void",
+          params: [
+            "@NonNull ConstructorMatcherImpl m"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2227
+        },
+        {
+          name: "addFieldsObserver",
+          signature: "void addFieldsObserver(@NonNull FieldMatcherImpl m)",
+          returnType: "void",
+          params: [
+            "@NonNull FieldMatcherImpl m"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2239
+        },
+        {
+          name: "methods",
+          signature: "MethodLazySequence methods(@NonNull Consumer<MethodMatcher> matcher)",
+          returnType: "MethodLazySequence",
+          params: [
+            "@NonNull Consumer<MethodMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2253
+        },
+        {
+          name: "MethodMatcherImpl",
+          signature: "new MethodMatcherImpl(rootMatcher, false)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2254
+        },
+        {
+          name: "firstMethod",
+          signature: "MethodMatch firstMethod(@NonNull Consumer<MethodMatcher> matcher)",
+          returnType: "MethodMatch",
+          params: [
+            "@NonNull Consumer<MethodMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2262
+        },
+        {
+          name: "MethodMatcherImpl",
+          signature: "new MethodMatcherImpl(rootMatcher, true)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2263
+        },
+        {
+          name: "constructors",
+          signature: "ConstructorLazySequence constructors(@NonNull Consumer<ConstructorMatcher> matcher)",
+          returnType: "ConstructorLazySequence",
+          params: [
+            "@NonNull Consumer<ConstructorMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2271
+        },
+        {
+          name: "ConstructorMatcherImpl",
+          signature: "new ConstructorMatcherImpl(rootMatcher, false)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2272
+        },
+        {
+          name: "firstConstructor",
+          signature: "ConstructorMatch firstConstructor(@NonNull Consumer<ConstructorMatcher> matcher)",
+          returnType: "ConstructorMatch",
+          params: [
+            "@NonNull Consumer<ConstructorMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2280
+        },
+        {
+          name: "ConstructorMatcherImpl",
+          signature: "new ConstructorMatcherImpl(rootMatcher, true)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2281
+        },
+        {
+          name: "fields",
+          signature: "FieldLazySequence fields(@NonNull Consumer<FieldMatcher> matcher)",
+          returnType: "FieldLazySequence",
+          params: [
+            "@NonNull Consumer<FieldMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2289
+        },
+        {
+          name: "FieldMatcherImpl",
+          signature: "new FieldMatcherImpl(rootMatcher, false)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2290
+        },
+        {
+          name: "firstField",
+          signature: "FieldMatch firstField(@NonNull Consumer<FieldMatcher> matcher)",
+          returnType: "FieldMatch",
+          params: [
+            "@NonNull Consumer<FieldMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2298
+        },
+        {
+          name: "FieldMatcherImpl",
+          signature: "new FieldMatcherImpl(rootMatcher, true)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2299
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ParameterLazySequenceImpl",
+      simpleName: "ParameterLazySequenceImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ParameterLazySequenceImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ParameterLazySequenceImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ParameterLazySequenceImpl",
+          signature: "private ParameterLazySequenceImpl(@NonNull ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "private",
+          params: [
+            "@NonNull ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2307
+        },
+        {
+          name: "newMatch",
+          signature: "ParameterMatchImpl newMatch()",
+          returnType: "ParameterMatchImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2313
+        },
+        {
+          name: "ParameterMatchImpl",
+          signature: "return new ParameterMatchImpl(rootMatcher)",
+          returnType: "return new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2314
+        },
+        {
+          name: "newMatcher",
+          signature: "ParameterMatcherImpl newMatcher(boolean matchFirst)",
+          returnType: "ParameterMatcherImpl",
+          params: [
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2319
+        },
+        {
+          name: "ParameterMatcherImpl",
+          signature: "return new ParameterMatcherImpl(rootMatcher, matchFirst)",
+          returnType: "return new",
+          params: [
+            "rootMatcher",
+            "matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2320
+        },
+        {
+          name: "addTypesObserver",
+          signature: "void addTypesObserver(@NonNull ClassMatcherImpl m)",
+          returnType: "void",
+          params: [
+            "@NonNull ClassMatcherImpl m"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2323
+        },
+        {
+          name: "types",
+          signature: "ClassLazySequence types(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassLazySequence",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2337
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "new ClassMatcherImpl(rootMatcher, false)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2338
+        },
+        {
+          name: "firstType",
+          signature: "ClassMatch firstType(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2346
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "new ClassMatcherImpl(rootMatcher, true)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2347
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.MemberLazySequenceImpl",
+      simpleName: "MemberLazySequenceImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class MemberLazySequenceImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MemberLazySequenceImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "MemberLazySequenceImpl",
+          signature: "protected MemberLazySequenceImpl(@NonNull ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "protected",
+          params: [
+            "@NonNull ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2355
+        },
+        {
+          name: "addDeclaringClassesObserver",
+          signature: "void addDeclaringClassesObserver(@NonNull ClassMatcherImpl m)",
+          returnType: "void",
+          params: [
+            "@NonNull ClassMatcherImpl m"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2359
+        },
+        {
+          name: "declaringClasses",
+          signature: "ClassLazySequence declaringClasses(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassLazySequence",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2373
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "new ClassMatcherImpl(rootMatcher, false)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2374
+        },
+        {
+          name: "firstDeclaringClass",
+          signature: "ClassMatch firstDeclaringClass(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2382
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "new ClassMatcherImpl(rootMatcher, true)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2383
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.FieldLazySequenceImpl",
+      simpleName: "FieldLazySequenceImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class FieldLazySequenceImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/FieldLazySequenceImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "FieldLazySequenceImpl",
+          signature: "private FieldLazySequenceImpl(@NonNull ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "private",
+          params: [
+            "@NonNull ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2391
+        },
+        {
+          name: "addTypesObserver",
+          signature: "void addTypesObserver(@NonNull ClassMatcherImpl m)",
+          returnType: "void",
+          params: [
+            "@NonNull ClassMatcherImpl m"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2395
+        },
+        {
+          name: "newMatch",
+          signature: "FieldMatchImpl newMatch()",
+          returnType: "FieldMatchImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2409
+        },
+        {
+          name: "FieldMatchImpl",
+          signature: "return new FieldMatchImpl(rootMatcher)",
+          returnType: "return new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2410
+        },
+        {
+          name: "newMatcher",
+          signature: "FieldMatcherImpl newMatcher(boolean matchFirst)",
+          returnType: "FieldMatcherImpl",
+          params: [
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2415
+        },
+        {
+          name: "FieldMatcherImpl",
+          signature: "return new FieldMatcherImpl(rootMatcher, matchFirst)",
+          returnType: "return new",
+          params: [
+            "rootMatcher",
+            "matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2416
+        },
+        {
+          name: "types",
+          signature: "ClassLazySequence types(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassLazySequence",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2421
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "new ClassMatcherImpl(rootMatcher, false)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2422
+        },
+        {
+          name: "firstType",
+          signature: "ClassMatch firstType(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2430
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "new ClassMatcherImpl(rootMatcher, true)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2431
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ExecutableLazySequenceImpl",
+      simpleName: "ExecutableLazySequenceImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ExecutableLazySequenceImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ExecutableLazySequenceImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ExecutableLazySequenceImpl",
+          signature: "private ExecutableLazySequenceImpl(@NonNull ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "private",
+          params: [
+            "@NonNull ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2439
+        },
+        {
+          name: "addParametersObserver",
+          signature: "void addParametersObserver(ParameterMatcherImpl m)",
+          returnType: "void",
+          params: [
+            "ParameterMatcherImpl m"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2443
+        },
+        {
+          name: "ParameterImpl",
+          signature: "new ParameterImpl(i, p[i].getType()",
+          returnType: "new",
+          params: [
+            "i",
+            "p[i].getType("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2452
+        },
+        {
+          name: "ParameterImpl",
+          signature: "new ParameterImpl(i, parameterTypes.get(i)",
+          returnType: "new",
+          params: [
+            "i",
+            "parameterTypes.get(i"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2462
+        },
+        {
+          name: "addParameterTypesObserver",
+          signature: "void addParameterTypesObserver(ClassMatcherImpl m)",
+          returnType: "void",
+          params: [
+            "ClassMatcherImpl m"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2470
+        },
+        {
+          name: "parameters",
+          signature: "ParameterLazySequence parameters(@NonNull Consumer<ParameterMatcher> matcher)",
+          returnType: "ParameterLazySequence",
+          params: [
+            "@NonNull Consumer<ParameterMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2488
+        },
+        {
+          name: "ParameterMatcherImpl",
+          signature: "new ParameterMatcherImpl(rootMatcher, false)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2489
+        },
+        {
+          name: "firstParameter",
+          signature: "ParameterMatch firstParameter(@NonNull Consumer<ParameterMatcher> matcher)",
+          returnType: "ParameterMatch",
+          params: [
+            "@NonNull Consumer<ParameterMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2497
+        },
+        {
+          name: "ParameterMatcherImpl",
+          signature: "new ParameterMatcherImpl(rootMatcher, true)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2498
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.MethodLazySequenceImpl",
+      simpleName: "MethodLazySequenceImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class MethodLazySequenceImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MethodLazySequenceImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "MethodLazySequenceImpl",
+          signature: "private MethodLazySequenceImpl(@NonNull ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "private",
+          params: [
+            "@NonNull ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2506
+        },
+        {
+          name: "addReturnTypesObserver",
+          signature: "void addReturnTypesObserver(@NonNull ClassMatcherImpl m)",
+          returnType: "void",
+          params: [
+            "@NonNull ClassMatcherImpl m"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2510
+        },
+        {
+          name: "newMatch",
+          signature: "MethodMatchImpl newMatch()",
+          returnType: "MethodMatchImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2524
+        },
+        {
+          name: "MethodMatchImpl",
+          signature: "return new MethodMatchImpl(rootMatcher)",
+          returnType: "return new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2525
+        },
+        {
+          name: "newMatcher",
+          signature: "MethodMatcherImpl newMatcher(boolean matchFirst)",
+          returnType: "MethodMatcherImpl",
+          params: [
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2530
+        },
+        {
+          name: "MethodMatcherImpl",
+          signature: "return new MethodMatcherImpl(rootMatcher, matchFirst)",
+          returnType: "return new",
+          params: [
+            "rootMatcher",
+            "matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2531
+        },
+        {
+          name: "returnTypes",
+          signature: "ClassLazySequence returnTypes(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassLazySequence",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2536
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "new ClassMatcherImpl(rootMatcher, false)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2537
+        },
+        {
+          name: "firstReturnType",
+          signature: "ClassMatch firstReturnType(@NonNull Consumer<ClassMatcher> matcher)",
+          returnType: "ClassMatch",
+          params: [
+            "@NonNull Consumer<ClassMatcher> matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2545
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "new ClassMatcherImpl(rootMatcher, true)",
+          returnType: "new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2546
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ConstructorLazySequenceImpl",
+      simpleName: "ConstructorLazySequenceImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ConstructorLazySequenceImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ConstructorLazySequenceImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ConstructorLazySequenceImpl",
+          signature: "private ConstructorLazySequenceImpl(@NonNull ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "private",
+          params: [
+            "@NonNull ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2554
+        },
+        {
+          name: "newMatch",
+          signature: "ConstructorMatchImpl newMatch()",
+          returnType: "ConstructorMatchImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2560
+        },
+        {
+          name: "ConstructorMatchImpl",
+          signature: "return new ConstructorMatchImpl(rootMatcher)",
+          returnType: "return new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2561
+        },
+        {
+          name: "newMatcher",
+          signature: "ConstructorMatcherImpl newMatcher(boolean matchFirst)",
+          returnType: "ConstructorMatcherImpl",
+          params: [
+            "boolean matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2566
+        },
+        {
+          name: "ConstructorMatcherImpl",
+          signature: "return new ConstructorMatcherImpl(rootMatcher, matchFirst)",
+          returnType: "return new",
+          params: [
+            "rootMatcher",
+            "matchFirst"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2567
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ReflectMatchImpl",
+      simpleName: "ReflectMatchImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ReflectMatchImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ReflectMatchImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ReflectMatchImpl",
+          signature: "protected ReflectMatchImpl(@NonNull ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "protected",
+          params: [
+            "@NonNull ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2588
+        },
+        {
+          name: "getKey",
+          signature: "String getKey()",
+          returnType: "String",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2594
+        },
+        {
+          name: "setKey",
+          signature: "Base setKey(@Nullable String key)",
+          returnType: "Base",
+          params: [
+            "@Nullable String key"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2600
+        },
+        {
+          name: "onMatch",
+          signature: "Base onMatch(@NonNull Consumer<Reflect> consumer)",
+          returnType: "Base",
+          params: [
+            "@NonNull Consumer<Reflect> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2608
+        },
+        {
+          name: "onMiss",
+          signature: "Base onMiss(@NonNull Runnable handler)",
+          returnType: "Base",
+          params: [
+            "@NonNull Runnable handler"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2618
+        },
+        {
+          name: "substituteIfMiss",
+          signature: "Base substituteIfMiss(@NonNull Supplier<Base> replacement)",
+          returnType: "Base",
+          params: [
+            "@NonNull Supplier<Base> replacement"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2627
+        },
+        {
+          name: "matchFirstIfMiss",
+          signature: "Base matchFirstIfMiss(@NonNull Consumer<Matcher> consumer)",
+          returnType: "Base",
+          params: [
+            "@NonNull Consumer<Matcher> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2635
+        },
+        {
+          name: "bind",
+          signature: "Base bind(@NonNull Bind bind, @NonNull BiConsumer<Bind, Reflect> consumer)",
+          returnType: "Base",
+          params: [
+            "@NonNull Bind bind",
+            "@NonNull BiConsumer<Bind",
+            "Reflect> consumer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2645
+        },
+        {
+          name: "AtomicInteger",
+          signature: "bind, new AtomicInteger(1)",
+          returnType: "bind, new",
+          params: [
+            "1"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2647
+        },
+        {
+          name: "addObserver",
+          signature: "void addObserver(BaseObserver<Reflect> observer)",
+          returnType: "void",
+          params: [
+            "BaseObserver<Reflect> observer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2670
+        },
+        {
+          name: "removeObserver",
+          signature: "void removeObserver(BaseObserver<Reflect> observer)",
+          returnType: "void",
+          params: [
+            "BaseObserver<Reflect> observer"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2676
+        },
+        {
+          name: "match",
+          signature: "void match(@Nullable Reflect match)",
+          returnType: "void",
+          params: [
+            "@Nullable Reflect match"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2680
+        },
+        {
+          name: "ReflectWrapper",
+          signature: "null, new ReflectWrapper(match)",
+          returnType: "null, new",
+          params: [
+            "match"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2681
+        },
+        {
+          name: "newFirstMatcher",
+          signature: "MatcherImpl newFirstMatcher()",
+          returnType: "MatcherImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2706
+        },
+        {
+          name: "onKey",
+          signature: "void onKey(@Nullable String newKey, @Nullable String oldKey)",
+          returnType: "void",
+          params: [
+            "@Nullable String newKey",
+            "@Nullable String oldKey"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2708
+        },
+        {
+          name: "observe",
+          signature: "Syntax<Base> observe()",
+          returnType: "Syntax<Base>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2712
+        },
+        {
+          name: "reverse",
+          signature: "Syntax<Base> reverse()",
+          returnType: "Syntax<Base>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2718
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ReflectMatchImpl.ReflectWrapper",
+      simpleName: "ReflectWrapper",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ReflectWrapper",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ReflectWrapper.html",
+      constants: [],
+      methods: [
+        {
+          name: "ReflectWrapper",
+          signature: "private ReflectWrapper(@Nullable Reflect reflect)",
+          returnType: "private",
+          params: [
+            "@Nullable Reflect reflect"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2726
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ClassMatchImpl",
+      simpleName: "ClassMatchImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ClassMatchImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ClassMatchImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ClassMatchImpl",
+          signature: "protected ClassMatchImpl(@NonNull ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "protected",
+          params: [
+            "@NonNull ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2733
+        },
+        {
+          name: "newFirstMatcher",
+          signature: "ClassMatcherImpl newFirstMatcher()",
+          returnType: "ClassMatcherImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2739
+        },
+        {
+          name: "ClassMatcherImpl",
+          signature: "return new ClassMatcherImpl(rootMatcher, true)",
+          returnType: "return new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2740
+        },
+        {
+          name: "getSuperClass",
+          signature: "ClassMatch getSuperClass()",
+          returnType: "ClassMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2745
+        },
+        {
+          name: "ClassMatchImpl",
+          signature: "new ClassMatchImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2746
+        },
+        {
+          name: "getInterfaces",
+          signature: "ClassLazySequence getInterfaces()",
+          returnType: "ClassLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2753
+        },
+        {
+          name: "ClassLazySequenceImpl",
+          signature: "new ClassLazySequenceImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2754
+        },
+        {
+          name: "getDeclaredMethods",
+          signature: "MethodLazySequence getDeclaredMethods()",
+          returnType: "MethodLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2761
+        },
+        {
+          name: "MethodLazySequenceImpl",
+          signature: "new MethodLazySequenceImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2762
+        },
+        {
+          name: "getDeclaredConstructors",
+          signature: "ConstructorLazySequence getDeclaredConstructors()",
+          returnType: "ConstructorLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2769
+        },
+        {
+          name: "ConstructorLazySequenceImpl",
+          signature: "new ConstructorLazySequenceImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2770
+        },
+        {
+          name: "getDeclaredFields",
+          signature: "FieldLazySequence getDeclaredFields()",
+          returnType: "FieldLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2777
+        },
+        {
+          name: "FieldLazySequenceImpl",
+          signature: "new FieldLazySequenceImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2778
+        },
+        {
+          name: "getArrayType",
+          signature: "ClassMatch getArrayType()",
+          returnType: "ClassMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2785
+        },
+        {
+          name: "ClassMatchImpl",
+          signature: "new ClassMatchImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2786
+        },
+        {
+          name: "onKey",
+          signature: "void onKey(@Nullable String newKey, @Nullable String oldKey)",
+          returnType: "void",
+          params: [
+            "@Nullable String newKey",
+            "@Nullable String oldKey"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2792
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ParameterMatchImpl",
+      simpleName: "ParameterMatchImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ParameterMatchImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ParameterMatchImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ParameterMatchImpl",
+          signature: "private ParameterMatchImpl(@NonNull ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "private",
+          params: [
+            "@NonNull ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2805
+        },
+        {
+          name: "newFirstMatcher",
+          signature: "ParameterMatcherImpl newFirstMatcher()",
+          returnType: "ParameterMatcherImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2811
+        },
+        {
+          name: "ParameterMatcherImpl",
+          signature: "return new ParameterMatcherImpl(rootMatcher, true)",
+          returnType: "return new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2812
+        },
+        {
+          name: "onKey",
+          signature: "void onKey(@Nullable String newKey, @Nullable String oldKey)",
+          returnType: "void",
+          params: [
+            "@Nullable String newKey",
+            "@Nullable String oldKey"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2816
+        },
+        {
+          name: "getType",
+          signature: "ClassMatch getType()",
+          returnType: "ClassMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2823
+        },
+        {
+          name: "ClassMatchImpl",
+          signature: "new ClassMatchImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2824
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.MemberMatchImpl",
+      simpleName: "MemberMatchImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class MemberMatchImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MemberMatchImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "MemberMatchImpl",
+          signature: "protected MemberMatchImpl(ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "protected",
+          params: [
+            "ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2831
+        },
+        {
+          name: "getDeclaringClass",
+          signature: "ClassMatch getDeclaringClass()",
+          returnType: "ClassMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2837
+        },
+        {
+          name: "ClassMatchImpl",
+          signature: "new ClassMatchImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2838
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.FieldMatchImpl",
+      simpleName: "FieldMatchImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class FieldMatchImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/FieldMatchImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "FieldMatchImpl",
+          signature: "private FieldMatchImpl(ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "private",
+          params: [
+            "ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2845
+        },
+        {
+          name: "newFirstMatcher",
+          signature: "FieldMatcherImpl newFirstMatcher()",
+          returnType: "FieldMatcherImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2851
+        },
+        {
+          name: "FieldMatcherImpl",
+          signature: "return new FieldMatcherImpl(rootMatcher, true)",
+          returnType: "return new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2852
+        },
+        {
+          name: "onKey",
+          signature: "void onKey(@Nullable String newKey, @Nullable String oldKey)",
+          returnType: "void",
+          params: [
+            "@Nullable String newKey",
+            "@Nullable String oldKey"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2856
+        },
+        {
+          name: "getType",
+          signature: "ClassMatch getType()",
+          returnType: "ClassMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2867
+        },
+        {
+          name: "ClassMatchImpl",
+          signature: "new ClassMatchImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2868
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ExecutableMatchImpl",
+      simpleName: "ExecutableMatchImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ExecutableMatchImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ExecutableMatchImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ExecutableMatchImpl",
+          signature: "protected ExecutableMatchImpl(ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "protected",
+          params: [
+            "ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2875
+        },
+        {
+          name: "getParameterTypes",
+          signature: "ClassLazySequence getParameterTypes()",
+          returnType: "ClassLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2881
+        },
+        {
+          name: "ClassLazySequenceImpl",
+          signature: "new ClassLazySequenceImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2882
+        },
+        {
+          name: "getParameters",
+          signature: "ParameterLazySequence getParameters()",
+          returnType: "ParameterLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2895
+        },
+        {
+          name: "ParameterLazySequenceImpl",
+          signature: "new ParameterLazySequenceImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2896
+        },
+        {
+          name: "ParameterImpl",
+          signature: "new ParameterImpl(i, p[i].getType()",
+          returnType: "new",
+          params: [
+            "i",
+            "p[i].getType("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2906
+        },
+        {
+          name: "ParameterImpl",
+          signature: "new ParameterImpl(i, parameterTypes.get(i)",
+          returnType: "new",
+          params: [
+            "i",
+            "parameterTypes.get(i"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2916
+        },
+        {
+          name: "getAssignedFields",
+          signature: "FieldLazySequence getAssignedFields()",
+          returnType: "FieldLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2927
+        },
+        {
+          name: "getAccessedFields",
+          signature: "FieldLazySequence getAccessedFields()",
+          returnType: "FieldLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2935
+        },
+        {
+          name: "getInvokedMethods",
+          signature: "MethodLazySequence getInvokedMethods()",
+          returnType: "MethodLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2943
+        },
+        {
+          name: "getInvokedConstructors",
+          signature: "ConstructorLazySequence getInvokedConstructors()",
+          returnType: "ConstructorLazySequence",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2951
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.MethodMatchImpl",
+      simpleName: "MethodMatchImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class MethodMatchImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MethodMatchImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "MethodMatchImpl",
+          signature: "private MethodMatchImpl(ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "private",
+          params: [
+            "ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2958
+        },
+        {
+          name: "newFirstMatcher",
+          signature: "MethodMatcherImpl newFirstMatcher()",
+          returnType: "MethodMatcherImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2964
+        },
+        {
+          name: "MethodMatcherImpl",
+          signature: "return new MethodMatcherImpl(rootMatcher, true)",
+          returnType: "return new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2965
+        },
+        {
+          name: "onKey",
+          signature: "void onKey(@Nullable String newKey, @Nullable String oldKey)",
+          returnType: "void",
+          params: [
+            "@Nullable String newKey",
+            "@Nullable String oldKey"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2969
+        },
+        {
+          name: "getReturnType",
+          signature: "ClassMatch getReturnType()",
+          returnType: "ClassMatch",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2980
+        },
+        {
+          name: "ClassMatchImpl",
+          signature: "new ClassMatchImpl(rootMatcher)",
+          returnType: "new",
+          params: [
+            "rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2981
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.ConstructorMatchImpl",
+      simpleName: "ConstructorMatchImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class ConstructorMatchImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ConstructorMatchImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "ConstructorMatchImpl",
+          signature: "private ConstructorMatchImpl(ReflectMatcherImpl<?, ?, ?, ?, ?> rootMatcher)",
+          returnType: "private",
+          params: [
+            "ReflectMatcherImpl<?",
+            "?",
+            "?",
+            "?",
+            "?> rootMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2988
+        },
+        {
+          name: "newFirstMatcher",
+          signature: "ConstructorMatcherImpl newFirstMatcher()",
+          returnType: "ConstructorMatcherImpl",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 2994
+        },
+        {
+          name: "ConstructorMatcherImpl",
+          signature: "return new ConstructorMatcherImpl(rootMatcher, true)",
+          returnType: "return new",
+          params: [
+            "rootMatcher",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2995
+        },
+        {
+          name: "onKey",
+          signature: "void onKey(@Nullable String newKey, @Nullable String oldKey)",
+          returnType: "void",
+          params: [
+            "@Nullable String newKey",
+            "@Nullable String oldKey"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 2999
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.HookBuilderImpl.StringMatchImpl",
+      simpleName: "StringMatchImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/HookBuilderImpl.java",
+      sinceApi: 101,
+      summary: "class StringMatchImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/StringMatchImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "StringMatchImpl",
+          signature: "private StringMatchImpl(@NonNull StringMatcherImpl matcher)",
+          returnType: "private",
+          params: [
+            "@NonNull StringMatcherImpl matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 3016
+        },
+        {
+          name: "test",
+          signature: "boolean test(@NonNull String value)",
+          returnType: "boolean",
+          params: [
+            "@NonNull String value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 3021
+        },
+        {
+          name: "observe",
+          signature: "Syntax<StringMatch> observe()",
+          returnType: "Syntax<StringMatch>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 3028
+        },
+        {
+          name: "StringSyntaxImpl",
+          signature: "return new StringSyntaxImpl(this, '+')",
+          returnType: "return new",
+          params: [
+            "this",
+            "'+'"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 3029
+        },
+        {
+          name: "reverse",
+          signature: "Syntax<StringMatch> reverse()",
+          returnType: "Syntax<StringMatch>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 3034
+        },
+        {
+          name: "StringSyntaxImpl",
+          signature: "return new StringSyntaxImpl(this, '-')",
+          returnType: "return new",
+          params: [
+            "this",
+            "'-'"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 3035
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.BaseObserver",
+      simpleName: "BaseObserver",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "interface BaseObserver",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/BaseObserver.html",
+      constants: [],
+      methods: [
+        {
+          name: "update",
+          signature: "void update(T result)",
+          returnType: "void",
+          params: [
+            "T result"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 35
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ItemObserver",
+      simpleName: "ItemObserver",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "interface ItemObserver",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ItemObserver.html",
+      constants: [],
+      methods: [
+        {
+          name: "update",
+          signature: "void update(@Nullable T result)",
+          returnType: "void",
+          params: [
+            "@Nullable T result"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 39
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ListObserver",
+      simpleName: "ListObserver",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "interface ListObserver",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ListObserver.html",
+      constants: [],
+      methods: [
+        {
+          name: "update",
+          signature: "void update(@NonNull Collection<T> result)",
+          returnType: "void",
+          params: [
+            "@NonNull Collection<T> result"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 43
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.Transformer",
+      simpleName: "Transformer",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "interface Transformer",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/Transformer.html",
+      constants: [],
+      methods: [
+        {
+          name: "transform",
+          signature: "U transform(@NonNull T input)",
+          returnType: "U",
+          params: [
+            "@NonNull T input"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 48
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.FieldAndMethodVisitor",
+      simpleName: "FieldAndMethodVisitor",
+      type: "interface",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "interface FieldAndMethodVisitor",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/FieldAndMethodVisitor.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.TypeOnlyParameter",
+      simpleName: "TypeOnlyParameter",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "class TypeOnlyParameter",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/TypeOnlyParameter.html",
+      constants: [],
+      methods: [
+        {
+          name: "getType",
+          signature: "Class<?> getType()",
+          returnType: "Class<?>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 67
+        },
+        {
+          name: "getIndex",
+          signature: "int getIndex()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 72
+        },
+        {
+          name: "getDeclaringExecutable",
+          signature: "Member getDeclaringExecutable()",
+          returnType: "Member",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 78
+        },
+        {
+          name: "IllegalStateException",
+          signature: 'throw new IllegalStateException("TypeOnlyParameter does not have a declaring executable")',
+          returnType: "throw new",
+          params: [
+            '"TypeOnlyParameter does not have a declaring executable"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 79
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ParameterImpl",
+      simpleName: "ParameterImpl",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "class ParameterImpl",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ParameterImpl.html",
+      constants: [],
+      methods: [
+        {
+          name: "getType",
+          signature: "Class<?> getType()",
+          returnType: "Class<?>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 102
+        },
+        {
+          name: "getIndex",
+          signature: "int getIndex()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 107
+        },
+        {
+          name: "getDeclaringExecutable",
+          signature: "Member getDeclaringExecutable()",
+          returnType: "Member",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 113
+        },
+        {
+          name: "getModifiers",
+          signature: "int getModifiers()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 117
+        },
+        {
+          name: "hashCode",
+          signature: "int hashCode()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 122
+        },
+        {
+          name: "equals",
+          signature: "boolean equals(@Nullable Object obj)",
+          returnType: "boolean",
+          params: [
+            "@Nullable Object obj"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 127
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.SimpleExecutor",
+      simpleName: "SimpleExecutor",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "class SimpleExecutor",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/SimpleExecutor.html",
+      constants: [],
+      methods: [
+        {
+          name: "of",
+          signature: "SimpleExecutor of(@NonNull ExecutorService executor)",
+          returnType: "SimpleExecutor",
+          params: [
+            "@NonNull ExecutorService executor"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 142
+        },
+        {
+          name: "SimpleExecutor",
+          signature: "return new SimpleExecutor()",
+          returnType: "return new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 143
+        },
+        {
+          name: "onSubmit",
+          signature: "Future<T> onSubmit(Callable<T> task)",
+          returnType: "Future<T>",
+          params: [
+            "Callable<T> task"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 145
+        },
+        {
+          name: "of",
+          signature: "SimpleExecutor of(@NonNull Handler handler)",
+          returnType: "SimpleExecutor",
+          params: [
+            "@NonNull Handler handler"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 151
+        },
+        {
+          name: "SimpleExecutor",
+          signature: "return new SimpleExecutor()",
+          returnType: "return new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 152
+        },
+        {
+          name: "onSubmit",
+          signature: "Future<T> onSubmit(Callable<T> task)",
+          returnType: "Future<T>",
+          params: [
+            "Callable<T> task"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 154
+        },
+        {
+          name: "onSubmit",
+          signature: "Future<T> onSubmit(Callable<T> task)",
+          returnType: "Future<T>",
+          params: [
+            "Callable<T> task"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 162
+        },
+        {
+          name: "submit",
+          signature: "Future<T> submit(Callable<T> task)",
+          returnType: "Future<T>",
+          params: [
+            "Callable<T> task"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 164
+        },
+        {
+          name: "submit",
+          signature: "Future<?> submit(Runnable task)",
+          returnType: "Future<?>",
+          params: [
+            "Runnable task"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 170
+        },
+        {
+          name: "submit",
+          signature: "return submit(()",
+          returnType: "return",
+          params: [
+            "("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 171
+        },
+        {
+          name: "joinAll",
+          signature: "void joinAll()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 177
+        },
+        {
+          name: "joinAll",
+          signature: "void joinAll(long timeout, TimeUnit unit)",
+          returnType: "void",
+          params: [
+            "long timeout",
+            "TimeUnit unit"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 184
+        },
+        {
+          name: "TimeoutException",
+          signature: "throw new TimeoutException()",
+          returnType: "throw new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 192
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.PendingExecutor",
+      simpleName: "PendingExecutor",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "class PendingExecutor",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/PendingExecutor.html",
+      constants: [],
+      methods: [
+        {
+          name: "onSubmit",
+          signature: "Future<T> onSubmit(Callable<T> task)",
+          returnType: "Future<T>",
+          params: [
+            "Callable<T> task"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 204
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.MatchCache",
+      simpleName: "MatchCache",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "class MatchCache",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MatchCache.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.TreeSetView",
+      simpleName: "TreeSetView",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "class TreeSetView",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/TreeSetView.html",
+      constants: [],
+      methods: [
+        {
+          name: "TreeSetView",
+          signature: "private TreeSetView(T[] array, int start, int end)",
+          returnType: "private",
+          params: [
+            "T[] array",
+            "int start",
+            "int end"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 244
+        },
+        {
+          name: "ofSorted",
+          signature: "<T extends Comparable<T>> TreeSetView<T> ofSorted(T[] array)",
+          returnType: "<T extends Comparable<T>> TreeSetView<T>",
+          params: [
+            "T[] array"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 250
+        },
+        {
+          name: "ofSorted",
+          signature: "<T extends Comparable<T>> TreeSetView<T> ofSorted(T[] array, int start, int end)",
+          returnType: "<T extends Comparable<T>> TreeSetView<T>",
+          params: [
+            "T[] array",
+            "int start",
+            "int end"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 254
+        },
+        {
+          name: "ofSorted",
+          signature: "<T extends Comparable<T>> TreeSetView<T> ofSorted(Collection<T> c)",
+          returnType: "<T extends Comparable<T>> TreeSetView<T>",
+          params: [
+            "Collection<T> c"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 258
+        },
+        {
+          name: "comparator",
+          signature: "Comparator<? super T> comparator()",
+          returnType: "Comparator<? super T>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 264
+        },
+        {
+          name: "subSet",
+          signature: "TreeSetView<T> subSet(T fromElement, T toElement)",
+          returnType: "TreeSetView<T>",
+          params: [
+            "T fromElement",
+            "T toElement"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 269
+        },
+        {
+          name: "subSet",
+          signature: "return subSet(fromElement, true, toElement, false)",
+          returnType: "return",
+          params: [
+            "fromElement",
+            "true",
+            "toElement",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 270
+        },
+        {
+          name: "headSet",
+          signature: "TreeSetView<T> headSet(T toElement)",
+          returnType: "TreeSetView<T>",
+          params: [
+            "T toElement"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 274
+        },
+        {
+          name: "headSet",
+          signature: "return headSet(toElement, false)",
+          returnType: "return",
+          params: [
+            "toElement",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 275
+        },
+        {
+          name: "tailSet",
+          signature: "TreeSetView<T> tailSet(T fromElement)",
+          returnType: "TreeSetView<T>",
+          params: [
+            "T fromElement"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 279
+        },
+        {
+          name: "tailSet",
+          signature: "return tailSet(fromElement, true)",
+          returnType: "return",
+          params: [
+            "fromElement",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 280
+        },
+        {
+          name: "first",
+          signature: "T first()",
+          returnType: "T",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 284
+        },
+        {
+          name: "isEmpty",
+          signature: "return isEmpty()",
+          returnType: "return",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 285
+        },
+        {
+          name: "last",
+          signature: "T last()",
+          returnType: "T",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 289
+        },
+        {
+          name: "isEmpty",
+          signature: "return isEmpty()",
+          returnType: "return",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 290
+        },
+        {
+          name: "size",
+          signature: "int size()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 294
+        },
+        {
+          name: "isEmpty",
+          signature: "boolean isEmpty()",
+          returnType: "boolean",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 299
+        },
+        {
+          name: "size",
+          signature: "return size()",
+          returnType: "return",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 300
+        },
+        {
+          name: "contains",
+          signature: "boolean contains(@Nullable Object o)",
+          returnType: "boolean",
+          params: [
+            "@Nullable Object o"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 304
+        },
+        {
+          name: "lower",
+          signature: "T lower(T t)",
+          returnType: "T",
+          params: [
+            "T t"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 315
+        },
+        {
+          name: "floor",
+          signature: "T floor(T t)",
+          returnType: "T",
+          params: [
+            "T t"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 326
+        },
+        {
+          name: "ceiling",
+          signature: "T ceiling(T t)",
+          returnType: "T",
+          params: [
+            "T t"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 337
+        },
+        {
+          name: "higher",
+          signature: "T higher(T t)",
+          returnType: "T",
+          params: [
+            "T t"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 348
+        },
+        {
+          name: "pollFirst",
+          signature: "T pollFirst()",
+          returnType: "T",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 356
+        },
+        {
+          name: "UnsupportedOperationException",
+          signature: 'throw new UnsupportedOperationException("This is a read-only view.")',
+          returnType: "throw new",
+          params: [
+            '"This is a read-only view."'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 357
+        },
+        {
+          name: "pollLast",
+          signature: "T pollLast()",
+          returnType: "T",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 362
+        },
+        {
+          name: "UnsupportedOperationException",
+          signature: 'throw new UnsupportedOperationException("This is a read-only view.")',
+          returnType: "throw new",
+          params: [
+            '"This is a read-only view."'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 363
+        },
+        {
+          name: "iterator",
+          signature: "Iterator<T> iterator()",
+          returnType: "Iterator<T>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 368
+        },
+        {
+          name: "hasNext",
+          signature: "boolean hasNext()",
+          returnType: "boolean",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 373
+        },
+        {
+          name: "next",
+          signature: "T next()",
+          returnType: "T",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 378
+        },
+        {
+          name: "descendingSet",
+          signature: "NavigableSet<T> descendingSet()",
+          returnType: "NavigableSet<T>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 385
+        },
+        {
+          name: "UnsupportedOperationException",
+          signature: 'throw new UnsupportedOperationException("Not implemented yet.")',
+          returnType: "throw new",
+          params: [
+            '"Not implemented yet."'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 386
+        },
+        {
+          name: "descendingIterator",
+          signature: "Iterator<T> descendingIterator()",
+          returnType: "Iterator<T>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 390
+        },
+        {
+          name: "hasNext",
+          signature: "boolean hasNext()",
+          returnType: "boolean",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 395
+        },
+        {
+          name: "next",
+          signature: "T next()",
+          returnType: "T",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 400
+        },
+        {
+          name: "subSet",
+          signature: "TreeSetView<T> subSet(T fromElement, boolean fromInclusive, T toElement, boolean toInclusive)",
+          returnType: "TreeSetView<T>",
+          params: [
+            "T fromElement",
+            "boolean fromInclusive",
+            "T toElement",
+            "boolean toInclusive"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 407
+        },
+        {
+          name: "headSet",
+          signature: "TreeSetView<T> headSet(T toElement, boolean inclusive)",
+          returnType: "TreeSetView<T>",
+          params: [
+            "T toElement",
+            "boolean inclusive"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 424
+        },
+        {
+          name: "tailSet",
+          signature: "TreeSetView<T> tailSet(T fromElement, boolean inclusive)",
+          returnType: "TreeSetView<T>",
+          params: [
+            "T fromElement",
+            "boolean inclusive"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 435
+        },
+        {
+          name: "toArray",
+          signature: "Object[] toArray()",
+          returnType: "Object[]",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 447
+        },
+        {
+          name: "size",
+          signature: "array, start, arr, 0, size()",
+          returnType: "array, start, arr, 0,",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 449
+        },
+        {
+          name: "toArray",
+          signature: "T1[] toArray(@NonNull T1[] a)",
+          returnType: "T1[]",
+          params: [
+            "@NonNull T1[] a"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 455
+        },
+        {
+          name: "size",
+          signature: "array, start, a, 0, size()",
+          returnType: "array, start, a, 0,",
+          params: [],
+          sinceApi: 101,
+          doc: "noinspection SuspiciousSystemArraycopy",
+          line: 458
+        },
+        {
+          name: "add",
+          signature: "boolean add(T t)",
+          returnType: "boolean",
+          params: [
+            "T t"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 468
+        },
+        {
+          name: "UnsupportedOperationException",
+          signature: 'throw new UnsupportedOperationException("This is a read-only view")',
+          returnType: "throw new",
+          params: [
+            '"This is a read-only view"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 469
+        },
+        {
+          name: "remove",
+          signature: "boolean remove(@Nullable Object o)",
+          returnType: "boolean",
+          params: [
+            "@Nullable Object o"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 474
+        },
+        {
+          name: "UnsupportedOperationException",
+          signature: 'throw new UnsupportedOperationException("This is a read-only view")',
+          returnType: "throw new",
+          params: [
+            '"This is a read-only view"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 475
+        },
+        {
+          name: "containsAll",
+          signature: "boolean containsAll(@NonNull Collection<?> c)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Collection<?> c"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 479
+        },
+        {
+          name: "size",
+          signature: "> size()",
+          returnType: ">",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 480
+        },
+        {
+          name: "containsAny",
+          signature: "boolean containsAny(@NonNull TreeSetView<T> c)",
+          returnType: "boolean",
+          params: [
+            "@NonNull TreeSetView<T> c"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 504
+        },
+        {
+          name: "addAll",
+          signature: "boolean addAll(@NonNull Collection<? extends T> c)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Collection<? extends T> c"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 524
+        },
+        {
+          name: "UnsupportedOperationException",
+          signature: 'throw new UnsupportedOperationException("This is a read-only view")',
+          returnType: "throw new",
+          params: [
+            '"This is a read-only view"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 525
+        },
+        {
+          name: "retainAll",
+          signature: "boolean retainAll(@NonNull Collection<?> c)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Collection<?> c"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 529
+        },
+        {
+          name: "UnsupportedOperationException",
+          signature: 'throw new UnsupportedOperationException("This is a read-only view")',
+          returnType: "throw new",
+          params: [
+            '"This is a read-only view"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 530
+        },
+        {
+          name: "removeAll",
+          signature: "boolean removeAll(@NonNull Collection<?> c)",
+          returnType: "boolean",
+          params: [
+            "@NonNull Collection<?> c"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 535
+        },
+        {
+          name: "UnsupportedOperationException",
+          signature: 'throw new UnsupportedOperationException("This is a read-only view")',
+          returnType: "throw new",
+          params: [
+            '"This is a read-only view"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 536
+        },
+        {
+          name: "clear",
+          signature: "void clear()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 541
+        },
+        {
+          name: "UnsupportedOperationException",
+          signature: 'throw new UnsupportedOperationException("This is a read-only view")',
+          returnType: "throw new",
+          params: [
+            '"This is a read-only view"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 542
+        },
+        {
+          name: "merge",
+          signature: "TreeSetView<T> merge(@NonNull TreeSetView<T> other)",
+          returnType: "TreeSetView<T>",
+          params: [
+            "@NonNull TreeSetView<T> other"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 545
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.IdTreeSetView",
+      simpleName: "IdTreeSetView",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "class IdTreeSetView",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/IdTreeSetView.html",
+      constants: [],
+      methods: [
+        {
+          name: "IdTreeSetView",
+          signature: "private IdTreeSetView(int[] array, int start, int end)",
+          returnType: "private",
+          params: [
+            "int[] array",
+            "int start",
+            "int end"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 588
+        },
+        {
+          name: "ofSorted",
+          signature: "IdTreeSetView ofSorted(int[] array)",
+          returnType: "IdTreeSetView",
+          params: [
+            "int[] array"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 594
+        },
+        {
+          name: "IdTreeSetView",
+          signature: "return new IdTreeSetView(array, 0, array.length)",
+          returnType: "return new",
+          params: [
+            "array",
+            "0",
+            "array.length"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 595
+        },
+        {
+          name: "ofSorted",
+          signature: "IdTreeSetView ofSorted(int[] array, int start, int end)",
+          returnType: "IdTreeSetView",
+          params: [
+            "int[] array",
+            "int start",
+            "int end"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 598
+        },
+        {
+          name: "IdTreeSetView",
+          signature: "return new IdTreeSetView(array, start, end)",
+          returnType: "return new",
+          params: [
+            "array",
+            "start",
+            "end"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 599
+        },
+        {
+          name: "subSet",
+          signature: "IdTreeSetView subSet(int fromElement, int toElement)",
+          returnType: "IdTreeSetView",
+          params: [
+            "int fromElement",
+            "int toElement"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 602
+        },
+        {
+          name: "subSet",
+          signature: "return subSet(fromElement, true, toElement, false)",
+          returnType: "return",
+          params: [
+            "fromElement",
+            "true",
+            "toElement",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 603
+        },
+        {
+          name: "headSet",
+          signature: "IdTreeSetView headSet(int toElement)",
+          returnType: "IdTreeSetView",
+          params: [
+            "int toElement"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 606
+        },
+        {
+          name: "headSet",
+          signature: "return headSet(toElement, false)",
+          returnType: "return",
+          params: [
+            "toElement",
+            "false"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 607
+        },
+        {
+          name: "tailSet",
+          signature: "IdTreeSetView tailSet(int fromElement)",
+          returnType: "IdTreeSetView",
+          params: [
+            "int fromElement"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 610
+        },
+        {
+          name: "tailSet",
+          signature: "return tailSet(fromElement, true)",
+          returnType: "return",
+          params: [
+            "fromElement",
+            "true"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 611
+        },
+        {
+          name: "first",
+          signature: "int first()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 614
+        },
+        {
+          name: "isEmpty",
+          signature: "return isEmpty()",
+          returnType: "return",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 615
+        },
+        {
+          name: "last",
+          signature: "int last()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 618
+        },
+        {
+          name: "isEmpty",
+          signature: "return isEmpty()",
+          returnType: "return",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 619
+        },
+        {
+          name: "size",
+          signature: "int size()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 622
+        },
+        {
+          name: "isEmpty",
+          signature: "boolean isEmpty()",
+          returnType: "boolean",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 626
+        },
+        {
+          name: "size",
+          signature: "return size()",
+          returnType: "return",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 627
+        },
+        {
+          name: "contains",
+          signature: "boolean contains(int o)",
+          returnType: "boolean",
+          params: [
+            "int o"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 630
+        },
+        {
+          name: "lower",
+          signature: "int lower(int t)",
+          returnType: "int",
+          params: [
+            "int t"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 635
+        },
+        {
+          name: "floor",
+          signature: "int floor(int t)",
+          returnType: "int",
+          params: [
+            "int t"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 645
+        },
+        {
+          name: "ceiling",
+          signature: "int ceiling(int t)",
+          returnType: "int",
+          params: [
+            "int t"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 655
+        },
+        {
+          name: "higher",
+          signature: "int higher(int t)",
+          returnType: "int",
+          params: [
+            "int t"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 665
+        },
+        {
+          name: "subSet",
+          signature: "IdTreeSetView subSet(int fromElement, boolean fromInclusive, int toElement, boolean toInclusive)",
+          returnType: "IdTreeSetView",
+          params: [
+            "int fromElement",
+            "boolean fromInclusive",
+            "int toElement",
+            "boolean toInclusive"
+          ],
+          sinceApi: 101,
+          doc: "@Override public Iterator<T> descendingIterator() { return new Iterator<>() { int index = end - 1; @Override public boolean hasNext() { return index >= start; } @Override public T next() { return array[index--]; } }; }",
+          line: 705
+        },
+        {
+          name: "IdTreeSetView",
+          signature: "return new IdTreeSetView(array, left, Math.max(right, left)",
+          returnType: "return new",
+          params: [
+            "array",
+            "left",
+            "Math.max(right",
+            "left"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 718
+        },
+        {
+          name: "headSet",
+          signature: "IdTreeSetView headSet(int toElement, boolean inclusive)",
+          returnType: "IdTreeSetView",
+          params: [
+            "int toElement",
+            "boolean inclusive"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 721
+        },
+        {
+          name: "IdTreeSetView",
+          signature: "return new IdTreeSetView(array, start, right)",
+          returnType: "return new",
+          params: [
+            "array",
+            "start",
+            "right"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 728
+        },
+        {
+          name: "tailSet",
+          signature: "IdTreeSetView tailSet(int fromElement, boolean inclusive)",
+          returnType: "IdTreeSetView",
+          params: [
+            "int fromElement",
+            "boolean inclusive"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 731
+        },
+        {
+          name: "IdTreeSetView",
+          signature: "return new IdTreeSetView(array, left, array.length)",
+          returnType: "return new",
+          params: [
+            "array",
+            "left",
+            "array.length"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 738
+        },
+        {
+          name: "toArray",
+          signature: "int[] toArray()",
+          returnType: "int[]",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 742
+        },
+        {
+          name: "containsAll",
+          signature: "boolean containsAll(@NonNull IdTreeSetView c)",
+          returnType: "boolean",
+          params: [
+            "@NonNull IdTreeSetView c"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 746
+        },
+        {
+          name: "containsAny",
+          signature: "boolean containsAny(@NonNull IdTreeSetView c)",
+          returnType: "boolean",
+          params: [
+            "@NonNull IdTreeSetView c"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 763
+        },
+        {
+          name: "merge",
+          signature: "IdTreeSetView merge(@NonNull IdTreeSetView other)",
+          returnType: "IdTreeSetView",
+          params: [
+            "@NonNull IdTreeSetView other"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 782
+        },
+        {
+          name: "IdTreeSetView",
+          signature: "return new IdTreeSetView(res, 0, p)",
+          returnType: "return new",
+          params: [
+            "res",
+            "0",
+            "p"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 813
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.AtomicHelper",
+      simpleName: "AtomicHelper",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Misc.java",
+      sinceApi: 101,
+      summary: "class AtomicHelper",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/AtomicHelper.html",
+      constants: [],
+      methods: [
+        {
+          name: "updateIfNullAndGet",
+          signature: "T updateIfNullAndGet(AtomicReference<T> atomic, HookBuilder.Supplier<T> updateFunction)",
+          returnType: "T",
+          params: [
+            "AtomicReference<T> atomic",
+            "HookBuilder.Supplier<T> updateFunction"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 818
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.Reflector",
+      simpleName: "Reflector",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Reflector.java",
+      sinceApi: 101,
+      summary: "class Reflector",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/Reflector.html",
+      constants: [
+        {
+          name: "EMPTY",
+          type: "WeakReference<?>",
+          value: "new WeakReference<>(null)",
+          doc: ""
+        }
+      ],
+      methods: [
+        {
+          name: "loadClass",
+          signature: "Class<?> loadClass(@NonNull String className)",
+          returnType: "Class<?>",
+          params: [
+            "@NonNull String className"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 33
+        },
+        {
+          name: "StringBuilder",
+          signature: "new StringBuilder()",
+          returnType: "new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 38
+        },
+        {
+          name: "ClassNotFoundException",
+          signature: "throw new ClassNotFoundException(className)",
+          returnType: "throw new",
+          params: [
+            "className"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 57
+        },
+        {
+          name: "loadClass",
+          signature: "return loadClass(innerClassName)",
+          returnType: "return",
+          params: [
+            "innerClassName"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 80
+        },
+        {
+          name: "loadField",
+          signature: "Field loadField(@NonNull String fieldString)",
+          returnType: "Field",
+          params: [
+            "@NonNull String fieldString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 89
+        },
+        {
+          name: "NoSuchFieldException",
+          signature: "throw new NoSuchFieldException(fieldString)",
+          returnType: "throw new",
+          params: [
+            "fieldString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 121
+        },
+        {
+          name: "NoSuchFieldException",
+          signature: "throw new NoSuchFieldException(fieldString)",
+          returnType: "throw new",
+          params: [
+            "fieldString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 132
+        },
+        {
+          name: "NoSuchFieldException",
+          signature: "throw new NoSuchFieldException(fieldString)",
+          returnType: "throw new",
+          params: [
+            "fieldString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 139
+        },
+        {
+          name: "loadMethod",
+          signature: "Method loadMethod(@NonNull String methodString)",
+          returnType: "Method",
+          params: [
+            "@NonNull String methodString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 157
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(methodString)",
+          returnType: "throw new",
+          params: [
+            "methodString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 170
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(methodString)",
+          returnType: "throw new",
+          params: [
+            "methodString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 188
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(methodString)",
+          returnType: "throw new",
+          params: [
+            "methodString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 198
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(methodString)",
+          returnType: "throw new",
+          params: [
+            "methodString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 205
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(methodString)",
+          returnType: "throw new",
+          params: [
+            "methodString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 220
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(methodString)",
+          returnType: "throw new",
+          params: [
+            "methodString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 235
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(methodString)",
+          returnType: "throw new",
+          params: [
+            "methodString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 263
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(methodString)",
+          returnType: "throw new",
+          params: [
+            "methodString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 270
+        },
+        {
+          name: "loadConstructor",
+          signature: "Constructor<?> loadConstructor(@NonNull String constructorString)",
+          returnType: "Constructor<?>",
+          params: [
+            "@NonNull String constructorString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 288
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(constructorString)",
+          returnType: "throw new",
+          params: [
+            "constructorString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 299
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(constructorString)",
+          returnType: "throw new",
+          params: [
+            "constructorString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 303
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(constructorString)",
+          returnType: "throw new",
+          params: [
+            "constructorString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 307
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(constructorString)",
+          returnType: "throw new",
+          params: [
+            "constructorString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 317
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(constructorString)",
+          returnType: "throw new",
+          params: [
+            "constructorString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 327
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(constructorString)",
+          returnType: "throw new",
+          params: [
+            "constructorString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 334
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(constructorString)",
+          returnType: "throw new",
+          params: [
+            "constructorString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 349
+        },
+        {
+          name: "NoSuchMethodException",
+          signature: "throw new NoSuchMethodException(constructorString)",
+          returnType: "throw new",
+          params: [
+            "constructorString"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 376
+        },
+        {
+          name: "loadClasses",
+          signature: "Collection<Class<?>> loadClasses(Collection<String> classNames)",
+          returnType: "Collection<Class<?>>",
+          params: [
+            "Collection<String> classNames"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 398
+        },
+        {
+          name: "loadFields",
+          signature: "Collection<Field> loadFields(Collection<String> fieldStrings)",
+          returnType: "Collection<Field>",
+          params: [
+            "Collection<String> fieldStrings"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 407
+        },
+        {
+          name: "loadMethods",
+          signature: "Collection<Method> loadMethods(Collection<String> methodStrings)",
+          returnType: "Collection<Method>",
+          params: [
+            "Collection<String> methodStrings"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 416
+        },
+        {
+          name: "loadConstructors",
+          signature: "Collection<Constructor<?>> loadConstructors(Collection<String> constructorStrings)",
+          returnType: "Collection<Constructor<?>>",
+          params: [
+            "Collection<String> constructorStrings"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 425
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.Reflector.MemberKey",
+      simpleName: "MemberKey",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Reflector.java",
+      sinceApi: 101,
+      summary: "class MemberKey",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/MemberKey.html",
+      constants: [],
+      methods: [
+        {
+          name: "MemberKey",
+          signature: "protected MemberKey(int hash)",
+          returnType: "protected",
+          params: [
+            "int hash"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 436
+        },
+        {
+          name: "getClassNames",
+          signature: "String[] getClassNames(Class<?>[] classes)",
+          returnType: "String[]",
+          params: [
+            "Class<?>[] classes"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 440
+        },
+        {
+          name: "hashCode",
+          signature: "int hashCode()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 449
+        },
+        {
+          name: "equals",
+          signature: "boolean equals(@Nullable Object obj)",
+          returnType: "boolean",
+          params: [
+            "@Nullable Object obj"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 454
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.Reflector.MemberKey.Field",
+      simpleName: "Field",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Reflector.java",
+      sinceApi: 101,
+      summary: "class Field",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/Field.html",
+      constants: [],
+      methods: [
+        {
+          name: "Field",
+          signature: "protected Field(String declaringClass, String name)",
+          returnType: "protected",
+          params: [
+            "String declaringClass",
+            "String name"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 460
+        },
+        {
+          name: "Field",
+          signature: "protected Field(Class<?> declaringClass, String name)",
+          returnType: "protected",
+          params: [
+            "Class<?> declaringClass",
+            "String name"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 466
+        },
+        {
+          name: "equals",
+          signature: "boolean equals(@Nullable Object obj)",
+          returnType: "boolean",
+          params: [
+            "@Nullable Object obj"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 471
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.Reflector.MemberKey.Constructor",
+      simpleName: "Constructor",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Reflector.java",
+      sinceApi: 101,
+      summary: "class Constructor",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/Constructor.html",
+      constants: [],
+      methods: [
+        {
+          name: "Constructor",
+          signature: "protected Constructor(String declaringClass, String[] parameterTypes)",
+          returnType: "protected",
+          params: [
+            "String declaringClass",
+            "String[] parameterTypes"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 487
+        },
+        {
+          name: "Constructor",
+          signature: "protected Constructor(Class<?> declaringClass, Class<?>[] parameterTypes)",
+          returnType: "protected",
+          params: [
+            "Class<?> declaringClass",
+            "Class<?>[] parameterTypes"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 493
+        },
+        {
+          name: "getClassNames",
+          signature: ", getClassNames(parameterTypes)",
+          returnType: ",",
+          params: [
+            "parameterTypes"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 494
+        },
+        {
+          name: "equals",
+          signature: "boolean equals(@Nullable Object obj)",
+          returnType: "boolean",
+          params: [
+            "@Nullable Object obj"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 498
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.Reflector.MemberKey.Method",
+      simpleName: "Method",
+      type: "class",
+      packageName: "io.github.libxposed.helper",
+      filePath: "helper/helper/src/main/java/io/github/libxposed/helper/Reflector.java",
+      sinceApi: 101,
+      summary: "class Method",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/Method.html",
+      constants: [],
+      methods: [
+        {
+          name: "Method",
+          signature: "protected Method(String declaringClass, String name, String[] parameterTypes)",
+          returnType: "protected",
+          params: [
+            "String declaringClass",
+            "String name",
+            "String[] parameterTypes"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 515
+        },
+        {
+          name: "Method",
+          signature: "protected Method(Class<?> declaringClass, String name, Class<?>[] parameterTypes)",
+          returnType: "protected",
+          params: [
+            "Class<?> declaringClass",
+            "String name",
+            "Class<?>[] parameterTypes"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 522
+        },
+        {
+          name: "getClassNames",
+          signature: ", name, getClassNames(parameterTypes)",
+          returnType: ", name,",
+          params: [
+            "parameterTypes"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 523
+        },
+        {
+          name: "equals",
+          signature: "boolean equals(@Nullable Object obj)",
+          returnType: "boolean",
+          params: [
+            "@Nullable Object obj"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 527
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker",
+      simpleName: "Hooker",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class Hooker",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/Hooker.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher",
+      simpleName: "Matcher",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class Matcher",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/Matcher.html",
+      constants: [],
+      methods: [
+        {
+          name: "UnsupportedOperationException",
+          signature: 'throw UnsupportedOperationException("Write-only property")',
+          returnType: "throw",
+          params: [
+            '"Write-only property"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 29
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis",
+      simpleName: "DexAnalysis",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class DexAnalysis",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/DexAnalysis.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis",
+      simpleName: "AnnotationAnalysis",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class AnnotationAnalysis",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/AnnotationAnalysis.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.LazyBind",
+      simpleName: "LazyBind",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class LazyBind",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/LazyBind.html",
+      constants: [],
+      methods: [
+        {
+          name: "onMatch",
+          signature: "override fun onMatch()",
+          returnType: "override fun",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 51
+        },
+        {
+          name: "onMiss",
+          signature: "override fun onMiss()",
+          returnType: "override fun",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 53
+        },
+        {
+          name: "onMatch",
+          signature: "fun onMatch()",
+          returnType: "fun",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 56
+        },
+        {
+          name: "onMiss",
+          signature: "fun onMiss()",
+          returnType: "fun",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 58
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ParameterKt",
+      simpleName: "ParameterKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ParameterKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ParameterKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 63
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 66
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 69
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.SyntaxKt",
+      simpleName: "SyntaxKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class SyntaxKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/SyntaxKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "and",
+          signature: "infix fun and(element: SyntaxKt<MatchKt, Match>)",
+          returnType: "infix fun",
+          params: [
+            "element: SyntaxKt<MatchKt",
+            "Match>"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 73
+        },
+        {
+          name: "or",
+          signature: "infix fun or(element: SyntaxKt<MatchKt, Match>)",
+          returnType: "infix fun",
+          params: [
+            "element: SyntaxKt<MatchKt",
+            "Match>"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 76
+        },
+        {
+          name: "not",
+          signature: "operator fun not()",
+          returnType: "operator fun",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 79
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ReflectMatcherKt",
+      simpleName: "ReflectMatcherKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ReflectMatcherKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ReflectMatcherKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 87
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 88
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 94
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 95
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 101
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 102
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 108
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 115
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt",
+      simpleName: "ClassMatcherKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ClassMatcherKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ClassMatcherKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 126
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 127
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 133
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 134
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 140
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 141
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 147
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 148
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 154
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 155
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 161
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 162
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 168
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 169
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt",
+      simpleName: "ParameterMatcherKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ParameterMatcherKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ParameterMatcherKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 179
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 180
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 187
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 188
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 195
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 196
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 203
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 204
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 211
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 212
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 219
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 220
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt",
+      simpleName: "MemberMatcherKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class MemberMatcherKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/MemberMatcherKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 230
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 231
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 237
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 238
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 244
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 245
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 251
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 252
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt",
+      simpleName: "FieldMatcherKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class FieldMatcherKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/FieldMatcherKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 262
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 263
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 269
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 270
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 276
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 277
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 283
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 284
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 290
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 291
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 297
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 298
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt",
+      simpleName: "ExecutableMatcherKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ExecutableMatcherKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ExecutableMatcherKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 308
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 309
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 316
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 317
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 325
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 326
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 334
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 335
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 343
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 344
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 352
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 353
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 361
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 362
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 370
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 371
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 378
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 379
+        },
+        {
+          name: "conjunction",
+          signature: "fun conjunction(vararg types: Class<*>?)",
+          returnType: "fun",
+          params: [
+            "vararg types: Class<*>?"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 383
+        },
+        {
+          name: "conjunction",
+          signature: "fun conjunction(vararg types: ClassMatchKt?)",
+          returnType: "fun",
+          params: [
+            "vararg types: ClassMatchKt?"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 386
+        },
+        {
+          name: "firstParameter",
+          signature: "inline fun firstParameter(crossinline init: ParameterMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ParameterMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 390
+        },
+        {
+          name: "parameters",
+          signature: "inline fun parameters(crossinline init: ParameterMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ParameterMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 395
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt",
+      simpleName: "MethodMatcherKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class MethodMatcherKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/MethodMatcherKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 412
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 413
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 419
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 420
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 426
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 427
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 433
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 434
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 440
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 441
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 447
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 448
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 454
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 455
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt",
+      simpleName: "ConstructorMatcherKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ConstructorMatcherKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ConstructorMatcherKt.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt",
+      simpleName: "BaseMatchKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class BaseMatchKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/BaseMatchKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "unaryPlus",
+          signature: "operator fun unaryPlus()",
+          returnType: "operator fun",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 467
+        },
+        {
+          name: "unaryMinus",
+          signature: "operator fun unaryMinus()",
+          returnType: "operator fun",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 469
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt",
+      simpleName: "ReflectMatchKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ReflectMatchKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ReflectMatchKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 476
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 477
+        },
+        {
+          name: "onMiss",
+          signature: "inline fun onMiss(crossinline handler: DummyHooker.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline handler: DummyHooker.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 481
+        },
+        {
+          name: "substituteIfMiss",
+          signature: "inline fun substituteIfMiss(crossinline substitute: ()",
+          returnType: "inline fun",
+          params: [
+            "crossinline substitute: ("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 488
+        },
+        {
+          name: "matchFirstIfMiss",
+          signature: "inline fun matchFirstIfMiss(crossinline handler: MatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline handler: MatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 495
+        },
+        {
+          name: "newSelf",
+          signature: "internal abstract fun newSelf(match: Match)",
+          returnType: "internal abstract fun",
+          params: [
+            "match: Match"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 503
+        },
+        {
+          name: "newMatcher",
+          signature: "internal abstract fun newMatcher(match: Matcher)",
+          returnType: "internal abstract fun",
+          params: [
+            "match: Matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 506
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt",
+      simpleName: "ClassMatchKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ClassMatchKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ClassMatchKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 512
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 514
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 516
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 518
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 520
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 522
+        },
+        {
+          name: "newSelf",
+          signature: "override fun newSelf(match: ClassMatch)",
+          returnType: "override fun",
+          params: [
+            "match: ClassMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 524
+        },
+        {
+          name: "newMatcher",
+          signature: "override fun newMatcher(match: ClassMatcher)",
+          returnType: "override fun",
+          params: [
+            "match: ClassMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 526
+        },
+        {
+          name: "onMatch",
+          signature: "inline fun onMatch(crossinline handler: DummyHooker.(Class<*>)",
+          returnType: "inline fun",
+          params: [
+            "crossinline handler: DummyHooker.(Class<*>"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 528
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt",
+      simpleName: "ParameterMatchKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ParameterMatchKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ParameterMatchKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 550
+        },
+        {
+          name: "newSelf",
+          signature: "override fun newSelf(match: ParameterMatch)",
+          returnType: "override fun",
+          params: [
+            "match: ParameterMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 552
+        },
+        {
+          name: "newMatcher",
+          signature: "override fun newMatcher(match: ParameterMatcher)",
+          returnType: "override fun",
+          params: [
+            "match: ParameterMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 553
+        },
+        {
+          name: "onMatch",
+          signature: "inline fun onMatch(crossinline handler: DummyHooker.(ParameterKt)",
+          returnType: "inline fun",
+          params: [
+            "crossinline handler: DummyHooker.(ParameterKt"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 555
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt",
+      simpleName: "MemberMatchKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class MemberMatchKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/MemberMatchKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 575
+        },
+        {
+          name: "onMatch",
+          signature: "inline fun onMatch(crossinline handler: DummyHooker.(Reflect)",
+          returnType: "inline fun",
+          params: [
+            "crossinline handler: DummyHooker.(Reflect"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 578
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt",
+      simpleName: "ExecutableMatchKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ExecutableMatchKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ExecutableMatchKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 599
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 602
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 606
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 610
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 614
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 618
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt",
+      simpleName: "MethodMatchKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class MethodMatchKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/MethodMatchKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 624
+        },
+        {
+          name: "newSelf",
+          signature: "override fun newSelf(match: MethodMatch)",
+          returnType: "override fun",
+          params: [
+            "match: MethodMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 626
+        },
+        {
+          name: "newMatcher",
+          signature: "override fun newMatcher(match: MethodMatcher)",
+          returnType: "override fun",
+          params: [
+            "match: MethodMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 627
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt.ConstructorMatchKt",
+      simpleName: "ConstructorMatchKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ConstructorMatchKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ConstructorMatchKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "newSelf",
+          signature: "override fun newSelf(match: ConstructorMatch)",
+          returnType: "override fun",
+          params: [
+            "match: ConstructorMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 634
+        },
+        {
+          name: "newMatcher",
+          signature: "override fun newMatcher(match: ConstructorMatcher)",
+          returnType: "override fun",
+          params: [
+            "match: ConstructorMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 635
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt.ConstructorMatchKt.FieldMatchKt",
+      simpleName: "FieldMatchKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class FieldMatchKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/FieldMatchKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 641
+        },
+        {
+          name: "newSelf",
+          signature: "override fun newSelf(match: FieldMatch)",
+          returnType: "override fun",
+          params: [
+            "match: FieldMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 643
+        },
+        {
+          name: "newMatcher",
+          signature: "override fun newMatcher(match: FieldMatcher)",
+          returnType: "override fun",
+          params: [
+            "match: FieldMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 644
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt.ConstructorMatchKt.FieldMatchKt.StringMatchKt",
+      simpleName: "StringMatchKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class StringMatchKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/StringMatchKt.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt.ConstructorMatchKt.FieldMatchKt.StringMatchKt.LazySequenceKt",
+      simpleName: "LazySequenceKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class LazySequenceKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/LazySequenceKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "first",
+          signature: "fun first()",
+          returnType: "fun",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 655
+        },
+        {
+          name: "unaryPlus",
+          signature: "fun unaryPlus()",
+          returnType: "fun",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 656
+        },
+        {
+          name: "unaryMinus",
+          signature: "fun unaryMinus()",
+          returnType: "fun",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 658
+        },
+        {
+          name: "all",
+          signature: "inline fun all(crossinline init: MatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: MatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 660
+        },
+        {
+          name: "first",
+          signature: "inline fun first(crossinline init: MatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: MatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 664
+        },
+        {
+          name: "substituteIfMiss",
+          signature: "inline fun substituteIfMiss(crossinline substitute: ()",
+          returnType: "inline fun",
+          params: [
+            "crossinline substitute: ("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 668
+        },
+        {
+          name: "matchIfMiss",
+          signature: "inline fun matchIfMiss(crossinline handler: MatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline handler: MatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 675
+        },
+        {
+          name: "onMiss",
+          signature: "inline fun onMiss(crossinline handler: DummyHooker.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline handler: DummyHooker.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 682
+        },
+        {
+          name: "newMatch",
+          signature: "internal abstract fun newMatch(impl: Match)",
+          returnType: "internal abstract fun",
+          params: [
+            "impl: Match"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 690
+        },
+        {
+          name: "newMatcher",
+          signature: "internal abstract fun newMatcher(impl: Matcher)",
+          returnType: "internal abstract fun",
+          params: [
+            "impl: Matcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 693
+        },
+        {
+          name: "newSelf",
+          signature: "internal abstract fun newSelf(impl: Seq)",
+          returnType: "internal abstract fun",
+          params: [
+            "impl: Seq"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 696
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt.ConstructorMatchKt.FieldMatchKt.StringMatchKt.LazySequenceKt.ClassLazySequenceKt",
+      simpleName: "ClassLazySequenceKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ClassLazySequenceKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ClassLazySequenceKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "methods",
+          signature: "inline fun methods(crossinline init: MethodMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: MethodMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 703
+        },
+        {
+          name: "firstMethod",
+          signature: "inline fun firstMethod(crossinline init: MethodMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: MethodMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 708
+        },
+        {
+          name: "fields",
+          signature: "inline fun fields(crossinline init: FieldMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: FieldMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 713
+        },
+        {
+          name: "firstField",
+          signature: "inline fun firstField(crossinline init: FieldMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: FieldMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 718
+        },
+        {
+          name: "constructors",
+          signature: "inline fun constructors(crossinline init: ConstructorMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ConstructorMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 723
+        },
+        {
+          name: "firstConstructor",
+          signature: "inline fun firstConstructor(crossinline init: ConstructorMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ConstructorMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 728
+        },
+        {
+          name: "newMatch",
+          signature: "override fun newMatch(impl: ClassMatch)",
+          returnType: "override fun",
+          params: [
+            "impl: ClassMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 733
+        },
+        {
+          name: "newMatcher",
+          signature: "override fun newMatcher(impl: ClassMatcher)",
+          returnType: "override fun",
+          params: [
+            "impl: ClassMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 735
+        },
+        {
+          name: "newSelf",
+          signature: "override fun newSelf(impl: ClassLazySequence)",
+          returnType: "override fun",
+          params: [
+            "impl: ClassLazySequence"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 737
+        },
+        {
+          name: "onMatch",
+          signature: "inline fun onMatch(crossinline handler: DummyHooker.(Sequence<Class<*>>)",
+          returnType: "inline fun",
+          params: [
+            "crossinline handler: DummyHooker.(Sequence<Class<*>>"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 748
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt.ConstructorMatchKt.FieldMatchKt.StringMatchKt.LazySequenceKt.ClassLazySequenceKt.MemberLazySequenceKt",
+      simpleName: "MemberLazySequenceKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class MemberLazySequenceKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/MemberLazySequenceKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "declaringClasses",
+          signature: "inline fun declaringClasses(crossinline init: ClassMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ClassMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 758
+        },
+        {
+          name: "firstDeclaringClass",
+          signature: "inline fun firstDeclaringClass(crossinline init: ClassMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ClassMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 763
+        },
+        {
+          name: "onMatch",
+          signature: "inline fun onMatch(crossinline handler: DummyHooker.(Sequence<Reflect>)",
+          returnType: "inline fun",
+          params: [
+            "crossinline handler: DummyHooker.(Sequence<Reflect>"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 779
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt.ConstructorMatchKt.FieldMatchKt.StringMatchKt.LazySequenceKt.ClassLazySequenceKt.MemberLazySequenceKt.ExecutableLazySequenceKt",
+      simpleName: "ExecutableLazySequenceKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ExecutableLazySequenceKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ExecutableLazySequenceKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "parameters",
+          signature: "inline fun parameters(crossinline init: ParameterMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ParameterMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 789
+        },
+        {
+          name: "firstParameter",
+          signature: "inline fun firstParameter(crossinline init: ParameterMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ParameterMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 794
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt.ConstructorMatchKt.FieldMatchKt.StringMatchKt.LazySequenceKt.ClassLazySequenceKt.MemberLazySequenceKt.ExecutableLazySequenceKt.ParameterLazySequenceKt",
+      simpleName: "ParameterLazySequenceKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ParameterLazySequenceKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ParameterLazySequenceKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "types",
+          signature: "inline fun types(crossinline init: ClassMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ClassMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 804
+        },
+        {
+          name: "firstType",
+          signature: "inline fun firstType(crossinline init: ClassMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ClassMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 808
+        },
+        {
+          name: "newMatch",
+          signature: "override fun newMatch(impl: ParameterMatch)",
+          returnType: "override fun",
+          params: [
+            "impl: ParameterMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 812
+        },
+        {
+          name: "newMatcher",
+          signature: "override fun newMatcher(impl: ParameterMatcher)",
+          returnType: "override fun",
+          params: [
+            "impl: ParameterMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 814
+        },
+        {
+          name: "newSelf",
+          signature: "override fun newSelf(impl: ParameterLazySequence)",
+          returnType: "override fun",
+          params: [
+            "impl: ParameterLazySequence"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 816
+        },
+        {
+          name: "onMatch",
+          signature: "inline fun onMatch(crossinline handler: DummyHooker.(Sequence<ParameterKt>)",
+          returnType: "inline fun",
+          params: [
+            "crossinline handler: DummyHooker.(Sequence<ParameterKt>"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 828
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt.ConstructorMatchKt.FieldMatchKt.StringMatchKt.LazySequenceKt.ClassLazySequenceKt.MemberLazySequenceKt.ExecutableLazySequenceKt.ParameterLazySequenceKt.FieldLazySequenceKt",
+      simpleName: "FieldLazySequenceKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class FieldLazySequenceKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/FieldLazySequenceKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "newMatch",
+          signature: "override fun newMatch(impl: FieldMatch)",
+          returnType: "override fun",
+          params: [
+            "impl: FieldMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 840
+        },
+        {
+          name: "newMatcher",
+          signature: "override fun newMatcher(impl: FieldMatcher)",
+          returnType: "override fun",
+          params: [
+            "impl: FieldMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 842
+        },
+        {
+          name: "newSelf",
+          signature: "override fun newSelf(impl: FieldLazySequence)",
+          returnType: "override fun",
+          params: [
+            "impl: FieldLazySequence"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 844
+        },
+        {
+          name: "types",
+          signature: "inline fun types(crossinline init: ClassMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ClassMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 845
+        },
+        {
+          name: "firstType",
+          signature: "inline fun firstType(crossinline init: ClassMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ClassMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 849
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt.ConstructorMatchKt.FieldMatchKt.StringMatchKt.LazySequenceKt.ClassLazySequenceKt.MemberLazySequenceKt.ExecutableLazySequenceKt.ParameterLazySequenceKt.FieldLazySequenceKt.MethodLazySequenceKt",
+      simpleName: "MethodLazySequenceKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class MethodLazySequenceKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/MethodLazySequenceKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "newMatch",
+          signature: "override fun newMatch(impl: MethodMatch)",
+          returnType: "override fun",
+          params: [
+            "impl: MethodMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 858
+        },
+        {
+          name: "newMatcher",
+          signature: "override fun newMatcher(impl: MethodMatcher)",
+          returnType: "override fun",
+          params: [
+            "impl: MethodMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 860
+        },
+        {
+          name: "newSelf",
+          signature: "override fun newSelf(impl: MethodLazySequence)",
+          returnType: "override fun",
+          params: [
+            "impl: MethodLazySequence"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 862
+        },
+        {
+          name: "returnTypes",
+          signature: "inline fun returnTypes(crossinline init: ClassMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ClassMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 863
+        },
+        {
+          name: "firstReturnType",
+          signature: "inline fun firstReturnType(crossinline init: ClassMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ClassMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 868
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt.ConstructorMatchKt.FieldMatchKt.StringMatchKt.LazySequenceKt.ClassLazySequenceKt.MemberLazySequenceKt.ExecutableLazySequenceKt.ParameterLazySequenceKt.FieldLazySequenceKt.MethodLazySequenceKt.ConstructorLazySequenceKt",
+      simpleName: "ConstructorLazySequenceKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class ConstructorLazySequenceKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/ConstructorLazySequenceKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "newMatch",
+          signature: "override fun newMatch(impl: ConstructorMatch)",
+          returnType: "override fun",
+          params: [
+            "impl: ConstructorMatch"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 878
+        },
+        {
+          name: "newMatcher",
+          signature: "override fun newMatcher(impl: ConstructorMatcher)",
+          returnType: "override fun",
+          params: [
+            "impl: ConstructorMatcher"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 880
+        },
+        {
+          name: "newSelf",
+          signature: "override fun newSelf(impl: ConstructorLazySequence)",
+          returnType: "override fun",
+          params: [
+            "impl: ConstructorLazySequence"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 882
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.helper.ktx.Hooker.Matcher.DexAnalysis.AnnotationAnalysis.ClassMatcherKt.ParameterMatcherKt.MemberMatcherKt.FieldMatcherKt.ExecutableMatcherKt.MethodMatcherKt.ConstructorMatcherKt.BaseMatchKt.ReflectMatchKt.ClassMatchKt.ParameterMatchKt.MemberMatchKt.ExecutableMatchKt.MethodMatchKt.ConstructorMatchKt.FieldMatchKt.StringMatchKt.LazySequenceKt.ClassLazySequenceKt.MemberLazySequenceKt.ExecutableLazySequenceKt.ParameterLazySequenceKt.FieldLazySequenceKt.MethodLazySequenceKt.ConstructorLazySequenceKt.HookBuilderKt",
+      simpleName: "HookBuilderKt",
+      type: "class",
+      packageName: "io.github.libxposed.helper.ktx",
+      filePath: "helper/helper-ktx/src/main/kotlin/io/github/libxposed/helper/ktx/HookBuilderKt.kt",
+      sinceApi: 101,
+      summary: "class HookBuilderKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/helper/ktx/HookBuilderKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 890
+        },
+        {
+          name: "set",
+          signature: "inline set(crossinline value)",
+          returnType: "inline",
+          params: [
+            "crossinline value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 891
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 901
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 902
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 909
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 910
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 917
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 918
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 925
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 926
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 933
+        },
+        {
+          name: "set",
+          signature: "inline set(value)",
+          returnType: "inline",
+          params: [
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 934
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 941
+        },
+        {
+          name: "set",
+          signature: "inline set(crossinline value)",
+          returnType: "inline",
+          params: [
+            "crossinline value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 942
+        },
+        {
+          name: "methods",
+          signature: "inline fun methods(crossinline init: MethodMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: MethodMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 948
+        },
+        {
+          name: "firstMethod",
+          signature: "inline fun firstMethod(crossinline init: MethodMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: MethodMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 953
+        },
+        {
+          name: "classes",
+          signature: "inline fun classes(crossinline init: ClassMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ClassMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 958
+        },
+        {
+          name: "firstClass",
+          signature: "inline fun firstClass(crossinline init: ClassMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ClassMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 963
+        },
+        {
+          name: "fields",
+          signature: "inline fun fields(crossinline init: FieldMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: FieldMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 968
+        },
+        {
+          name: "firstField",
+          signature: "inline fun firstField(crossinline init: FieldMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: FieldMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 973
+        },
+        {
+          name: "constructors",
+          signature: "inline fun constructors(crossinline init: ConstructorMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ConstructorMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 978
+        },
+        {
+          name: "firstConstructor",
+          signature: "inline fun firstConstructor(crossinline init: ConstructorMatcherKt.()",
+          returnType: "inline fun",
+          params: [
+            "crossinline init: ConstructorMatcherKt.("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 983
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 989
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 991
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 993
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 995
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 997
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 999
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1001
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1003
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1005
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1007
+        },
+        {
+          name: "get",
+          signature: "inline get()",
+          returnType: "inline",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 1009
         }
       ]
     }
@@ -37125,134 +61381,1664 @@ var service_default = {
   },
   classes: [
     {
-      name: "io.github.libxposed.service.XposedService",
-      type: "final class",
+      name: "io.github.libxposed.service.IHotReloadCallback",
+      simpleName: "IHotReloadCallback",
+      type: "interface",
+      packageName: "io.github.libxposed.service",
+      filePath: "service/interface/src/main/aidl/io/github/libxposed/service/IHotReloadCallback.aidl",
       sinceApi: 101,
-      summary: "Central client service class managing communication with the host Xposed framework daemon (scope, running targets, hot reload, remote preferences, remote files).",
-      constants: [
-        { name: "API_101", type: "int", value: "101", doc: "Initial modern service API level." },
-        { name: "API_102", type: "int", value: "102", doc: "Service API 102: allows querying running hooked targets and requesting hot reload." },
-        { name: "PROP_CAP_SYSTEM", type: "long", value: "1L", doc: "Framework can hook system_server and system processes." },
-        { name: "PROP_CAP_REMOTE", type: "long", value: "1L << 1", doc: "Framework provides remote preferences and files support." },
-        { name: "PROP_RT_API_PROTECTION", type: "long", value: "1L << 2", doc: "Framework disallows accessing API via reflection or dynamically loaded code." }
-      ],
+      summary: "Callback for asynchronous hot reload completion.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/service/IHotReloadCallback.html",
+      constants: [],
       methods: [
-        { name: "getApiVersion", signature: "int getApiVersion()", doc: "Returns the service API version of the running framework." },
-        { name: "getFrameworkName", signature: "String getFrameworkName()", doc: "Returns the host framework name (e.g. LSPosed)." },
-        { name: "getFrameworkVersion", signature: "String getFrameworkVersion()", doc: "Returns the host framework version string." },
-        { name: "getFrameworkVersionCode", signature: "long getFrameworkVersionCode()", doc: "Returns the framework version code." },
-        { name: "getFrameworkProperties", signature: "long getFrameworkProperties()", doc: "Returns bitmask of framework capabilities and runtime flags." },
-        { name: "getScope", signature: "List<String> getScope()", doc: "Returns the application package scope configured for this module." },
-        { name: "requestScope", signature: "void requestScope(@NonNull List<String> packages, @NonNull OnScopeEventListener callback)", doc: "Asynchronously requests the framework to expand module scope to include the specified packages." },
-        { name: "removeScope", signature: "void removeScope(@NonNull List<String> packages)", doc: "Removes specified packages from module scope." },
-        { name: "getRunningTargets", signature: "List<HookedTarget> getRunningTargets()", sinceApi: 102, doc: "Queries all currently running processes that are hooked by this module. Returned targets can be used to trigger hot reloading." },
-        { name: "hotReloadModule", signature: "void hotReloadModule(@NonNull HookedTarget target, @Nullable Bundle data, @NonNull HotReloadCallback callback)", sinceApi: 102, doc: "Requests the framework to hot reload the module in target process without rebooting or killing the target app." },
-        { name: "getRemotePreferences", signature: "SharedPreferences getRemotePreferences(@NonNull String group)", doc: "Retrieves or creates a named group of RemotePreferences stored in the Xposed framework." },
-        { name: "deleteRemotePreferences", signature: "void deleteRemotePreferences(@NonNull String group)", doc: "Deletes a named group of RemotePreferences." },
-        { name: "listRemoteFiles", signature: "String[] listRemoteFiles()", doc: "Lists all shared files in module's framework-managed data directory." },
-        { name: "openRemoteFile", signature: "ParcelFileDescriptor openRemoteFile(@NonNull String name)", doc: "Opens a ParcelFileDescriptor to a remote file." },
-        { name: "deleteRemoteFile", signature: "boolean deleteRemoteFile(@NonNull String name)", doc: "Deletes a remote file from module's shared data directory." }
-      ],
-      innerTypes: [
         {
-          name: "OnScopeEventListener",
-          type: "interface",
-          methods: [
-            { name: "onScopeRequestApproved", signature: "void onScopeRequestApproved(@NonNull List<String> approved)", doc: "Called when user/framework approves the scope expansion." },
-            { name: "onScopeRequestFailed", signature: "void onScopeRequestFailed(@NonNull String message)", doc: "Called when scope request is rejected or fails." }
-          ]
-        },
-        {
-          name: "HotReloadCallback",
-          type: "interface",
-          sinceApi: 102,
-          methods: [
-            { name: "onHotReloadResult", signature: "void onHotReloadResult(@NonNull HookedTarget target, @NonNull HotReloadResult result)", doc: "Called when hot reload completes or fails. Note: runs on Binder thread; dispatch to Main thread for UI updates." }
-          ]
-        },
-        {
-          name: "ServiceException",
-          type: "class",
-          doc: "Runtime exception thrown when framework service connection is dead or IPC transaction fails."
+          name: "onHotReloadResult",
+          signature: "oneway void onHotReloadResult(int status, String message)",
+          returnType: "oneway void",
+          params: [
+            "int status",
+            "String message"
+          ],
+          sinceApi: 101,
+          doc: "Called when hot reload completes or fails. @param status The raw hot reload status @param message Optional diagnostic message; null for module-refused reloads",
+          line: 13
         }
       ]
     },
     {
-      name: "io.github.libxposed.service.XposedServiceHelper",
-      type: "final class",
-      summary: "Helper to bind and listen to Xposed framework service connections in module applications.",
+      name: "io.github.libxposed.service.IXposedScopeCallback",
+      simpleName: "IXposedScopeCallback",
+      type: "interface",
+      packageName: "io.github.libxposed.service",
+      filePath: "service/interface/src/main/aidl/io/github/libxposed/service/IXposedScopeCallback.aidl",
+      sinceApi: 101,
+      summary: "interface IXposedScopeCallback",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/service/IXposedScopeCallback.html",
+      constants: [],
       methods: [
         {
-          name: "registerListener",
-          signature: "static void registerListener(OnServiceListener listener)",
-          doc: "Registers a service listener to receive XposedService instances when framework connects. Safe across multiple framework managers."
+          name: "onScopeRequestApproved",
+          signature: "oneway void onScopeRequestApproved(in List<String> approved)",
+          returnType: "oneway void",
+          params: [
+            "in List<String> approved"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 4
+        },
+        {
+          name: "onScopeRequestFailed",
+          signature: "oneway void onScopeRequestFailed(String message)",
+          returnType: "oneway void",
+          params: [
+            "String message"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 5
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.service.IXposedService",
+      simpleName: "IXposedService",
+      type: "interface",
+      packageName: "io.github.libxposed.service",
+      filePath: "service/interface/src/main/aidl/io/github/libxposed/service/IXposedService.aidl",
+      sinceApi: 101,
+      summary: "interface IXposedService",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/service/IXposedService.html",
+      constants: [
+        {
+          name: "AUTHORITY_SUFFIX",
+          type: "String",
+          value: '".XposedService"',
+          doc: ""
+        },
+        {
+          name: "SEND_BINDER",
+          type: "String",
+          value: '"SendBinder"',
+          doc: ""
+        },
+        {
+          name: "API_101",
+          type: "int",
+          value: "101",
+          doc: "API version 101."
+        },
+        {
+          name: "API_102",
+          type: "int",
+          value: "102",
+          doc: "API version 102."
+        },
+        {
+          name: "LIB_API",
+          type: "int",
+          value: "API_102",
+          doc: "API version implemented by this interface."
+        },
+        {
+          name: "PROP_CAP_SYSTEM",
+          type: "long",
+          value: "1L",
+          doc: "Framework property bit: system process hooking is supported."
+        },
+        {
+          name: "PROP_CAP_REMOTE",
+          type: "long",
+          value: "1L << 1",
+          doc: "Framework property bit: remote preferences and files are supported."
+        },
+        {
+          name: "PROP_RT_API_PROTECTION",
+          type: "long",
+          value: "1L << 2",
+          doc: "Framework property bit: runtime API protection is enforced."
+        },
+        {
+          name: "HOT_RELOAD_SUCCEEDED",
+          type: "int",
+          value: "0",
+          doc: "Raw hot reload status: succeeded."
+        },
+        {
+          name: "HOT_RELOAD_FAILED",
+          type: "int",
+          value: "1",
+          doc: "Raw hot reload status: module refused reload or reload raised an exception."
+        },
+        {
+          name: "HOT_RELOAD_UNSUPPORTED",
+          type: "int",
+          value: "2",
+          doc: "Raw hot reload status: unsupported."
+        },
+        {
+          name: "HOT_RELOAD_IN_PROGRESS",
+          type: "int",
+          value: "3",
+          doc: "Raw hot reload status: target already reloading."
+        },
+        {
+          name: "HOT_RELOAD_PROCESS_DIED",
+          type: "int",
+          value: "4",
+          doc: "Raw hot reload status: target process died."
         }
       ],
-      innerTypes: [
+      methods: [
         {
-          name: "OnServiceListener",
-          type: "interface",
-          methods: [
-            { name: "onServiceBind", signature: "void onServiceBind(@NonNull XposedService service)", doc: "Called when XposedService binder is connected. May be called multiple times if multiple frameworks exist." },
-            { name: "onServiceDied", signature: "void onServiceDied(@NonNull XposedService service)", doc: "Called when framework service dies or disconnects." }
-          ]
+          name: "getApiVersion",
+          signature: "int getApiVersion()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "framework details",
+          line: 58
+        },
+        {
+          name: "getFrameworkName",
+          signature: "String getFrameworkName()",
+          returnType: "String",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 59
+        },
+        {
+          name: "getFrameworkVersion",
+          signature: "String getFrameworkVersion()",
+          returnType: "String",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 60
+        },
+        {
+          name: "getFrameworkVersionCode",
+          signature: "long getFrameworkVersionCode()",
+          returnType: "long",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 61
+        },
+        {
+          name: "getFrameworkProperties",
+          signature: "long getFrameworkProperties()",
+          returnType: "long",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 62
+        },
+        {
+          name: "getScope",
+          signature: "List<String> getScope()",
+          returnType: "List<String>",
+          params: [],
+          sinceApi: 101,
+          doc: "scope utilities",
+          line: 65
+        },
+        {
+          name: "requestScope",
+          signature: "oneway void requestScope(in List<String> packages, IXposedScopeCallback callback)",
+          returnType: "oneway void",
+          params: [
+            "in List<String> packages",
+            "IXposedScopeCallback callback"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 66
+        },
+        {
+          name: "removeScope",
+          signature: "void removeScope(in List<String> packages)",
+          returnType: "void",
+          params: [
+            "in List<String> packages"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 67
+        },
+        {
+          name: "getRunningTargets",
+          signature: "List<HookedProcess> getRunningTargets()",
+          returnType: "List<HookedProcess>",
+          params: [],
+          sinceApi: 101,
+          doc: "Returns running processes currently hooked by this module. Returned target ids are opaque, process-scoped tokens and may become invalid after this call returns.",
+          line: 73
+        },
+        {
+          name: "hotReloadModule",
+          signature: "void hotReloadModule(long targetId, in Bundle data, IHotReloadCallback callback)",
+          returnType: "void",
+          params: [
+            "long targetId",
+            "in Bundle data",
+            "IHotReloadCallback callback"
+          ],
+          sinceApi: 101,
+          doc: "Requests hot reload for a target returned by getRunningTargets(). Implementations should validate and enqueue the request promptly, then report completion through the callback. If hot reload is unsupported for the module or target, implementations should report HOT_RELOAD_UNSUPPORTED through the callback. @throws SecurityException if the target id is invalid or no longer belongs to this module",
+          line: 83
+        },
+        {
+          name: "requestRemotePreferences",
+          signature: "Bundle requestRemotePreferences(String group)",
+          returnType: "Bundle",
+          params: [
+            "String group"
+          ],
+          sinceApi: 101,
+          doc: "remote preference utilities",
+          line: 86
+        },
+        {
+          name: "updateRemotePreferences",
+          signature: "void updateRemotePreferences(String group, in Bundle diff)",
+          returnType: "void",
+          params: [
+            "String group",
+            "in Bundle diff"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 87
+        },
+        {
+          name: "deleteRemotePreferences",
+          signature: "void deleteRemotePreferences(String group)",
+          returnType: "void",
+          params: [
+            "String group"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 88
+        },
+        {
+          name: "listRemoteFiles",
+          signature: "String[] listRemoteFiles()",
+          returnType: "String[]",
+          params: [],
+          sinceApi: 101,
+          doc: "remote file utilities",
+          line: 91
+        },
+        {
+          name: "openRemoteFile",
+          signature: "ParcelFileDescriptor openRemoteFile(String name)",
+          returnType: "ParcelFileDescriptor",
+          params: [
+            "String name"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 92
+        },
+        {
+          name: "deleteRemoteFile",
+          signature: "boolean deleteRemoteFile(String name)",
+          returnType: "boolean",
+          params: [
+            "String name"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 93
         }
       ]
     },
     {
       name: "io.github.libxposed.service.HookedTarget",
-      type: "final class",
-      sinceApi: 102,
-      summary: "Represents a running process that is hooked by this module.",
-      properties: [
-        { name: "mTargetId", type: "long", doc: "Internal target identity handle for hot reload transactions." },
-        { name: "mUid", type: "int", doc: "Target process UID." },
-        { name: "mPid", type: "int", doc: "Target process PID." },
-        { name: "mProcessName", type: "String", doc: "Android process name." },
-        { name: "mState", type: "HookedTarget.State", doc: "Status enum: UP_TO_DATE, STALE, RELOADING, FAILED." },
-        { name: "mLoadedVersionCode", type: "long", doc: "Version code of module package loaded in this process." }
-      ],
-      innerTypes: [
+      simpleName: "HookedTarget",
+      type: "class",
+      packageName: "io.github.libxposed.service",
+      filePath: "service/service/src/main/java/io/github/libxposed/service/HookedTarget.java",
+      sinceApi: 101,
+      summary: "Information about a process currently hooked by this module. <p>Instances are snapshot handles and do not define stable value equality.</p>",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/service/HookedTarget.html",
+      constants: [],
+      methods: [
         {
-          name: "State",
-          type: "enum",
-          values: ["UP_TO_DATE", "STALE", "RELOADING", "FAILED"]
+          name: "getUid",
+          signature: "int getUid()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "Gets the process uid, provided for display and diagnostics.",
+          line: 62
+        },
+        {
+          name: "getPid",
+          signature: "int getPid()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "Gets the process id, provided for display and diagnostics. It must not be used as target identity.",
+          line: 70
+        },
+        {
+          name: "getProcessName",
+          signature: "String getProcessName()",
+          returnType: "String",
+          params: [],
+          sinceApi: 101,
+          doc: "Gets the Android process name, provided for display and diagnostics.",
+          line: 78
+        },
+        {
+          name: "getState",
+          signature: "State getState()",
+          returnType: "State",
+          params: [],
+          sinceApi: 101,
+          doc: "Gets the target state.",
+          line: 86
+        },
+        {
+          name: "getLoadedVersionCode",
+          signature: "long getLoadedVersionCode()",
+          returnType: "long",
+          params: [],
+          sinceApi: 101,
+          doc: "Gets the version code of the module package loaded in this process. This is only a diagnostic value; the framework may use a stronger internal code identity to determine state.",
+          line: 95
         }
       ]
+    },
+    {
+      name: "io.github.libxposed.service.HookedTarget.State",
+      simpleName: "State",
+      type: "enum",
+      packageName: "io.github.libxposed.service",
+      filePath: "service/service/src/main/java/io/github/libxposed/service/HookedTarget.java",
+      sinceApi: 101,
+      summary: "State of a hooked target.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/service/State.html",
+      constants: [],
+      methods: []
     },
     {
       name: "io.github.libxposed.service.HotReloadResult",
+      simpleName: "HotReloadResult",
       type: "record",
-      sinceApi: 102,
-      summary: "Result record of an asynchronous hot reload request with completion status and diagnostic message.",
-      innerTypes: [
+      packageName: "io.github.libxposed.service",
+      filePath: "service/service/src/main/java/io/github/libxposed/service/HotReloadResult.java",
+      sinceApi: 101,
+      summary: "Result of an asynchronous hot reload request. @param status  The completion status @param message Optional framework-provided diagnostic message. For {@link Status#FAILED}, a null message means the old module refused reload by returning {@code false} from {@code onHotReloading}; a non-null message describes a reload exception.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/service/HotReloadResult.html",
+      constants: [],
+      methods: [
         {
-          name: "Status",
-          type: "enum",
-          values: ["SUCCEEDED", "FAILED", "UNSUPPORTED", "IN_PROGRESS", "PROCESS_DIED"]
+          name: "from",
+          signature: "HotReloadResult from(int code, @Nullable String message)",
+          returnType: "HotReloadResult",
+          params: [
+            "int code",
+            "@Nullable String message"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 58
+        },
+        {
+          name: "HotReloadResult",
+          signature: "return new HotReloadResult(status, message)",
+          returnType: "return new",
+          params: [
+            "status",
+            "message"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 67
         }
       ]
     },
     {
+      name: "io.github.libxposed.service.HotReloadResult.Status",
+      simpleName: "Status",
+      type: "enum",
+      packageName: "io.github.libxposed.service",
+      filePath: "service/service/src/main/java/io/github/libxposed/service/HotReloadResult.java",
+      sinceApi: 101,
+      summary: "Hot reload completion status.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/service/Status.html",
+      constants: [],
+      methods: []
+    },
+    {
       name: "io.github.libxposed.service.RemotePreferences",
-      type: "final class",
-      summary: "Modern secure SharedPreferences implementation over IPC. Overcomes Android 7.0+ world-readable file restrictions.",
+      simpleName: "RemotePreferences",
+      type: "class",
+      packageName: "io.github.libxposed.service",
+      filePath: "service/service/src/main/java/io/github/libxposed/service/RemotePreferences.java",
+      sinceApi: 101,
+      summary: "class RemotePreferences",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/service/RemotePreferences.html",
+      constants: [
+        {
+          name: "TAG",
+          type: "String",
+          value: '"RemotePreferences"',
+          doc: ""
+        },
+        {
+          name: "CONTENT",
+          type: "Object",
+          value: "new Object()",
+          doc: ""
+        },
+        {
+          name: "EXECUTOR",
+          type: "ExecutorService",
+          value: "Executors.newSingleThreadExecutor()",
+          doc: ""
+        }
+      ],
       methods: [
-        { name: "getAll", signature: "Map<String, ?> getAll()", doc: "Returns an unmodifiable snapshot copy of all key-value pairs." },
-        { name: "getString", signature: "String getString(String key, String defValue)", doc: "Retrieves String value." },
-        { name: "getInt", signature: "int getInt(String key, int defValue)", doc: "Retrieves int value." },
-        { name: "getBoolean", signature: "boolean getBoolean(String key, boolean defValue)", doc: "Retrieves boolean value." },
-        { name: "getLong", signature: "long getLong(String key, long defValue)", doc: "Retrieves long value." },
-        { name: "getFloat", signature: "float getFloat(String key, float defValue)", doc: "Retrieves float value." },
-        { name: "getStringSet", signature: "Set<String> getStringSet(String key, Set<String> defValues)", doc: "Retrieves Set<String> value." },
-        { name: "contains", signature: "boolean contains(String key)", doc: "Checks if preference key exists." },
-        { name: "registerOnSharedPreferenceChangeListener", signature: "void registerOnSharedPreferenceChangeListener(OnSharedPreferenceChangeListener listener)", doc: "Registers a reactive listener triggered when preferences update." }
+        {
+          name: "RemotePreferences",
+          signature: "private RemotePreferences(XposedService service, String group)",
+          returnType: "private",
+          params: [
+            "XposedService service",
+            "String group"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 38
+        },
+        {
+          name: "newInstance",
+          signature: "RemotePreferences newInstance(XposedService service, String group)",
+          returnType: "RemotePreferences",
+          params: [
+            "XposedService service",
+            "String group"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 44
+        },
+        {
+          name: "RemoteException",
+          signature: 'throw new RemoteException("Framework returns null")',
+          returnType: "throw new",
+          params: [
+            '"Framework returns null"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 46
+        },
+        {
+          name: "RemotePreferences",
+          signature: "new RemotePreferences(service, group)",
+          returnType: "new",
+          params: [
+            "service",
+            "group"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 47
+        },
+        {
+          name: "onDelete",
+          signature: "void onDelete()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 54
+        },
+        {
+          name: "getAll",
+          signature: "Map<String, ?> getAll()",
+          returnType: "Map<String, ?>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 59
+        },
+        {
+          name: "getString",
+          signature: "String getString(String key, @Nullable String defValue)",
+          returnType: "String",
+          params: [
+            "String key",
+            "@Nullable String defValue"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 65
+        },
+        {
+          name: "getStringSet",
+          signature: "Set<String> getStringSet(String key, @Nullable Set<String> defValues)",
+          returnType: "Set<String>",
+          params: [
+            "String key",
+            "@Nullable Set<String> defValues"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 71
+        },
+        {
+          name: "getInt",
+          signature: "int getInt(String key, int defValue)",
+          returnType: "int",
+          params: [
+            "String key",
+            "int defValue"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 76
+        },
+        {
+          name: "getLong",
+          signature: "long getLong(String key, long defValue)",
+          returnType: "long",
+          params: [
+            "String key",
+            "long defValue"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 82
+        },
+        {
+          name: "getFloat",
+          signature: "float getFloat(String key, float defValue)",
+          returnType: "float",
+          params: [
+            "String key",
+            "float defValue"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 88
+        },
+        {
+          name: "getBoolean",
+          signature: "boolean getBoolean(String key, boolean defValue)",
+          returnType: "boolean",
+          params: [
+            "String key",
+            "boolean defValue"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 94
+        },
+        {
+          name: "contains",
+          signature: "boolean contains(String key)",
+          returnType: "boolean",
+          params: [
+            "String key"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 100
+        },
+        {
+          name: "registerOnSharedPreferenceChangeListener",
+          signature: "void registerOnSharedPreferenceChangeListener(OnSharedPreferenceChangeListener listener)",
+          returnType: "void",
+          params: [
+            "OnSharedPreferenceChangeListener listener"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 105
+        },
+        {
+          name: "unregisterOnSharedPreferenceChangeListener",
+          signature: "void unregisterOnSharedPreferenceChangeListener(OnSharedPreferenceChangeListener listener)",
+          returnType: "void",
+          params: [
+            "OnSharedPreferenceChangeListener listener"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 110
+        },
+        {
+          name: "edit",
+          signature: "Editor edit()",
+          returnType: "Editor",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 115
+        },
+        {
+          name: "Editor",
+          signature: "return new Editor()",
+          returnType: "return new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 116
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.service.RemotePreferences.Editor",
+      simpleName: "Editor",
+      type: "class",
+      packageName: "io.github.libxposed.service",
+      filePath: "service/service/src/main/java/io/github/libxposed/service/RemotePreferences.java",
+      sinceApi: 101,
+      summary: "class Editor",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/service/Editor.html",
+      constants: [],
+      methods: [
+        {
+          name: "put",
+          signature: "void put(String key, @NonNull Object value)",
+          returnType: "void",
+          params: [
+            "String key",
+            "@NonNull Object value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 125
+        },
+        {
+          name: "putString",
+          signature: "Editor putString(String key, @Nullable String value)",
+          returnType: "Editor",
+          params: [
+            "String key",
+            "@Nullable String value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 131
+        },
+        {
+          name: "put",
+          signature: "else put(key, value)",
+          returnType: "else",
+          params: [
+            "key",
+            "value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 133
+        },
+        {
+          name: "putStringSet",
+          signature: "Editor putStringSet(String key, @Nullable Set<String> values)",
+          returnType: "Editor",
+          params: [
+            "String key",
+            "@Nullable Set<String> values"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 138
+        },
+        {
+          name: "put",
+          signature: "else put(key, values)",
+          returnType: "else",
+          params: [
+            "key",
+            "values"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 140
+        },
+        {
+          name: "putInt",
+          signature: "Editor putInt(String key, int value)",
+          returnType: "Editor",
+          params: [
+            "String key",
+            "int value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 145
+        },
+        {
+          name: "putLong",
+          signature: "Editor putLong(String key, long value)",
+          returnType: "Editor",
+          params: [
+            "String key",
+            "long value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 151
+        },
+        {
+          name: "putFloat",
+          signature: "Editor putFloat(String key, float value)",
+          returnType: "Editor",
+          params: [
+            "String key",
+            "float value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 157
+        },
+        {
+          name: "putBoolean",
+          signature: "Editor putBoolean(String key, boolean value)",
+          returnType: "Editor",
+          params: [
+            "String key",
+            "boolean value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 163
+        },
+        {
+          name: "remove",
+          signature: "Editor remove(String key)",
+          returnType: "Editor",
+          params: [
+            "String key"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 169
+        },
+        {
+          name: "clear",
+          signature: "Editor clear()",
+          returnType: "Editor",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 176
+        },
+        {
+          name: "doUpdate",
+          signature: "void doUpdate()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 183
+        },
+        {
+          name: "buildCommitBundle",
+          signature: "Bundle buildCommitBundle()",
+          returnType: "Bundle",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 210
+        },
+        {
+          name: "Bundle",
+          signature: "new Bundle()",
+          returnType: "new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 212
+        },
+        {
+          name: "doCommit",
+          signature: "boolean doCommit(Bundle bundle)",
+          returnType: "boolean",
+          params: [
+            "Bundle bundle"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 219
+        },
+        {
+          name: "commit",
+          signature: "boolean commit()",
+          returnType: "boolean",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 232
+        },
+        {
+          name: "doCommit",
+          signature: "return doCommit(bundle)",
+          returnType: "return",
+          params: [
+            "bundle"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 236
+        },
+        {
+          name: "apply",
+          signature: "void apply()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 240
+        },
+        {
+          name: "doCommit",
+          signature: "> doCommit(bundle)",
+          returnType: ">",
+          params: [
+            "bundle"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 244
+        }
       ]
     },
     {
       name: "io.github.libxposed.service.XposedProvider",
-      type: "class extends ContentProvider",
-      summary: "Internal Direct-Boot-aware ContentProvider exported by the module app to receive IBinder connection from LSPosed/Xposed framework."
+      simpleName: "XposedProvider",
+      type: "class",
+      packageName: "io.github.libxposed.service",
+      filePath: "service/service/src/main/java/io/github/libxposed/service/XposedProvider.java",
+      sinceApi: 101,
+      summary: "class XposedProvider",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/service/XposedProvider.html",
+      constants: [
+        {
+          name: "TAG",
+          type: "String",
+          value: '"XposedProvider"',
+          doc: ""
+        }
+      ],
+      methods: [
+        {
+          name: "onCreate",
+          signature: "boolean onCreate()",
+          returnType: "boolean",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 22
+        },
+        {
+          name: "query",
+          signature: "Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder)",
+          returnType: "Cursor",
+          params: [
+            "@NonNull Uri uri",
+            "@Nullable String[] projection",
+            "@Nullable String selection",
+            "@Nullable String[] selectionArgs",
+            "@Nullable String sortOrder"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 32
+        },
+        {
+          name: "getType",
+          signature: "String getType(@NonNull Uri uri)",
+          returnType: "String",
+          params: [
+            "@NonNull Uri uri"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 38
+        },
+        {
+          name: "insert",
+          signature: "Uri insert(@NonNull Uri uri, @Nullable ContentValues values)",
+          returnType: "Uri",
+          params: [
+            "@NonNull Uri uri",
+            "@Nullable ContentValues values"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 44
+        },
+        {
+          name: "delete",
+          signature: "int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs)",
+          returnType: "int",
+          params: [
+            "@NonNull Uri uri",
+            "@Nullable String selection",
+            "@Nullable String[] selectionArgs"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 49
+        },
+        {
+          name: "update",
+          signature: "int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs)",
+          returnType: "int",
+          params: [
+            "@NonNull Uri uri",
+            "@Nullable ContentValues values",
+            "@Nullable String selection",
+            "@Nullable String[] selectionArgs"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 54
+        },
+        {
+          name: "call",
+          signature: "Bundle call(@NonNull String method, @Nullable String arg, @Nullable Bundle extras)",
+          returnType: "Bundle",
+          params: [
+            "@NonNull String method",
+            "@Nullable String arg",
+            "@Nullable Bundle extras"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 60
+        },
+        {
+          name: "Bundle",
+          signature: "return new Bundle()",
+          returnType: "return new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 67
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.service.XposedService",
+      simpleName: "XposedService",
+      type: "class",
+      packageName: "io.github.libxposed.service",
+      filePath: "service/service/src/main/java/io/github/libxposed/service/XposedService.java",
+      sinceApi: 101,
+      summary: "class XposedService",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/service/XposedService.html",
+      constants: [
+        {
+          name: "API_101",
+          type: "int",
+          value: "IXposedService.API_101",
+          doc: "API version 101."
+        },
+        {
+          name: "API_102",
+          type: "int",
+          value: "IXposedService.API_102",
+          doc: "API version 102. <p>API additions:</p> <ul> <li>Running hooked targets can be queried.</li> <li>Hot reload can be requested for a hooked target when permitted by the framework.</li> </ul>"
+        },
+        {
+          name: "PROP_CAP_SYSTEM",
+          type: "long",
+          value: "IXposedService.PROP_CAP_SYSTEM",
+          doc: "The framework has the capability to hook system_server and other system processes."
+        },
+        {
+          name: "PROP_CAP_REMOTE",
+          type: "long",
+          value: "IXposedService.PROP_CAP_REMOTE",
+          doc: "The framework provides remote preferences and remote files support."
+        },
+        {
+          name: "PROP_RT_API_PROTECTION",
+          type: "long",
+          value: "IXposedService.PROP_RT_API_PROTECTION",
+          doc: "The framework disallows accessing Xposed API via reflection or dynamically loaded code."
+        }
+      ],
+      methods: [
+        {
+          name: "asInterface",
+          signature: "IXposedService asInterface()",
+          returnType: "IXposedService",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 129
+        },
+        {
+          name: "requireApi",
+          signature: "void requireApi(int api)",
+          returnType: "void",
+          params: [
+            "int api"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 133
+        },
+        {
+          name: "UnsupportedOperationException",
+          signature: 'throw new UnsupportedOperationException("Requires Xposed service API " + api)',
+          returnType: "throw new",
+          params: [
+            '"Requires Xposed service API " + api'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 135
+        },
+        {
+          name: "getApiVersion",
+          signature: "int getApiVersion()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "Get the Xposed API version of current implementation. @return API version @throws ServiceException If the service is dead or an error occurred",
+          line: 145
+        },
+        {
+          name: "ServiceException",
+          signature: "throw new ServiceException(e)",
+          returnType: "throw new",
+          params: [
+            "e"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 149
+        },
+        {
+          name: "getFrameworkName",
+          signature: "String getFrameworkName()",
+          returnType: "String",
+          params: [],
+          sinceApi: 101,
+          doc: "Get the Xposed framework name of current implementation. @return Framework name @throws ServiceException If the service is dead or an error occurred",
+          line: 160
+        },
+        {
+          name: "ServiceException",
+          signature: "throw new ServiceException(e)",
+          returnType: "throw new",
+          params: [
+            "e"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 164
+        },
+        {
+          name: "getFrameworkVersion",
+          signature: "String getFrameworkVersion()",
+          returnType: "String",
+          params: [],
+          sinceApi: 101,
+          doc: "Get the Xposed framework version of current implementation. @return Framework version @throws ServiceException If the service is dead or an error occurred",
+          line: 175
+        },
+        {
+          name: "ServiceException",
+          signature: "throw new ServiceException(e)",
+          returnType: "throw new",
+          params: [
+            "e"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 179
+        },
+        {
+          name: "getFrameworkVersionCode",
+          signature: "long getFrameworkVersionCode()",
+          returnType: "long",
+          params: [],
+          sinceApi: 101,
+          doc: "Get the Xposed framework version code of current implementation. @return Framework version code @throws ServiceException If the service is dead or an error occurred",
+          line: 189
+        },
+        {
+          name: "ServiceException",
+          signature: "throw new ServiceException(e)",
+          returnType: "throw new",
+          params: [
+            "e"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 193
+        },
+        {
+          name: "getFrameworkProperties",
+          signature: "long getFrameworkProperties()",
+          returnType: "long",
+          params: [],
+          sinceApi: 101,
+          doc: "Gets the Xposed framework properties. Properties with prefix PROP_RT_ may change among launches. @return Framework properties @throws ServiceException If the service is dead or an error occurred",
+          line: 204
+        },
+        {
+          name: "ServiceException",
+          signature: "throw new ServiceException(e)",
+          returnType: "throw new",
+          params: [
+            "e"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 208
+        },
+        {
+          name: "getScope",
+          signature: "List<String> getScope()",
+          returnType: "List<String>",
+          params: [],
+          sinceApi: 101,
+          doc: "Get the application scope of current module. @return Module scope @throws ServiceException If the service is dead or an error occurred",
+          line: 219
+        },
+        {
+          name: "ServiceException",
+          signature: "throw new ServiceException(e)",
+          returnType: "throw new",
+          params: [
+            "e"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 223
+        },
+        {
+          name: "requestScope",
+          signature: "void requestScope(@NonNull List<String> packages, @NonNull OnScopeEventListener callback)",
+          returnType: "void",
+          params: [
+            "@NonNull List<String> packages",
+            "@NonNull OnScopeEventListener callback"
+          ],
+          sinceApi: 101,
+          doc: "Request to add a new app to the module scope. @param packages Packages to be added @param callback Callback to be invoked when the request is completed or error occurred @throws ServiceException If the service is dead or an error occurred",
+          line: 234
+        },
+        {
+          name: "ServiceException",
+          signature: "throw new ServiceException(e)",
+          returnType: "throw new",
+          params: [
+            "e"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 238
+        },
+        {
+          name: "removeScope",
+          signature: "void removeScope(@NonNull List<String> packages)",
+          returnType: "void",
+          params: [
+            "@NonNull List<String> packages"
+          ],
+          sinceApi: 101,
+          doc: "Remove an app from the module scope. @param packages Packages to be removed @throws ServiceException If the service is dead or an error occurred",
+          line: 248
+        },
+        {
+          name: "ServiceException",
+          signature: "throw new ServiceException(e)",
+          returnType: "throw new",
+          params: [
+            "e"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 252
+        },
+        {
+          name: "getRunningTargets",
+          signature: "List<HookedTarget> getRunningTargets()",
+          returnType: "List<HookedTarget>",
+          params: [],
+          sinceApi: 101,
+          doc: "Get a list of currently running processes that are hooked by the module. <p> Returned targets can be passed to {@link #hotReloadModule(HookedTarget, Bundle, HotReloadCallback)}. The pid, uid, process name, and loaded version code are diagnostic values only. </p> @return The list of hooked processes @throws UnsupportedOperationException If the framework does not support service API 102 @throws ServiceException              If the service is dead or an error occurred",
+          line: 270
+        },
+        {
+          name: "ServiceException",
+          signature: 'throw new ServiceException("Framework returns null")',
+          returnType: "throw new",
+          params: [
+            '"Framework returns null"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 274
+        },
+        {
+          name: "ServiceException",
+          signature: 'throw new ServiceException("Framework returns null target")',
+          returnType: "throw new",
+          params: [
+            '"Framework returns null target"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 277
+        },
+        {
+          name: "ServiceException",
+          signature: "throw new ServiceException(e)",
+          returnType: "throw new",
+          params: [
+            "e"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 282
+        },
+        {
+          name: "onHotReloadResult",
+          signature: "void onHotReloadResult(int code, String message)",
+          returnType: "void",
+          params: [
+            "int code",
+            "String message"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 326
+        },
+        {
+          name: "ServiceException",
+          signature: "throw new ServiceException(e)",
+          returnType: "throw new",
+          params: [
+            "e"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 339
+        },
+        {
+          name: "toHookedTarget",
+          signature: "HookedTarget toHookedTarget(HookedProcess process)",
+          returnType: "HookedTarget",
+          params: [
+            "HookedProcess process"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 346
+        },
+        {
+          name: "ServiceException",
+          signature: 'throw new ServiceException("Framework returns target with null processName")',
+          returnType: "throw new",
+          params: [
+            '"Framework returns target with null processName"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 348
+        },
+        {
+          name: "toHookedTargetState",
+          signature: "State toHookedTargetState(int state)",
+          returnType: "State",
+          params: [
+            "int state"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 360
+        },
+        {
+          name: "ServiceException",
+          signature: '> throw new ServiceException("Invalid hooked target state: " + state)',
+          returnType: "> throw new",
+          params: [
+            '"Invalid hooked target state: " + state'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 366
+        },
+        {
+          name: "getRemotePreferences",
+          signature: "SharedPreferences getRemotePreferences(@NonNull String group)",
+          returnType: "SharedPreferences",
+          params: [
+            "@NonNull String group"
+          ],
+          sinceApi: 101,
+          doc: "Get remote preferences from Xposed framework. If the group does not exist, it will be created. @param group Group name @return The preferences @throws ServiceException              If the service is dead or an error occurred @throws UnsupportedOperationException If the framework does not have remote capability",
+          line: 379
+        },
+        {
+          name: "ServiceException",
+          signature: "throw new ServiceException(e)",
+          returnType: "throw new",
+          params: [
+            "e"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 384
+        },
+        {
+          name: "deleteRemotePreferences",
+          signature: "void deleteRemotePreferences(@NonNull String group)",
+          returnType: "void",
+          params: [
+            "@NonNull String group"
+          ],
+          sinceApi: 101,
+          doc: "Delete a group of remote preferences. @param group Group name @throws ServiceException              If the service is dead or an error occurred @throws UnsupportedOperationException If the framework does not have remote capability",
+          line: 396
+        },
+        {
+          name: "ServiceException",
+          signature: "throw new ServiceException(e)",
+          returnType: "throw new",
+          params: [
+            "e"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 402
+        },
+        {
+          name: "listRemoteFiles",
+          signature: "String[] listRemoteFiles()",
+          returnType: "String[]",
+          params: [],
+          sinceApi: 101,
+          doc: "List all files in the module's shared data directory. @return The file list @throws ServiceException              If the service is dead or an error occurred @throws UnsupportedOperationException If the framework does not have remote capability",
+          line: 414
+        },
+        {
+          name: "ServiceException",
+          signature: 'throw new ServiceException("Framework returns null")',
+          returnType: "throw new",
+          params: [
+            '"Framework returns null"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 417
+        },
+        {
+          name: "ServiceException",
+          signature: "throw new ServiceException(e)",
+          returnType: "throw new",
+          params: [
+            "e"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 420
+        },
+        {
+          name: "openRemoteFile",
+          signature: "ParcelFileDescriptor openRemoteFile(@NonNull String name)",
+          returnType: "ParcelFileDescriptor",
+          params: [
+            "@NonNull String name"
+          ],
+          sinceApi: 101,
+          doc: "Open a file in the module's shared data directory. The file will be created if not exists. @param name File name, must not contain path separators and . or .. @return The file descriptor @throws ServiceException              If the service is dead or an error occurred @throws UnsupportedOperationException If the framework does not have remote capability",
+          line: 433
+        },
+        {
+          name: "ServiceException",
+          signature: 'throw new ServiceException("Framework returns null")',
+          returnType: "throw new",
+          params: [
+            '"Framework returns null"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 436
+        },
+        {
+          name: "ServiceException",
+          signature: "throw new ServiceException(e)",
+          returnType: "throw new",
+          params: [
+            "e"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 439
+        },
+        {
+          name: "deleteRemoteFile",
+          signature: "boolean deleteRemoteFile(@NonNull String name)",
+          returnType: "boolean",
+          params: [
+            "@NonNull String name"
+          ],
+          sinceApi: 101,
+          doc: "Delete a file in the module's shared data directory. @param name File name, must not contain path separators and . or .. @return true if successful, false if the file does not exist @throws ServiceException              If the service is dead or an error occurred @throws UnsupportedOperationException If the framework does not have remote capability",
+          line: 451
+        },
+        {
+          name: "ServiceException",
+          signature: "throw new ServiceException(e)",
+          returnType: "throw new",
+          params: [
+            "e"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 455
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.service.XposedService.ServiceException",
+      simpleName: "ServiceException",
+      type: "class",
+      packageName: "io.github.libxposed.service",
+      filePath: "service/service/src/main/java/io/github/libxposed/service/XposedService.java",
+      sinceApi: 101,
+      summary: "class ServiceException",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/service/ServiceException.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.service.XposedService.OnScopeEventListener",
+      simpleName: "OnScopeEventListener",
+      type: "interface",
+      packageName: "io.github.libxposed.service",
+      filePath: "service/service/src/main/java/io/github/libxposed/service/XposedService.java",
+      sinceApi: 101,
+      summary: "Callback interface for module scope request.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/service/OnScopeEventListener.html",
+      constants: [],
+      methods: [
+        {
+          name: "onScopeRequestApproved",
+          signature: "void onScopeRequestApproved(@NonNull List<String> approved)",
+          returnType: "void",
+          params: [
+            "@NonNull List<String> approved"
+          ],
+          sinceApi: 101,
+          doc: "Callback when the request is approved. @param approved Approved packages for the request",
+          line: 76
+        },
+        {
+          name: "onScopeRequestFailed",
+          signature: "void onScopeRequestFailed(@NonNull String message)",
+          returnType: "void",
+          params: [
+            "@NonNull String message"
+          ],
+          sinceApi: 101,
+          doc: "Callback when the request is failed. @param message Error message",
+          line: 84
+        },
+        {
+          name: "asInterface",
+          signature: "IXposedScopeCallback asInterface()",
+          returnType: "IXposedScopeCallback",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 87
+        },
+        {
+          name: "onScopeRequestApproved",
+          signature: "void onScopeRequestApproved(List<String> approved)",
+          returnType: "void",
+          params: [
+            "List<String> approved"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 90
+        },
+        {
+          name: "onScopeRequestFailed",
+          signature: "void onScopeRequestFailed(String message)",
+          returnType: "void",
+          params: [
+            "String message"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 96
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.service.XposedService.HotReloadCallback",
+      simpleName: "HotReloadCallback",
+      type: "interface",
+      packageName: "io.github.libxposed.service",
+      filePath: "service/service/src/main/java/io/github/libxposed/service/XposedService.java",
+      sinceApi: 101,
+      summary: "Callback interface for hot reload requests.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/service/HotReloadCallback.html",
+      constants: [],
+      methods: [
+        {
+          name: "onHotReloadResult",
+          signature: "void onHotReloadResult(@NonNull HookedTarget target, @NonNull HotReloadResult result)",
+          returnType: "void",
+          params: [
+            "@NonNull HookedTarget target",
+            "@NonNull HotReloadResult result"
+          ],
+          sinceApi: 101,
+          doc: "Called when hot reload completes or fails. <p> This callback may run on a Binder thread. Dispatch to the main thread before touching UI. </p> @param target The target process passed to {@link #hotReloadModule(HookedTarget, Bundle, HotReloadCallback)} @param result The hot reload result",
+          line: 119
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.service.XposedServiceHelper",
+      simpleName: "XposedServiceHelper",
+      type: "class",
+      packageName: "io.github.libxposed.service",
+      filePath: "service/service/src/main/java/io/github/libxposed/service/XposedServiceHelper.java",
+      sinceApi: 101,
+      summary: "class XposedServiceHelper",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/service/XposedServiceHelper.html",
+      constants: [
+        {
+          name: "TAG",
+          type: "String",
+          value: '"XposedServiceHelper"',
+          doc: ""
+        }
+      ],
+      methods: [
+        {
+          name: "onBinderReceived",
+          signature: "void onBinderReceived(IBinder binder)",
+          returnType: "void",
+          params: [
+            "IBinder binder"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 36
+        },
+        {
+          name: "XposedService",
+          signature: "new XposedService(IXposedService.Stub.asInterface(binder)",
+          returnType: "new",
+          params: [
+            "IXposedService.Stub.asInterface(binder"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 40
+        },
+        {
+          name: "registerListener",
+          signature: "void registerListener(OnServiceListener listener)",
+          returnType: "void",
+          params: [
+            "OnServiceListener listener"
+          ],
+          sinceApi: 101,
+          doc: "Register a ServiceListener to receive service binders from Xposed frameworks.<br/> This method should only be called once. @param listener Listener to register",
+          line: 59
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.service.XposedServiceHelper.OnServiceListener",
+      simpleName: "OnServiceListener",
+      type: "interface",
+      packageName: "io.github.libxposed.service",
+      filePath: "service/service/src/main/java/io/github/libxposed/service/XposedServiceHelper.java",
+      sinceApi: 101,
+      summary: "Callback interface for Xposed service.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/service/OnServiceListener.html",
+      constants: [],
+      methods: [
+        {
+          name: "onServiceBind",
+          signature: "void onServiceBind(@NonNull XposedService service)",
+          returnType: "void",
+          params: [
+            "@NonNull XposedService service"
+          ],
+          sinceApi: 101,
+          doc: "Callback when the service is connected.<br/> This method could be called multiple times if multiple Xposed frameworks exist. @param service Service instance",
+          line: 24
+        },
+        {
+          name: "onServiceDied",
+          signature: "void onServiceDied(@NonNull XposedService service)",
+          returnType: "void",
+          params: [
+            "@NonNull XposedService service"
+          ],
+          sinceApi: 101,
+          doc: "Callback when the service is dead.",
+          line: 29
+        }
+      ]
     }
   ],
   aidl: [
@@ -37297,12 +63083,22 @@ var lint_default = {
   annotations: [
     {
       name: "io.github.libxposed.annotation.SinceApi",
-      target: ["TYPE", "METHOD", "CONSTRUCTOR", "FIELD"],
+      target: [
+        "TYPE",
+        "METHOD",
+        "CONSTRUCTOR",
+        "FIELD"
+      ],
       doc: "Annotates an API element with the minimum LibXposed API version required (e.g. 101, 102). Modules targeting lower API versions trigger a lint error when referencing it."
     },
     {
       name: "io.github.libxposed.annotation.InternalApi",
-      target: ["TYPE", "METHOD", "CONSTRUCTOR", "FIELD"],
+      target: [
+        "TYPE",
+        "METHOD",
+        "CONSTRUCTOR",
+        "FIELD"
+      ],
       doc: "Marks framework internal classes or methods. Calling these from module code triggers lint warnings/errors and breaks module portability."
     }
   ],
@@ -37327,6 +63123,1634 @@ var lint_default = {
         "Enforces strict block against calling legacy de.robv.android.xposed APIs"
       ]
     }
+  ],
+  classes: [
+    {
+      name: "io.github.libxposed.annotation.InternalApi",
+      simpleName: "InternalApi",
+      type: "@interface",
+      packageName: "io.github.libxposed.annotation",
+      filePath: "lint/annotation/src/main/java/io/github/libxposed/annotation/InternalApi.java",
+      sinceApi: 101,
+      summary: "Denotes an API element reserved for Xposed framework implementations. Xposed modules must not call APIs annotated with this annotation.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/annotation/InternalApi.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.annotation.SinceApi",
+      simpleName: "SinceApi",
+      type: "@interface",
+      packageName: "io.github.libxposed.annotation",
+      filePath: "lint/annotation/src/main/java/io/github/libxposed/annotation/SinceApi.java",
+      sinceApi: 101,
+      summary: "Denotes the Xposed API version where the annotated API element was introduced.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/annotation/SinceApi.html",
+      constants: [],
+      methods: [
+        {
+          name: "value",
+          signature: "int value()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "The first Xposed API version that includes the annotated element. @return The first Xposed API version that includes the annotated element.",
+          line: 31
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.lint.InternalApiDetector",
+      simpleName: "InternalApiDetector",
+      type: "class",
+      packageName: "io.github.libxposed.lint",
+      filePath: "lint/lint/src/main/java/io/github/libxposed/lint/InternalApiDetector.java",
+      sinceApi: 101,
+      summary: "Reports libxposed APIs that are reserved for Xposed framework implementations.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/lint/InternalApiDetector.html",
+      constants: [
+        {
+          name: "INTERNAL_API",
+          type: "String",
+          value: '"io.github.libxposed.annotation.InternalApi"',
+          doc: ""
+        }
+      ],
+      methods: [
+        {
+          name: "InternalApiDetector",
+          signature: "public InternalApiDetector()",
+          returnType: "public",
+          params: [],
+          sinceApi: 101,
+          doc: "Creates the detector used by Android lint.",
+          line: 38
+        },
+        {
+          name: "Implementation",
+          signature: "new Implementation(InternalApiDetector.class, Scope.JAVA_FILE_SCOPE)",
+          returnType: "new",
+          params: [
+            "InternalApiDetector.class",
+            "Scope.JAVA_FILE_SCOPE"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 49
+        },
+        {
+          name: "getApplicableUastTypes",
+          signature: "List<Class<? extends UElement>> getApplicableUastTypes()",
+          returnType: "List<Class<? extends UElement>>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 57
+        },
+        {
+          name: "createUastHandler",
+          signature: "UElementHandler createUastHandler(@NotNull JavaContext context)",
+          returnType: "UElementHandler",
+          params: [
+            "@NotNull JavaContext context"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 62
+        },
+        {
+          name: "UElementHandler",
+          signature: "return new UElementHandler()",
+          returnType: "return new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 63
+        },
+        {
+          name: "visitCallExpression",
+          signature: "void visitCallExpression(@NotNull UCallExpression node)",
+          returnType: "void",
+          params: [
+            "@NotNull UCallExpression node"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 65
+        },
+        {
+          name: "visitSimpleNameReferenceExpression",
+          signature: "void visitSimpleNameReferenceExpression(@NotNull USimpleNameReferenceExpression node)",
+          returnType: "void",
+          params: [
+            "@NotNull USimpleNameReferenceExpression node"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 70
+        },
+        {
+          name: "isInsideCallExpression",
+          signature: "boolean isInsideCallExpression(UElement node)",
+          returnType: "boolean",
+          params: [
+            "UElement node"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 85
+        },
+        {
+          name: "checkUsage",
+          signature: "void checkUsage(JavaContext context, UElement node, PsiModifierListOwner owner)",
+          returnType: "void",
+          params: [
+            "JavaContext context",
+            "UElement node",
+            "PsiModifierListOwner owner"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 96
+        },
+        {
+          name: "isXposedModuleProject",
+          signature: "boolean isXposedModuleProject(JavaContext context)",
+          returnType: "boolean",
+          params: [
+            "JavaContext context"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 108
+        },
+        {
+          name: "hasModuleProp",
+          signature: "boolean hasModuleProp(Path projectDir)",
+          returnType: "boolean",
+          params: [
+            "Path projectDir"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 113
+        },
+        {
+          name: "findInternalApiOwner",
+          signature: "PsiModifierListOwner findInternalApiOwner(PsiModifierListOwner owner)",
+          returnType: "PsiModifierListOwner",
+          params: [
+            "PsiModifierListOwner owner"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 129
+        },
+        {
+          name: "findInternalApiOwner",
+          signature: "return findInternalApiOwner(psiClass.getContainingClass()",
+          returnType: "return",
+          params: [
+            "psiClass.getContainingClass("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 138
+        },
+        {
+          name: "findInternalApiOwner",
+          signature: "return findInternalApiOwner(method.getContainingClass()",
+          returnType: "return",
+          params: [
+            "method.getContainingClass("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 141
+        },
+        {
+          name: "findInternalApiOwner",
+          signature: "return findInternalApiOwner(field.getContainingClass()",
+          returnType: "return",
+          params: [
+            "field.getContainingClass("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 144
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.lint.LibXposedIssueRegistry",
+      simpleName: "LibXposedIssueRegistry",
+      type: "class",
+      packageName: "io.github.libxposed.lint",
+      filePath: "lint/lint/src/main/java/io/github/libxposed/lint/LibXposedIssueRegistry.java",
+      sinceApi: 101,
+      summary: "Registers lint checks shipped with libxposed.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/lint/LibXposedIssueRegistry.html",
+      constants: [],
+      methods: [
+        {
+          name: "LibXposedIssueRegistry",
+          signature: "public LibXposedIssueRegistry()",
+          returnType: "public",
+          params: [],
+          sinceApi: 101,
+          doc: "Creates the issue registry used by Android lint.",
+          line: 25
+        },
+        {
+          name: "getIssues",
+          signature: "List<Issue> getIssues()",
+          returnType: "List<Issue>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 30
+        },
+        {
+          name: "getVendor",
+          signature: "Vendor getVendor()",
+          returnType: "Vendor",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 35
+        },
+        {
+          name: "getApi",
+          signature: "int getApi()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 40
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.lint.SinceApiDetector",
+      simpleName: "SinceApiDetector",
+      type: "class",
+      packageName: "io.github.libxposed.lint",
+      filePath: "lint/lint/src/main/java/io/github/libxposed/lint/SinceApiDetector.java",
+      sinceApi: 101,
+      summary: "Reports libxposed API usages that require a higher Xposed API than the module declares.",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/lint/SinceApiDetector.html",
+      constants: [
+        {
+          name: "SINCE_API",
+          type: "String",
+          value: '"io.github.libxposed.annotation.SinceApi"',
+          doc: ""
+        },
+        {
+          name: "UNKNOWN_API",
+          type: "int",
+          value: "-1",
+          doc: ""
+        }
+      ],
+      methods: [
+        {
+          name: "SinceApiDetector",
+          signature: "public SinceApiDetector()",
+          returnType: "public",
+          params: [],
+          sinceApi: 101,
+          doc: "Creates the detector used by Android lint.",
+          line: 58
+        },
+        {
+          name: "Implementation",
+          signature: "new Implementation(SinceApiDetector.class, Scope.JAVA_FILE_SCOPE)",
+          returnType: "new",
+          params: [
+            "SinceApiDetector.class",
+            "Scope.JAVA_FILE_SCOPE"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 70
+        },
+        {
+          name: "getApplicableUastTypes",
+          signature: "List<Class<? extends UElement>> getApplicableUastTypes()",
+          returnType: "List<Class<? extends UElement>>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 91
+        },
+        {
+          name: "createUastHandler",
+          signature: "UElementHandler createUastHandler(@NotNull JavaContext context)",
+          returnType: "UElementHandler",
+          params: [
+            "@NotNull JavaContext context"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 96
+        },
+        {
+          name: "UElementHandler",
+          signature: "return new UElementHandler()",
+          returnType: "return new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 97
+        },
+        {
+          name: "visitCallExpression",
+          signature: "void visitCallExpression(@NotNull UCallExpression node)",
+          returnType: "void",
+          params: [
+            "@NotNull UCallExpression node"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 99
+        },
+        {
+          name: "visitSimpleNameReferenceExpression",
+          signature: "void visitSimpleNameReferenceExpression(@NotNull USimpleNameReferenceExpression node)",
+          returnType: "void",
+          params: [
+            "@NotNull USimpleNameReferenceExpression node"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 104
+        },
+        {
+          name: "checkUsage",
+          signature: "void checkUsage(JavaContext context, UElement node, PsiModifierListOwner owner)",
+          returnType: "void",
+          params: [
+            "JavaContext context",
+            "UElement node",
+            "PsiModifierListOwner owner"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 116
+        },
+        {
+          name: "getMinApi",
+          signature: "int getMinApi(JavaContext context)",
+          returnType: "int",
+          params: [
+            "JavaContext context"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 139
+        },
+        {
+          name: "isInsideSinceApiOverride",
+          signature: "boolean isInsideSinceApiOverride(JavaContext context, UElement node, int requiredApi)",
+          returnType: "boolean",
+          params: [
+            "JavaContext context",
+            "UElement node",
+            "int requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 144
+        },
+        {
+          name: "getSuperMethod",
+          signature: "PsiMethod getSuperMethod(JavaContext context, PsiMethod method)",
+          returnType: "PsiMethod",
+          params: [
+            "JavaContext context",
+            "PsiMethod method"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 159
+        },
+        {
+          name: "readMinApi",
+          signature: "int readMinApi(Path projectDir)",
+          returnType: "int",
+          params: [
+            "Path projectDir"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 168
+        },
+        {
+          name: "readMinApiFromModuleProp",
+          signature: "int readMinApiFromModuleProp(Path moduleProp)",
+          returnType: "int",
+          params: [
+            "Path moduleProp"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 193
+        },
+        {
+          name: "Properties",
+          signature: "new Properties()",
+          returnType: "new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 194
+        },
+        {
+          name: "getRequiredApi",
+          signature: "Integer getRequiredApi(PsiModifierListOwner owner)",
+          returnType: "Integer",
+          params: [
+            "PsiModifierListOwner owner"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 211
+        },
+        {
+          name: "getRequiredApi",
+          signature: "return getRequiredApi(psiClass.getContainingClass()",
+          returnType: "return",
+          params: [
+            "psiClass.getContainingClass("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 221
+        },
+        {
+          name: "getRequiredApi",
+          signature: "return getRequiredApi(method.getContainingClass()",
+          returnType: "return",
+          params: [
+            "method.getContainingClass("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 224
+        },
+        {
+          name: "getRequiredApi",
+          signature: "return getRequiredApi(field.getContainingClass()",
+          returnType: "return",
+          params: [
+            "field.getContainingClass("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 227
+        },
+        {
+          name: "getDirectSinceApi",
+          signature: "Integer getDirectSinceApi(PsiModifierListOwner owner)",
+          returnType: "Integer",
+          params: [
+            "PsiModifierListOwner owner"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 232
+        },
+        {
+          name: "getAnnotationIntValue",
+          signature: "return getAnnotationIntValue(annotation)",
+          returnType: "return",
+          params: [
+            "annotation"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 237
+        },
+        {
+          name: "getAnnotationIntValue",
+          signature: "Integer getAnnotationIntValue(PsiAnnotation annotation)",
+          returnType: "Integer",
+          params: [
+            "PsiAnnotation annotation"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 240
+        },
+        {
+          name: "isGuarded",
+          signature: "boolean isGuarded(UElement node, int requiredApi)",
+          returnType: "boolean",
+          params: [
+            "UElement node",
+            "int requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 269
+        },
+        {
+          name: "isGuardedByPriorExit",
+          signature: "boolean isGuardedByPriorExit(UExpression expression, int requiredApi)",
+          returnType: "boolean",
+          params: [
+            "UExpression expression",
+            "int requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 290
+        },
+        {
+          name: "hasPriorExitGuard",
+          signature: "return hasPriorExitGuard(blockExpression.getExpressions()",
+          returnType: "return",
+          params: [
+            "blockExpression.getExpressions("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 293
+        },
+        {
+          name: "hasPriorExitGuard",
+          signature: "return hasPriorExitGuard(expressionList.getExpressions()",
+          returnType: "return",
+          params: [
+            "expressionList.getExpressions("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 296
+        },
+        {
+          name: "hasPriorExitGuard",
+          signature: "boolean hasPriorExitGuard(List<UExpression> expressions, UExpression expression, int requiredApi)",
+          returnType: "boolean",
+          params: [
+            "List<UExpression> expressions",
+            "UExpression expression",
+            "int requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 301
+        },
+        {
+          name: "indexOfExpression",
+          signature: "int indexOfExpression(List<UExpression> expressions, UExpression expression)",
+          returnType: "int",
+          params: [
+            "List<UExpression> expressions",
+            "UExpression expression"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 315
+        },
+        {
+          name: "ifExpressionExitsTowardSafeApi",
+          signature: "boolean ifExpressionExitsTowardSafeApi(UIfExpression ifExpression, int requiredApi)",
+          returnType: "boolean",
+          params: [
+            "UIfExpression ifExpression",
+            "int requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 324
+        },
+        {
+          name: "branchAlwaysExits",
+          signature: "boolean branchAlwaysExits(UElement element)",
+          returnType: "boolean",
+          params: [
+            "UElement element"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 332
+        },
+        {
+          name: "expressionsAlwaysExit",
+          signature: "return expressionsAlwaysExit(blockExpression.getExpressions()",
+          returnType: "return",
+          params: [
+            "blockExpression.getExpressions("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 337
+        },
+        {
+          name: "expressionsAlwaysExit",
+          signature: "return expressionsAlwaysExit(expressionList.getExpressions()",
+          returnType: "return",
+          params: [
+            "expressionList.getExpressions("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 340
+        },
+        {
+          name: "branchAlwaysExits",
+          signature: "return branchAlwaysExits(ifExpression.getThenExpression()",
+          returnType: "return",
+          params: [
+            "ifExpression.getThenExpression("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 343
+        },
+        {
+          name: "expressionsAlwaysExit",
+          signature: "boolean expressionsAlwaysExit(List<UExpression> expressions)",
+          returnType: "boolean",
+          params: [
+            "List<UExpression> expressions"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 349
+        },
+        {
+          name: "isWithin",
+          signature: "boolean isWithin(UElement node, UElement ancestor)",
+          returnType: "boolean",
+          params: [
+            "UElement node",
+            "UElement ancestor"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 358
+        },
+        {
+          name: "conditionImpliesAtLeast",
+          signature: "boolean conditionImpliesAtLeast(UExpression condition, int requiredApi)",
+          returnType: "boolean",
+          params: [
+            "UExpression condition",
+            "int requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 372
+        },
+        {
+          name: "sourceConditionImpliesAtLeast",
+          signature: "return sourceConditionImpliesAtLeast(condition, requiredApi)",
+          returnType: "return",
+          params: [
+            "condition",
+            "requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 374
+        },
+        {
+          name: "conditionImpliesAtLeast",
+          signature: "return conditionImpliesAtLeast(binary.getLeftOperand()",
+          returnType: "return",
+          params: [
+            "binary.getLeftOperand("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 379
+        },
+        {
+          name: "conditionImpliesAtLeast",
+          signature: "return conditionImpliesAtLeast(binary.getLeftOperand()",
+          returnType: "return",
+          params: [
+            "binary.getLeftOperand("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 383
+        },
+        {
+          name: "comparisonImpliesAtLeast",
+          signature: "return comparisonImpliesAtLeast(operator, rightConstant, requiredApi)",
+          returnType: "return",
+          params: [
+            "operator",
+            "rightConstant",
+            "requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 393
+        },
+        {
+          name: "reversedComparisonImpliesAtLeast",
+          signature: "return reversedComparisonImpliesAtLeast(operator, leftConstant, requiredApi)",
+          returnType: "return",
+          params: [
+            "operator",
+            "leftConstant",
+            "requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 396
+        },
+        {
+          name: "sourceConditionImpliesAtLeast",
+          signature: "return sourceConditionImpliesAtLeast(condition, requiredApi)",
+          returnType: "return",
+          params: [
+            "condition",
+            "requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 398
+        },
+        {
+          name: "conditionFalseImpliesAtLeast",
+          signature: "boolean conditionFalseImpliesAtLeast(UExpression condition, int requiredApi)",
+          returnType: "boolean",
+          params: [
+            "UExpression condition",
+            "int requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 401
+        },
+        {
+          name: "sourceConditionFalseImpliesAtLeast",
+          signature: "return sourceConditionFalseImpliesAtLeast(condition, requiredApi)",
+          returnType: "return",
+          params: [
+            "condition",
+            "requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 403
+        },
+        {
+          name: "conditionFalseImpliesAtLeast",
+          signature: "return conditionFalseImpliesAtLeast(binary.getLeftOperand()",
+          returnType: "return",
+          params: [
+            "binary.getLeftOperand("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 408
+        },
+        {
+          name: "conditionFalseImpliesAtLeast",
+          signature: "return conditionFalseImpliesAtLeast(binary.getLeftOperand()",
+          returnType: "return",
+          params: [
+            "binary.getLeftOperand("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 412
+        },
+        {
+          name: "comparisonFalseImpliesAtLeast",
+          signature: "return comparisonFalseImpliesAtLeast(operator, rightConstant, requiredApi)",
+          returnType: "return",
+          params: [
+            "operator",
+            "rightConstant",
+            "requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 422
+        },
+        {
+          name: "reversedComparisonFalseImpliesAtLeast",
+          signature: "return reversedComparisonFalseImpliesAtLeast(operator, leftConstant, requiredApi)",
+          returnType: "return",
+          params: [
+            "operator",
+            "leftConstant",
+            "requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 425
+        },
+        {
+          name: "sourceConditionFalseImpliesAtLeast",
+          signature: "return sourceConditionFalseImpliesAtLeast(condition, requiredApi)",
+          returnType: "return",
+          params: [
+            "condition",
+            "requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 427
+        },
+        {
+          name: "comparisonImpliesAtLeast",
+          signature: "boolean comparisonImpliesAtLeast(UastBinaryOperator operator, int value, int requiredApi)",
+          returnType: "boolean",
+          params: [
+            "UastBinaryOperator operator",
+            "int value",
+            "int requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 430
+        },
+        {
+          name: "reversedComparisonImpliesAtLeast",
+          signature: "boolean reversedComparisonImpliesAtLeast(UastBinaryOperator operator, int value, int requiredApi)",
+          returnType: "boolean",
+          params: [
+            "UastBinaryOperator operator",
+            "int value",
+            "int requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 443
+        },
+        {
+          name: "comparisonFalseImpliesAtLeast",
+          signature: "boolean comparisonFalseImpliesAtLeast(UastBinaryOperator operator, int value, int requiredApi)",
+          returnType: "boolean",
+          params: [
+            "UastBinaryOperator operator",
+            "int value",
+            "int requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 456
+        },
+        {
+          name: "reversedComparisonFalseImpliesAtLeast",
+          signature: "boolean reversedComparisonFalseImpliesAtLeast(UastBinaryOperator operator, int value, int requiredApi)",
+          returnType: "boolean",
+          params: [
+            "UastBinaryOperator operator",
+            "int value",
+            "int requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 466
+        },
+        {
+          name: "isApiVersionExpression",
+          signature: "boolean isApiVersionExpression(UExpression expression)",
+          returnType: "boolean",
+          params: [
+            "UExpression expression"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 476
+        },
+        {
+          name: "getIntConstant",
+          signature: "Integer getIntConstant(UExpression expression)",
+          returnType: "Integer",
+          params: [
+            "UExpression expression"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 497
+        },
+        {
+          name: "getApiConstantFromSource",
+          signature: "return getApiConstantFromSource(expression.asSourceString()",
+          returnType: "return",
+          params: [
+            "expression.asSourceString("
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 517
+        },
+        {
+          name: "sourceConditionImpliesAtLeast",
+          signature: "boolean sourceConditionImpliesAtLeast(UExpression condition, int requiredApi)",
+          returnType: "boolean",
+          params: [
+            "UExpression condition",
+            "int requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 520
+        },
+        {
+          name: "comparisonImpliesAtLeast",
+          signature: "return comparisonImpliesAtLeast(matcher.group(1)",
+          returnType: "return",
+          params: [
+            "matcher.group(1"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 524
+        },
+        {
+          name: "reversedComparisonImpliesAtLeast",
+          signature: "return reversedComparisonImpliesAtLeast(matcher.group(3)",
+          returnType: "return",
+          params: [
+            "matcher.group(3"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 528
+        },
+        {
+          name: "sourceConditionFalseImpliesAtLeast",
+          signature: "boolean sourceConditionFalseImpliesAtLeast(UExpression condition, int requiredApi)",
+          returnType: "boolean",
+          params: [
+            "UExpression condition",
+            "int requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 533
+        },
+        {
+          name: "comparisonFalseImpliesAtLeast",
+          signature: "return comparisonFalseImpliesAtLeast(matcher.group(1)",
+          returnType: "return",
+          params: [
+            "matcher.group(1"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 537
+        },
+        {
+          name: "reversedComparisonFalseImpliesAtLeast",
+          signature: "return reversedComparisonFalseImpliesAtLeast(matcher.group(3)",
+          returnType: "return",
+          params: [
+            "matcher.group(3"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 541
+        },
+        {
+          name: "comparisonImpliesAtLeast",
+          signature: "boolean comparisonImpliesAtLeast(String operator, int value, int requiredApi)",
+          returnType: "boolean",
+          params: [
+            "String operator",
+            "int value",
+            "int requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 546
+        },
+        {
+          name: "reversedComparisonImpliesAtLeast",
+          signature: "boolean reversedComparisonImpliesAtLeast(String operator, int value, int requiredApi)",
+          returnType: "boolean",
+          params: [
+            "String operator",
+            "int value",
+            "int requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 554
+        },
+        {
+          name: "comparisonFalseImpliesAtLeast",
+          signature: "boolean comparisonFalseImpliesAtLeast(String operator, int value, int requiredApi)",
+          returnType: "boolean",
+          params: [
+            "String operator",
+            "int value",
+            "int requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 562
+        },
+        {
+          name: "reversedComparisonFalseImpliesAtLeast",
+          signature: "boolean reversedComparisonFalseImpliesAtLeast(String operator, int value, int requiredApi)",
+          returnType: "boolean",
+          params: [
+            "String operator",
+            "int value",
+            "int requiredApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 570
+        },
+        {
+          name: "getApiConstantFromSource",
+          signature: "Integer getApiConstantFromSource(String source)",
+          returnType: "Integer",
+          params: [
+            "String source"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 578
+        },
+        {
+          name: "getApiValue",
+          signature: "int getApiValue(String value, String apiGroup)",
+          returnType: "int",
+          params: [
+            "String value",
+            "String apiGroup"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 586
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.lint.InternalApiDetectorTest",
+      simpleName: "InternalApiDetectorTest",
+      type: "class",
+      packageName: "io.github.libxposed.lint",
+      filePath: "lint/lint/src/test/java/io/github/libxposed/lint/InternalApiDetectorTest.java",
+      sinceApi: 101,
+      summary: "class InternalApiDetectorTest",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/lint/InternalApiDetectorTest.html",
+      constants: [],
+      methods: [
+        {
+          name: "getDetector",
+          signature: "Detector getDetector()",
+          returnType: "Detector",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 12
+        },
+        {
+          name: "InternalApiDetector",
+          signature: "return new InternalApiDetector()",
+          returnType: "return new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 13
+        },
+        {
+          name: "getIssues",
+          signature: "List<Issue> getIssues()",
+          returnType: "List<Issue>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 17
+        },
+        {
+          name: "testReportsInternalMethodCall",
+          signature: "void testReportsInternalMethodCall()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 21
+        },
+        {
+          name: "testReportsInternalClassConstructorCall",
+          signature: "void testReportsInternalClassConstructorCall()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 38
+        },
+        {
+          name: "testReportsInternalFieldReferenceInsideCall",
+          signature: "void testReportsInternalFieldReferenceInsideCall()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 55
+        },
+        {
+          name: "testIgnoresInternalApiOutsideXposedModuleProject",
+          signature: "void testIgnoresInternalApiOutsideXposedModuleProject()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 75
+        },
+        {
+          name: "testIgnoresRegularApiInXposedModuleProject",
+          signature: "void testIgnoresRegularApiInXposedModuleProject()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 91
+        },
+        {
+          name: "moduleProp",
+          signature: "TestFile moduleProp()",
+          returnType: "TestFile",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 108
+        },
+        {
+          name: "source",
+          signature: 'return source("src/main/resources/META-INF/xposed/module.prop", "minApiVersion=101\\n")',
+          returnType: "return",
+          params: [
+            '"src/main/resources/META-INF/xposed/module.prop"',
+            '"minApiVersion=101\\n"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 109
+        },
+        {
+          name: "internalApiAnnotation",
+          signature: "TestFile internalApiAnnotation()",
+          returnType: "TestFile",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 112
+        },
+        {
+          name: "internalApiStub",
+          signature: "TestFile internalApiStub()",
+          returnType: "TestFile",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 121
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.lint.InternalApiDetectorTest.TestModule",
+      simpleName: "TestModule",
+      type: "class",
+      packageName: "io.github.libxposed.lint",
+      filePath: "lint/lint/src/test/java/io/github/libxposed/lint/InternalApiDetectorTest.java",
+      sinceApi: 101,
+      summary: "class TestModule",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/lint/TestModule.html",
+      constants: [],
+      methods: [
+        {
+          name: "test",
+          signature: "void test(FrameworkBridge bridge)",
+          returnType: "void",
+          params: [
+            "FrameworkBridge bridge"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 30
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.lint.InternalApiDetectorTest.TestModule",
+      simpleName: "TestModule",
+      type: "class",
+      packageName: "io.github.libxposed.lint",
+      filePath: "lint/lint/src/test/java/io/github/libxposed/lint/InternalApiDetectorTest.java",
+      sinceApi: 101,
+      summary: "class TestModule",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/lint/TestModule.html",
+      constants: [],
+      methods: [
+        {
+          name: "test",
+          signature: "void test()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 47
+        },
+        {
+          name: "FrameworkOnlyApi",
+          signature: "new FrameworkOnlyApi()",
+          returnType: "new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 48
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.lint.InternalApiDetectorTest.TestModule",
+      simpleName: "TestModule",
+      type: "class",
+      packageName: "io.github.libxposed.lint",
+      filePath: "lint/lint/src/test/java/io/github/libxposed/lint/InternalApiDetectorTest.java",
+      sinceApi: 101,
+      summary: "class TestModule",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/lint/TestModule.html",
+      constants: [],
+      methods: [
+        {
+          name: "test",
+          signature: "void test()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 64
+        },
+        {
+          name: "consume",
+          signature: "void consume(Object value)",
+          returnType: "void",
+          params: [
+            "Object value"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 68
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.lint.InternalApiDetectorTest.TestModule",
+      simpleName: "TestModule",
+      type: "class",
+      packageName: "io.github.libxposed.lint",
+      filePath: "lint/lint/src/test/java/io/github/libxposed/lint/InternalApiDetectorTest.java",
+      sinceApi: 101,
+      summary: "class TestModule",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/lint/TestModule.html",
+      constants: [],
+      methods: [
+        {
+          name: "test",
+          signature: "void test(FrameworkBridge bridge)",
+          returnType: "void",
+          params: [
+            "FrameworkBridge bridge"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 83
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.lint.InternalApiDetectorTest.TestModule",
+      simpleName: "TestModule",
+      type: "class",
+      packageName: "io.github.libxposed.lint",
+      filePath: "lint/lint/src/test/java/io/github/libxposed/lint/InternalApiDetectorTest.java",
+      sinceApi: 101,
+      summary: "class TestModule",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/lint/TestModule.html",
+      constants: [],
+      methods: [
+        {
+          name: "test",
+          signature: "void test(PublicApi api)",
+          returnType: "void",
+          params: [
+            "PublicApi api"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 100
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.lint.InternalApiDetectorTest.InternalApi",
+      simpleName: "InternalApi",
+      type: "@interface",
+      packageName: "io.github.libxposed.lint",
+      filePath: "lint/lint/src/test/java/io/github/libxposed/lint/InternalApiDetectorTest.java",
+      sinceApi: 101,
+      summary: "@interface InternalApi",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/lint/InternalApi.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.lint.InternalApiDetectorTest.FrameworkBridge",
+      simpleName: "FrameworkBridge",
+      type: "class",
+      packageName: "io.github.libxposed.lint",
+      filePath: "lint/lint/src/test/java/io/github/libxposed/lint/InternalApiDetectorTest.java",
+      sinceApi: 101,
+      summary: "class FrameworkBridge",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/lint/FrameworkBridge.html",
+      constants: [
+        {
+          name: "INTERNAL_FIELD",
+          type: "Object",
+          value: "new Object()",
+          doc: ""
+        }
+      ],
+      methods: [
+        {
+          name: "attachFramework",
+          signature: "void attachFramework(Object base, Runnable detachImpl)",
+          returnType: "void",
+          params: [
+            "Object base",
+            "Runnable detachImpl"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 132
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.lint.InternalApiDetectorTest.FrameworkOnlyApi",
+      simpleName: "FrameworkOnlyApi",
+      type: "class",
+      packageName: "io.github.libxposed.lint",
+      filePath: "lint/lint/src/test/java/io/github/libxposed/lint/InternalApiDetectorTest.java",
+      sinceApi: 101,
+      summary: "class FrameworkOnlyApi",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/lint/FrameworkOnlyApi.html",
+      constants: [],
+      methods: []
+    },
+    {
+      name: "io.github.libxposed.lint.InternalApiDetectorTest.PublicApi",
+      simpleName: "PublicApi",
+      type: "class",
+      packageName: "io.github.libxposed.lint",
+      filePath: "lint/lint/src/test/java/io/github/libxposed/lint/InternalApiDetectorTest.java",
+      sinceApi: 101,
+      summary: "class PublicApi",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/lint/PublicApi.html",
+      constants: [],
+      methods: [
+        {
+          name: "call",
+          signature: "void call()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 141
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.lint.SinceApiDetectorTest",
+      simpleName: "SinceApiDetectorTest",
+      type: "class",
+      packageName: "io.github.libxposed.lint",
+      filePath: "lint/lint/src/test/java/io/github/libxposed/lint/SinceApiDetectorTest.java",
+      sinceApi: 101,
+      summary: "class SinceApiDetectorTest",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/lint/SinceApiDetectorTest.html",
+      constants: [],
+      methods: [
+        {
+          name: "getDetector",
+          signature: "Detector getDetector()",
+          returnType: "Detector",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 13
+        },
+        {
+          name: "SinceApiDetector",
+          signature: "return new SinceApiDetector()",
+          returnType: "return new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 14
+        },
+        {
+          name: "getIssues",
+          signature: "List<Issue> getIssues()",
+          returnType: "List<Issue>",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 18
+        },
+        {
+          name: "testReportsUnguardedNewApiUsage",
+          signature: "void testReportsUnguardedNewApiUsage()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 22
+        },
+        {
+          name: "testAcceptsEarlyReturnApiVersionGuard",
+          signature: "void testAcceptsEarlyReturnApiVersionGuard()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 39
+        },
+        {
+          name: "testAcceptsKotlinEarlyReturnApiVersionGuard",
+          signature: "void testAcceptsKotlinEarlyReturnApiVersionGuard()",
+          returnType: "void",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 59
+        },
+        {
+          name: "moduleProp",
+          signature: "TestFile moduleProp()",
+          returnType: "TestFile",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 79
+        },
+        {
+          name: "source",
+          signature: 'return source("src/main/resources/META-INF/xposed/module.prop", "minApiVersion=101\\n")',
+          returnType: "return",
+          params: [
+            '"src/main/resources/META-INF/xposed/module.prop"',
+            '"minApiVersion=101\\n"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 80
+        },
+        {
+          name: "sinceApiAnnotation",
+          signature: "TestFile sinceApiAnnotation()",
+          returnType: "TestFile",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 83
+        },
+        {
+          name: "newApiStub",
+          signature: "TestFile newApiStub()",
+          returnType: "TestFile",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 93
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.lint.SinceApiDetectorTest.TestModule",
+      simpleName: "TestModule",
+      type: "class",
+      packageName: "io.github.libxposed.lint",
+      filePath: "lint/lint/src/test/java/io/github/libxposed/lint/SinceApiDetectorTest.java",
+      sinceApi: 101,
+      summary: "class TestModule",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/lint/TestModule.html",
+      constants: [],
+      methods: [
+        {
+          name: "test",
+          signature: "void test(NewApi api)",
+          returnType: "void",
+          params: [
+            "NewApi api"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 31
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.lint.SinceApiDetectorTest.TestModule",
+      simpleName: "TestModule",
+      type: "class",
+      packageName: "io.github.libxposed.lint",
+      filePath: "lint/lint/src/test/java/io/github/libxposed/lint/SinceApiDetectorTest.java",
+      sinceApi: 101,
+      summary: "class TestModule",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/lint/TestModule.html",
+      constants: [],
+      methods: [
+        {
+          name: "test",
+          signature: "void test(NewApi api)",
+          returnType: "void",
+          params: [
+            "NewApi api"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 50
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.lint.SinceApiDetectorTest.TestModule",
+      simpleName: "TestModule",
+      type: "class",
+      packageName: "io.github.libxposed.lint",
+      filePath: "lint/lint/src/test/java/io/github/libxposed/lint/SinceApiDetectorTest.java",
+      sinceApi: 101,
+      summary: "class TestModule",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/lint/TestModule.html",
+      constants: [],
+      methods: [
+        {
+          name: "test",
+          signature: "fun test(api: NewApi)",
+          returnType: "fun",
+          params: [
+            "api: NewApi"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 70
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.lint.SinceApiDetectorTest.SinceApi",
+      simpleName: "SinceApi",
+      type: "@interface",
+      packageName: "io.github.libxposed.lint",
+      filePath: "lint/lint/src/test/java/io/github/libxposed/lint/SinceApiDetectorTest.java",
+      sinceApi: 101,
+      summary: "@interface SinceApi",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/lint/SinceApi.html",
+      constants: [],
+      methods: [
+        {
+          name: "value",
+          signature: "int value()",
+          returnType: "int",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 88
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.lint.SinceApiDetectorTest.NewApi",
+      simpleName: "NewApi",
+      type: "class",
+      packageName: "io.github.libxposed.lint",
+      filePath: "lint/lint/src/test/java/io/github/libxposed/lint/SinceApiDetectorTest.java",
+      sinceApi: 101,
+      summary: "class NewApi",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/lint/NewApi.html",
+      constants: [],
+      methods: [
+        {
+          name: "newApi",
+          signature: "void newApi()",
+          returnType: "void",
+          params: [],
+          sinceApi: 102,
+          doc: "",
+          line: 101
+        }
+      ]
+    }
   ]
 };
 
@@ -37342,7 +64766,406 @@ var example_default = {
     java_init_list: "com.example.xposedmodule.ModuleMain",
     java_module_example: 'package com.example.xposedmodule;\n\nimport android.util.Log;\nimport androidx.annotation.NonNull;\nimport io.github.libxposed.api.XposedModule;\nimport io.github.libxposed.api.XposedInterface.Invoker;\n\npublic class ModuleMain extends XposedModule {\n    private static final String TAG = "ModuleMain";\n\n    @Override\n    public void onPackageReady(@NonNull PackageReadyParam param) {\n        try {\n            Class<?> targetClass = Class.forName("com.target.app.MainActivity", true, param.getClassLoader());\n            var targetMethod = targetClass.getDeclaredMethod("someMethod", String.class);\n\n            hook(targetMethod).intercept(chain -> {\n                log(Log.INFO, TAG, "Intercepted: " + chain.getExecutable().getName());\n                String originalArg = (String) chain.getArg(0);\n                \n                // Modify arguments or execute original\n                Object result = chain.proceed();\n                \n                // Return result\n                return result;\n            });\n        } catch (Throwable t) {\n            log(Log.ERROR, TAG, "Hook initialization failed", t);\n        }\n    }\n}',
     kotlin_module_example: 'package com.example.xposedmodule\n\nimport android.util.Log\nimport io.github.libxposed.api.XposedModule\n\nclass ModuleMainKt : XposedModule() {\n    companion object {\n        const val TAG = "ModuleMainKt"\n    }\n\n    override fun onPackageReady(param: PackageReadyParam) {\n        if (!param.isFirstPackage) return\n\n        try {\n            val targetClass = Class.forName("com.target.app.MainActivity", true, param.classLoader)\n            val targetMethod = targetClass.getDeclaredMethod("someMethod", String::class.java)\n\n            hook(targetMethod).intercept { chain ->\n                log(Log.INFO, TAG, "Intercepted from Kotlin: ${chain.executable.name}")\n                chain.proceed()\n            }\n        } catch (t: Throwable) {\n            log(Log.ERROR, TAG, "Hook failed", t)\n        }\n    }\n}'
-  }
+  },
+  classes: [
+    {
+      name: "io.github.libxposed.example.App",
+      simpleName: "App",
+      type: "class",
+      packageName: "io.github.libxposed.example",
+      filePath: "example/app/src/main/java/io/github/libxposed/example/App.kt",
+      sinceApi: 101,
+      summary: "class App",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/example/App.html",
+      constants: [],
+      methods: [
+        {
+          name: "removeServiceStateListener",
+          signature: "fun removeServiceStateListener(listener: ServiceStateListener)",
+          returnType: "fun",
+          params: [
+            "listener: ServiceStateListener"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 38
+        },
+        {
+          name: "notifyServiceStateChanged",
+          signature: "fun notifyServiceStateChanged(service: XposedService?)",
+          returnType: "fun",
+          params: [
+            "service: XposedService?"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 43
+        },
+        {
+          name: "onCreate",
+          signature: "override fun onCreate()",
+          returnType: "override fun",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 49
+        },
+        {
+          name: "onServiceBind",
+          signature: "override fun onServiceBind(service: XposedService)",
+          returnType: "override fun",
+          params: [
+            "service: XposedService"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 58
+        },
+        {
+          name: "onServiceDied",
+          signature: "override fun onServiceDied(service: XposedService)",
+          returnType: "override fun",
+          params: [
+            "service: XposedService"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 63
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.example.App.ServiceStateListener",
+      simpleName: "ServiceStateListener",
+      type: "interface",
+      packageName: "io.github.libxposed.example",
+      filePath: "example/app/src/main/java/io/github/libxposed/example/App.kt",
+      sinceApi: 101,
+      summary: "interface ServiceStateListener",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/example/ServiceStateListener.html",
+      constants: [],
+      methods: [
+        {
+          name: "onServiceStateChanged",
+          signature: "fun onServiceStateChanged(service: XposedService?)",
+          returnType: "fun",
+          params: [
+            "service: XposedService?"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 55
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.example.MainActivity",
+      simpleName: "MainActivity",
+      type: "class",
+      packageName: "io.github.libxposed.example",
+      filePath: "example/app/src/main/java/io/github/libxposed/example/MainActivity.kt",
+      sinceApi: 101,
+      summary: "class MainActivity",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/example/MainActivity.html",
+      constants: [],
+      methods: [
+        {
+          name: "onScopeRequestApproved",
+          signature: "override fun onScopeRequestApproved(approved: List<String>)",
+          returnType: "override fun",
+          params: [
+            "approved: List<String>"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 19
+        },
+        {
+          name: "onScopeRequestFailed",
+          signature: "override fun onScopeRequestFailed(message: String)",
+          returnType: "override fun",
+          params: [
+            "message: String"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 30
+        },
+        {
+          name: "onCreate",
+          signature: "override fun onCreate(savedInstanceState: Bundle?)",
+          returnType: "override fun",
+          params: [
+            "savedInstanceState: Bundle?"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 42
+        },
+        {
+          name: "onStart",
+          signature: "override fun onStart()",
+          returnType: "override fun",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 51
+        },
+        {
+          name: "onStop",
+          signature: "override fun onStop()",
+          returnType: "override fun",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 56
+        },
+        {
+          name: "onServiceStateChanged",
+          signature: "override fun onServiceStateChanged(service: XposedService?)",
+          returnType: "override fun",
+          params: [
+            "service: XposedService?"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 61
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.example.ModuleMain",
+      simpleName: "ModuleMain",
+      type: "class",
+      packageName: "io.github.libxposed.example",
+      filePath: "example/app/src/main/java/io/github/libxposed/example/ModuleMain.java",
+      sinceApi: 101,
+      summary: "class ModuleMain",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/example/ModuleMain.html",
+      constants: [
+        {
+          name: "TAG",
+          type: "String",
+          value: '"ModuleMain"',
+          doc: ""
+        }
+      ],
+      methods: [
+        {
+          name: "hasProp",
+          signature: "boolean hasProp(long prop)",
+          returnType: "boolean",
+          params: [
+            "long prop"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 16
+        },
+        {
+          name: "onModuleLoaded",
+          signature: "void onModuleLoaded(@NonNull ModuleLoadedParam param)",
+          returnType: "void",
+          params: [
+            "@NonNull ModuleLoadedParam param"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 21
+        },
+        {
+          name: "getFrameworkName",
+          signature: ", getFrameworkName()",
+          returnType: ",",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 23
+        },
+        {
+          name: "onPackageLoaded",
+          signature: "void onPackageLoaded(@NonNull PackageLoadedParam param)",
+          returnType: "void",
+          params: [
+            "@NonNull PackageLoadedParam param"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 31
+        },
+        {
+          name: "onHotReloading",
+          signature: "boolean onHotReloading(@NonNull HotReloadingParam param)",
+          returnType: "boolean",
+          params: [
+            "@NonNull HotReloadingParam param"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 37
+        },
+        {
+          name: "onHotReloaded",
+          signature: "void onHotReloaded(@NonNull HotReloadedParam param)",
+          returnType: "void",
+          params: [
+            "@NonNull HotReloadedParam param"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 44
+        },
+        {
+          name: "onPackageReady",
+          signature: "void onPackageReady(@NonNull PackageReadyParam param)",
+          returnType: "void",
+          params: [
+            "@NonNull PackageReadyParam param"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 51
+        },
+        {
+          name: "Object",
+          signature: "new Object()",
+          returnType: "new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 63
+        },
+        {
+          name: "Object",
+          signature: "new Object()",
+          returnType: "new",
+          params: [],
+          sinceApi: 101,
+          doc: "",
+          line: 68
+        },
+        {
+          name: "RuntimeException",
+          signature: 'throw new RuntimeException("constructor hook exception")',
+          returnType: "throw new",
+          params: [
+            '"constructor hook exception"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 89
+        },
+        {
+          name: "Object",
+          signature: "new Object()",
+          returnType: "new",
+          params: [],
+          sinceApi: 101,
+          doc: "call the original method",
+          line: 93
+        },
+        {
+          name: "Object",
+          signature: "new Object()",
+          returnType: "new",
+          params: [],
+          sinceApi: 101,
+          doc: "call the special method starting from the middle of the hook chain",
+          line: 95
+        }
+      ]
+    },
+    {
+      name: "io.github.libxposed.example.ModuleMainKt",
+      simpleName: "ModuleMainKt",
+      type: "class",
+      packageName: "io.github.libxposed.example",
+      filePath: "example/app/src/main/java/io/github/libxposed/example/ModuleMainKt.kt",
+      sinceApi: 101,
+      summary: "class ModuleMainKt",
+      javadocUrl: "https://libxposed.github.io/api/io/github/libxposed/example/ModuleMainKt.html",
+      constants: [],
+      methods: [
+        {
+          name: "onModuleLoaded",
+          signature: "override fun onModuleLoaded(param: ModuleLoadedParam)",
+          returnType: "override fun",
+          params: [
+            "param: ModuleLoadedParam"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 22
+        },
+        {
+          name: "onHotReloading",
+          signature: "override fun onHotReloading(param: XposedModuleInterface.HotReloadingParam)",
+          returnType: "override fun",
+          params: [
+            "param: XposedModuleInterface.HotReloadingParam"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 32
+        },
+        {
+          name: "onHotReloaded",
+          signature: "override fun onHotReloaded(param: XposedModuleInterface.HotReloadedParam)",
+          returnType: "override fun",
+          params: [
+            "param: XposedModuleInterface.HotReloadedParam"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 38
+        },
+        {
+          name: "onPackageLoaded",
+          signature: "override fun onPackageLoaded(param: PackageLoadedParam)",
+          returnType: "override fun",
+          params: [
+            "param: PackageLoadedParam"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 45
+        },
+        {
+          name: "onPackageReady",
+          signature: "override fun onPackageReady(param: PackageReadyParam)",
+          returnType: "override fun",
+          params: [
+            "param: PackageReadyParam"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 50
+        },
+        {
+          name: "RuntimeException",
+          signature: 'throw RuntimeException("constructor hook exception")',
+          returnType: "throw",
+          params: [
+            '"constructor hook exception"'
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 114
+        },
+        {
+          name: "onSystemServerStarting",
+          signature: "override fun onSystemServerStarting(param: SystemServerStartingParam)",
+          returnType: "override fun",
+          params: [
+            "param: SystemServerStartingParam"
+          ],
+          sinceApi: 101,
+          doc: "",
+          line: 129
+        }
+      ]
+    }
+  ]
 };
 
 // src/data/migration.json
@@ -37425,90 +65248,202 @@ var serviceData = service_default;
 var lintData = lint_default;
 var exampleData = example_default;
 var migrationData = migration_default;
+function getAllClasses() {
+  const all = [];
+  if (apiData.classes) all.push(...apiData.classes);
+  if (helperData.classes) all.push(...helperData.classes);
+  if (helperData.components) all.push(...helperData.components);
+  if (serviceData.classes) all.push(...serviceData.classes);
+  if (lintData.classes) all.push(...lintData.classes);
+  return all;
+}
 function createLibXposedServer() {
   const server = new McpServer({
     name: "libxposed-mcp",
     version: "1.0.0"
   });
   server.tool(
+    "get_symbol",
+    "Retrieve exact signature, sinceApi, source location (filePath:line), parameters, and Javadoc for any symbol (class, interface, method, constant, package-info, annotation) across all 5 LibXposed subprojects.",
+    {
+      symbol: external_exports.string().describe("Fully qualified name or symbol name (e.g., 'io.github.libxposed.api.XposedInterface#hook', 'HookBuilder#fragment', 'package-info', 'RemotePreferences', 'Reflector#unreflect', 'deoptimize')")
+    },
+    async ({ symbol: symbol2 }) => {
+      const q = symbol2.trim();
+      const allClasses = getAllClasses();
+      if (q.includes("#")) {
+        const [classPart, memberPart] = q.split("#");
+        const targetCls2 = allClasses.find(
+          (c) => c.name?.toLowerCase() === classPart.toLowerCase() || c.simpleName?.toLowerCase() === classPart.toLowerCase() || c.name?.toLowerCase().endsWith("." + classPart.toLowerCase())
+        );
+        if (targetCls2) {
+          const m = targetCls2.methods?.find((x) => x.name?.toLowerCase() === memberPart.toLowerCase());
+          const cn = targetCls2.constants?.find((x) => x.name?.toLowerCase() === memberPart.toLowerCase());
+          if (m) {
+            return {
+              content: [
+                {
+                  type: "text",
+                  text: `# Symbol: \`${targetCls2.name}#${m.name}\`
+
+- **Type**: \`method\`
+- **Since API**: \`${m.sinceApi || targetCls2.sinceApi || 101}\`
+- **Source Location**: \`${targetCls2.filePath || "api/api/src/main/java"}:${m.line || 1}\`
+- **Signature**: \`${m.signature}\`
+- **Return Type**: \`${m.returnType || "void"}\`
+- **Official Javadoc**: ${targetCls2.javadocUrl || apiData.javadocBaseUrl}
+
+### Description
+${m.doc || targetCls2.summary}
+
+${m.params && m.params.length > 0 ? "### Parameters\n" + m.params.map((p) => "- `" + p + "`").join("\n") : ""}`
+                }
+              ]
+            };
+          }
+          if (cn) {
+            return {
+              content: [
+                {
+                  type: "text",
+                  text: `# Symbol: \`${targetCls2.name}.${cn.name}\`
+
+- **Type**: \`constant\`
+- **Value**: \`${cn.value}\`
+- **Source Location**: \`${targetCls2.filePath || "api/api/src/main/java"}\`
+- **Official Javadoc**: ${targetCls2.javadocUrl || apiData.javadocBaseUrl}
+
+### Description
+${cn.doc}`
+                }
+              ]
+            };
+          }
+        }
+      }
+      const targetCls = allClasses.find(
+        (c) => c.name?.toLowerCase() === q.toLowerCase() || c.simpleName?.toLowerCase() === q.toLowerCase() || c.name?.toLowerCase().endsWith("." + q.toLowerCase())
+      );
+      if (targetCls) {
+        let doc = `# ${targetCls.name}
+
+- **Type**: \`${targetCls.type || "class"}\`
+- **Since API**: \`${targetCls.sinceApi || 101}\`
+- **Source Location**: \`${targetCls.filePath || "libxposed/api"}\`
+- **Official Javadoc**: ${targetCls.javadocUrl || apiData.javadocBaseUrl}
+
+### Overview
+${targetCls.summary}
+`;
+        if (targetCls.constants && targetCls.constants.length > 0) {
+          doc += `
+### Constants
+| Name | Type | Value | Description |
+|---|---|---|---|
+`;
+          for (const cn of targetCls.constants) {
+            doc += `| \`${cn.name}\` | \`${cn.type}\` | \`${cn.value}\` | ${cn.doc} |
+`;
+          }
+        }
+        if (targetCls.methods && targetCls.methods.length > 0) {
+          doc += `
+### Methods (${targetCls.methods.length})
+`;
+          for (const mt of targetCls.methods) {
+            doc += `- **\`${mt.name}\`** (Since API ${mt.sinceApi || targetCls.sinceApi || 101}): \`${mt.signature}\`
+  ${mt.doc}
+`;
+          }
+        }
+        return { content: [{ type: "text", text: doc }] };
+      }
+      const matches = [];
+      for (const c of allClasses) {
+        if (c.methods) {
+          for (const m of c.methods) {
+            if (m.name?.toLowerCase() === q.toLowerCase() || m.signature?.toLowerCase().includes(q.toLowerCase())) {
+              matches.push(`### Method: \`${c.name}#${m.name}\`
+- **Signature**: \`${m.signature}\`
+- **Since API**: ${m.sinceApi || c.sinceApi}
+- **Source**: \`${c.filePath}:${m.line || 1}\`
+- **Doc**: ${m.doc || c.summary}`);
+            }
+          }
+        }
+        if (c.constants) {
+          for (const cn of c.constants) {
+            if (cn.name?.toLowerCase() === q.toLowerCase()) {
+              matches.push(`### Constant: \`${c.name}.${cn.name}\`
+- **Value**: \`${cn.value}\`
+- **Source**: \`${c.filePath}\`
+- **Doc**: ${cn.doc}`);
+            }
+          }
+        }
+      }
+      if (matches.length > 0) {
+        return {
+          content: [
+            {
+              type: "text",
+              text: `Found ${matches.length} matching symbol(s) for "${symbol2}":
+
+` + matches.join("\n\n---\n\n")
+            }
+          ]
+        };
+      }
+      const availableNames = allClasses.map((c) => c.simpleName || c.name.split(".").pop()).join(", ");
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Symbol "${symbol2}" not found in LibXposed codebase.
+Available symbols/classes include: ${availableNames}`
+          }
+        ]
+      };
+    }
+  );
+  server.tool(
     "search_libxposed",
     "Search across all LibXposed modules (api, helper, service, lint, example, migration) by keyword, class name, method name, or concept.",
     {
-      query: external_exports.string().describe("Search term, e.g., 'hook', 'Invoker', 'RemotePreferences', 'onPackageReady', 'SinceApi', 'XSharedPreferences'"),
+      query: external_exports.string().describe("Search term, e.g., 'hook', 'Invoker', 'RemotePreferences', 'onPackageReady', 'SinceApi', 'XSharedPreferences', 'package-info'"),
       module: external_exports.enum(["all", "api", "helper", "service", "lint", "example", "migration"]).optional().describe("Optional module scope to filter search results (default: 'all')")
     },
     async ({ query, module = "all" }) => {
       const q = query.toLowerCase();
       const results = [];
-      if (module === "all" || module === "api") {
-        for (const cls of apiData.classes) {
-          if (cls.name?.toLowerCase().includes(q) || cls.summary?.toLowerCase().includes(q)) {
-            results.push(`### [API Class] ${cls.name}
-- **Type**: ${cls.type} (Since API ${cls.sinceApi})
+      const allClasses = getAllClasses();
+      if (module === "all" || module === "api" || module === "helper" || module === "service" || module === "lint") {
+        for (const cls of allClasses) {
+          if (cls.name?.toLowerCase().includes(q) || cls.summary?.toLowerCase().includes(q) || cls.simpleName?.toLowerCase().includes(q)) {
+            results.push(`### [Class] ${cls.name}
+- **Type**: ${cls.type || "class"} (Since API ${cls.sinceApi || 101})
+- **Source File**: \`${cls.filePath || "libxposed"}\`
 - **Summary**: ${cls.summary}
 - **Javadoc**: ${cls.javadocUrl || apiData.javadocBaseUrl}`);
           }
           if (cls.methods) {
             for (const m of cls.methods) {
               if (m.name?.toLowerCase().includes(q) || m.signature?.toLowerCase().includes(q) || m.doc?.toLowerCase().includes(q)) {
-                results.push(`### [API Method] ${cls.name}#${m.name}
+                results.push(`### [Method] ${cls.name}#${m.name}
 - **Signature**: \`${m.signature}\`
+- **Source**: \`${cls.filePath}:${m.line || 1}\`
 - **Doc**: ${m.doc || ""}
-- **Since API**: ${m.sinceApi || cls.sinceApi}`);
+- **Since API**: ${m.sinceApi || cls.sinceApi || 101}`);
               }
             }
           }
           if (cls.constants) {
             for (const c of cls.constants) {
               if (c.name?.toLowerCase().includes(q) || c.doc?.toLowerCase().includes(q)) {
-                results.push(`### [API Constant] ${cls.name}.${c.name}
+                results.push(`### [Constant] ${cls.name}.${c.name}
 - **Type**: \`${c.type}\` = \`${c.value}\`
 - **Doc**: ${c.doc || ""}`);
               }
-            }
-          }
-        }
-      }
-      if (module === "all" || module === "helper") {
-        for (const comp of helperData.components) {
-          if (comp.name?.toLowerCase().includes(q) || comp.summary?.toLowerCase().includes(q)) {
-            results.push(`### [Helper Component] ${comp.name}
-- **Type**: ${comp.type}
-- **Summary**: ${comp.summary}`);
-          }
-          if (comp.methods) {
-            for (const m of comp.methods) {
-              if (m.name?.toLowerCase().includes(q) || m.signature?.toLowerCase().includes(q) || m.doc?.toLowerCase().includes(q)) {
-                results.push(`### [Helper Method] ${comp.name}#${m.name}
-- **Signature**: \`${m.signature}\`
-- **Doc**: ${m.doc || ""}`);
-              }
-            }
-          }
-        }
-      }
-      if (module === "all" || module === "service") {
-        for (const cls of serviceData.classes) {
-          if (cls.name?.toLowerCase().includes(q) || cls.summary?.toLowerCase().includes(q)) {
-            results.push(`### [Service Class] ${cls.name}
-- **Type**: ${cls.type}
-- **Summary**: ${cls.summary}`);
-          }
-          if (cls.methods) {
-            for (const m of cls.methods) {
-              if (m.name?.toLowerCase().includes(q) || m.signature?.toLowerCase().includes(q) || m.doc?.toLowerCase().includes(q)) {
-                results.push(`### [Service Method] ${cls.name}#${m.name}
-- **Signature**: \`${m.signature}\`
-- **Doc**: ${m.doc || ""}`);
-              }
-            }
-          }
-        }
-        if (serviceData.aidl) {
-          for (const a of serviceData.aidl) {
-            if (a.name?.toLowerCase().includes(q) || a.summary?.toLowerCase().includes(q)) {
-              results.push(`### [Service AIDL] ${a.name}
-- **Summary**: ${a.summary}`);
             }
           }
         }
@@ -37548,30 +65483,31 @@ function createLibXposedServer() {
   );
   server.tool(
     "get_api_doc",
-    "Retrieve detailed documentation, method signatures, parameters, return types, sinceApi version, and official Javadoc links for LibXposed core API classes.",
+    "Retrieve detailed documentation, method signatures, parameters, return types, sinceApi version, and official Javadoc links for any LibXposed class.",
     {
-      className: external_exports.string().describe("Name of the class or interface (e.g., 'XposedInterface', 'XposedModule', 'Chain', 'Hooker', 'Invoker', 'HookHandle', 'HookBuilder')"),
+      className: external_exports.string().describe("Name of the class, interface, or package-info (e.g., 'XposedInterface', 'XposedModule', 'RemotePreferences', 'HookBuilderImpl', 'package-info')"),
       memberName: external_exports.string().optional().describe("Optional method or constant name to focus on (e.g., 'hook', 'deoptimize', 'proceed', 'replaceHook', 'API_102')")
     },
     async ({ className, memberName }) => {
-      const targetCls = apiData.classes.find(
-        (c) => c.name.toLowerCase() === className.toLowerCase() || c.name.toLowerCase().endsWith("." + className.toLowerCase()) || c.name.toLowerCase().endsWith("$" + className.toLowerCase())
+      const allClasses = getAllClasses();
+      const targetCls = allClasses.find(
+        (c) => c.name?.toLowerCase() === className.toLowerCase() || c.simpleName?.toLowerCase() === className.toLowerCase() || c.name?.toLowerCase().endsWith("." + className.toLowerCase())
       );
       if (!targetCls) {
-        const available = apiData.classes.map((c) => c.name.split(".").pop()).join(", ");
+        const available = allClasses.map((c) => c.simpleName || c.name.split(".").pop()).join(", ");
         return {
           content: [
             {
               type: "text",
-              text: `Class "${className}" not found in LibXposed core API.
+              text: `Class "${className}" not found in LibXposed codebase.
 Available classes: ${available}`
             }
           ]
         };
       }
       if (memberName) {
-        const m = targetCls.methods?.find((x) => x.name.toLowerCase() === memberName.toLowerCase());
-        const c = targetCls.constants?.find((x) => x.name.toLowerCase() === memberName.toLowerCase());
+        const m = targetCls.methods?.find((x) => x.name?.toLowerCase() === memberName.toLowerCase());
+        const c = targetCls.constants?.find((x) => x.name?.toLowerCase() === memberName.toLowerCase());
         if (m) {
           return {
             content: [
@@ -37581,11 +65517,12 @@ Available classes: ${available}`
 
 - **Signature**: \`${m.signature}\`
 - **Return Type**: \`${m.returnType || "void"}\`
-- **Since API**: ${m.sinceApi || targetCls.sinceApi}
+- **Since API**: ${m.sinceApi || targetCls.sinceApi || 101}
+- **Source File**: \`${targetCls.filePath}:${m.line || 1}\`
 - **Official Javadoc**: ${targetCls.javadocUrl || apiData.javadocBaseUrl}
 
 ### Description
-${m.doc}
+${m.doc || targetCls.summary}
 
 ${m.params && m.params.length > 0 ? "### Parameters\n" + m.params.map((p) => "- `" + p + "`").join("\n") : ""}`
               }
@@ -37620,8 +65557,9 @@ ${c.doc}`
       }
       let doc = `# ${targetCls.name}
 
-- **Type**: \`${targetCls.type}\`
-- **Since API**: ${targetCls.sinceApi}
+- **Type**: \`${targetCls.type || "class"}\`
+- **Since API**: ${targetCls.sinceApi || 101}
+- **Source Location**: \`${targetCls.filePath || "libxposed"}\`
 - **Official Javadoc**: ${targetCls.javadocUrl || apiData.javadocBaseUrl}
 
 ### Overview
@@ -37640,10 +65578,10 @@ ${targetCls.summary}
       }
       if (targetCls.methods && targetCls.methods.length > 0) {
         doc += `
-### Methods
+### Methods (${targetCls.methods.length})
 `;
         for (const mt of targetCls.methods) {
-          doc += `- **\`${mt.name}\`** (Since API ${mt.sinceApi || targetCls.sinceApi}): \`${mt.signature}\`
+          doc += `- **\`${mt.name}\`** (Since API ${mt.sinceApi || targetCls.sinceApi || 101}): \`${mt.signature}\`
   ${mt.doc}
 `;
         }

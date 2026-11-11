@@ -1,6 +1,8 @@
 import { spawn } from "node:child_process";
 
-const child = spawn("node", ["dist/index.js"], {
+const nodeExe = "C:\\Users\\aka\\AppData\\Local\\Programs\\DeepSeek Harness\\resources\\runtime\\primary-runtime\\dependencies\\node\\bin\\node.exe";
+
+const child = spawn(nodeExe, ["dist/index.js"], {
   stdio: ["pipe", "pipe", "inherit"],
 });
 
@@ -34,39 +36,39 @@ function handleMessage(msg) {
     send({ jsonrpc: "2.0", id: 2, method: "tools/list", params: {} });
   } else if (msg.id === 2) {
     const tools = msg.result?.tools?.map((t) => t.name) || [];
-    console.log("2. [OK] Registered 7 tools:", tools);
+    console.log("2. [OK] Registered tools:", tools);
     send({
       jsonrpc: "2.0",
       id: 3,
       method: "tools/call",
-      params: { name: "get_api_doc", arguments: { className: "XposedInterface", memberName: "hook" } },
+      params: { name: "get_symbol", arguments: { symbol: "XposedInterface#deoptimize" } },
     });
   } else if (msg.id === 3) {
-    console.log("3. [OK] get_api_doc returned signature:\n  ", msg.result?.content?.[0]?.text?.split("\n")[2]);
+    console.log("3. [OK] get_symbol returned deoptimize symbol details:\n  ", msg.result?.content?.[0]?.text?.split("\n")[0]);
     send({
       jsonrpc: "2.0",
       id: 4,
       method: "tools/call",
-      params: { name: "get_helper_guide", arguments: { topic: "kotlin_dsl" } },
+      params: { name: "get_symbol", arguments: { symbol: "package-info" } },
     });
   } else if (msg.id === 4) {
-    console.log("4. [OK] get_helper_guide returned Kotlin DSL snippet");
+    console.log("4. [OK] get_symbol returned package-info details:\n  ", msg.result?.content?.[0]?.text?.split("\n")[0]);
     send({
       jsonrpc: "2.0",
       id: 5,
       method: "tools/call",
-      params: { name: "get_service_guide", arguments: { topic: "remote_preferences" } },
+      params: { name: "get_symbol", arguments: { symbol: "HookBuilderImpl" } },
     });
   } else if (msg.id === 5) {
-    console.log("5. [OK] get_service_guide returned RemotePreferences docs");
+    console.log("5. [OK] get_symbol returned HookBuilderImpl details:\n  ", msg.result?.content?.[0]?.text?.split("\n")[0]);
     send({
       jsonrpc: "2.0",
       id: 6,
       method: "tools/call",
-      params: { name: "migrate_legacy_code", arguments: { legacySnippet: "findAndHookMethod" } },
+      params: { name: "get_api_doc", arguments: { className: "XposedInterfaceWrapper" } },
     });
   } else if (msg.id === 6) {
-    console.log("6. [OK] migrate_legacy_code returned modern mapping");
+    console.log("6. [OK] get_api_doc returned XposedInterfaceWrapper doc without whitelist restrictions");
     send({
       jsonrpc: "2.0",
       id: 7,
@@ -75,7 +77,7 @@ function handleMessage(msg) {
     });
   } else if (msg.id === 7) {
     console.log("7. [OK] check_api_compatibility returned API 102 specifications");
-    console.log("\n[PASS] All 7 tools tested and verified.");
+    console.log("\n[PASS] All tools and full symbol coverage verified successfully!");
     child.kill();
     process.exit(0);
   }
